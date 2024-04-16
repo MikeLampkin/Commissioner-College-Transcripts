@@ -1,0 +1,512 @@
+/*!
+=====================================================================================
+v. CUSTOM
+
+ * Lampkin Custom Style Sheet
+ * Copyright 2010-2020 Mike Lampkin - developer
+ * Licensed under MIT
+
+ Copyright (c) Copyright 2010-2020 Mike Lampkin - developer
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this 
+software and associated documentation files (the "Software"), to deal in the Software 
+without restriction, including without limitation the rights to use, copy, modify, 
+merge, publish, distribute, sublicense, and/or sell copies of the Software, and to 
+permit persons to whom the Software is furnished to do so, subject to the following 
+conditions:
+
+The above copyright notice and this permission notice shall be included in all 
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR 
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, 
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE 
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
+WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+=====================================================================================
+  */
+
+@charset "utf-8";
+
+/*
+First, declare your variables as property/value pairs on a selector such as the :root pseudo-class.
+*/
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Roboto+Slab:wght@400;700&display=swap');
+
+/*font-family: 'Roboto Condensed', sans-serif;*/
+/*font-family: 'Roboto Slab', serif;*/
+
+
+:root {
+	--main_clr: 		#6B8E23; /* OliveDrab */
+	--main_clr_lt: 		#228B22; /* ForestGreen */
+	--main_clr_dk: 		#556B2F; /* DarkOliveGreen */
+	--hover_clr: 		#000;
+
+	/*--bodyfont: 'Roboto Condensed', sans-serif;*/
+	--headfont: 'Roboto Slab', serif;
+
+
+	--fontsize: 13px;
+	--fontsize2: 15px;
+
+	--scouting_red: 		#CE1126;
+	--scouting_blue: 		#003F87;
+
+	--cubscouting_blue:		#003F87;
+	--cubscouting_yellow:	#FCD116;
+
+	--scoutsbsa_tan:		#DEB887;
+	--scoutsbsa_yellow:		#FFCC00;
+	--scoutsbsa_brown:		#996633;
+	--scoutsbsa_blue:		#003F87;
+	--scoutsbsa_red:		#CE1126;
+	--scoutsbsa_green:		#006B3F;
+
+	--venturing_green:		#006B3F;
+	--venturing_yellow:		#FCD116;
+
+	--seascout_black: 		#000000;
+	--seascout_dark_blue: 	#003366;
+	--seascout_dark_brown: 	#330000;
+	--seascout_dark_gold: 	#996600;
+	--seascout_light_yellow: #FFCC66;
+	--seascout_light_brown: #B39475;
+	--seascout_light_blue: 	#9AB3D5;
+	--seascout_dark_yellow: #FFCC00;
+	--seascout_red: 		#990000;
+	--seascout_gold: 		#CC9900;
+
+	--oa_red:				#e31837;
+	--oa_gray:				#36454f;
+
+	--district_blue:	steelblue;
+	--district_silver:	lightslategray;
+
+}
+
+.font-small
+{
+	font-size:10px;
+	line-height: 125%;
+}
+
+	#data_entry .btn.active
+	{
+		background:#000!important;
+		/*border:1px solid darkred!important;*/
+	}
+
+
+/*  --------------------------------------------------
+	:: ROUNDTABLE LOGO
+	-------------------------------------------------- */
+
+.fa-stack-logo 
+{ 
+	font-size: 1.25em;
+	margin:-5px;
+}
+
+i 
+{ 
+	vertical-align: middle; 
+}
+
+.logo-bottom
+{
+	/*opacity: .5;*/
+	color: rgba(255,255,255,0.6);
+}
+
+
+
+/*  --------------------------------------------------
+	:: NAVBAR ICONS
+	-------------------------------------------------- */
+
+
+
+/*  --------------------------------------------------
+	:: SCOUT COLORS
+	-------------------------------------------------- */
+#data_entry .btn
+{
+	margin:2px 0 2px 0; 
+}
+
+#data_entry .btn.active
+{
+	background:#000!important;
+	border:4px solid darkred!important;
+}
+
+.badge
+{
+  font-size:10px;
+}
+
+.cub-badge 
+{
+  transform: rotate(45deg);
+}
+
+
+
+
+
+
+
+.btn-cubscouts
+{
+	background-color: var(--cubscouting_blue);
+	border:2px solid var(--cubscouting_yellow);
+	color:white!important;
+}
+
+	.btn-cubscouts a, 
+	.btn-cubscouts:hover 
+	{
+	  color: white;
+	}
+
+	.btn-cubscouts:hover
+	{
+		background:dodgerblue;
+		transition: 0.2s background;
+	}
+	
+	.btn-cubscouts:active 
+	{
+		background:#000;
+		border:2px solid darkred!important;
+	}
+
+
+
+
+.btn-scoutsbsa
+{
+	background-color: var(--scoutsbsa_tan);
+	border:2px solid var(--scoutsbsa_green);
+	color:white!important;
+}
+
+	.btn-scoutsbsa a, 
+	.btn-scoutsbsa:hover 
+	{
+	  color: white;
+	}
+
+	.btn-scoutsbsa:hover
+	{
+		background:var(--scoutsbsa_brown);
+		transition: 0.2s background;
+	}
+	
+	.btn-scoutsbsa:active
+	{
+
+		background:#000;
+		border:2px solid darkred!important;
+	}
+
+
+
+
+.btn-venturing
+{
+	background-color: var(--venturing_green);
+	border:2px solid var(--venturing_yellow);
+	color:white!important;
+}
+
+	.btn-venturing a, 
+	.btn-venturing:hover 
+	{
+	  color: white;
+	}
+
+	.btn-venturing:hover
+	{
+		background:#34421c;
+		transition: 0.2s background;
+	}
+	/*
+	.btn-venturing:visited 
+	{
+		background-color: midnightblue;
+	}*/
+	
+	.btn-venturing:active
+	{
+
+		background:#000;
+		border:2px solid darkred!important;
+	}
+
+
+
+
+.btn-seascouts
+{
+	background-color: var(--seascout_dark_blue);
+	border:2px solid var(--seascout_light_yellow);
+	color:white!important;
+}
+
+	.btn-seascouts a, 
+	.btn-seascouts:hover 
+	{
+	  color: white;
+	}
+
+	.btn-seascouts:hover
+	{
+		background:black;
+		transition: 0.2s background;
+	}
+	/*
+	.btn-seascouts:visited 
+	{
+		background-color: midnightblue;
+	}*/
+	
+	.btn-seascouts:active
+	{
+
+		background:#000;
+		border:2px solid darkred!important;
+	}
+
+
+
+.btn-district
+{
+	background-color: var(--district_blue);
+	border:2px solid var(--district_silver);
+	color:white!important;
+}
+
+	.btn-district a, 
+	.btn-district:hover 
+	{
+	  color: white;
+	}
+
+	.btn-district:hover
+	{
+		background:darkslategray;
+		transition: 0.2s background;
+	}
+	/*
+	.btn-district:visited 
+	{
+		background-color: midnightblue;
+	}*/
+	
+	.btn-district:active
+	{
+
+		background:#000;
+		border:2px solid darkred!important;
+	}
+
+
+
+.btn-council
+{
+	background-color: var(--district_silver);
+	border:2px solid var(--district_blue);
+	color:white!important;
+}
+
+	.btn-council a, 
+	.btn-council:hover 
+	{
+	  color: white;
+	}
+
+	.btn-council:hover
+	{
+		background:dimgray;
+		transition: 0.2s background;
+	}
+	/*
+	.btn-council:visited 
+	{
+		background-color: midnightblue;
+	}*/
+	
+	.btn-council:active
+	{
+
+		background:#000;
+		border:2px solid darkred!important;
+	}
+
+
+.btn-oa
+{
+	background-color: var(--oa_red);
+	border:2px solid darkred;
+	color:white!important;
+}
+
+	.btn-oa a, 
+	.btn-oa:hover 
+	{
+	  color: white;
+	}
+
+	.btn-oa:hover
+	{
+		background:darkred;
+		transition: 0.2s background;
+	}
+	/*
+	.btn-oa:visited 
+	{
+		background-color: midnightblue;
+	}*/
+	
+	.btn-oa:active
+	{
+
+		background:#000;
+		border:2px solid darkred!important;
+	}
+
+
+.btn-other
+{
+	background-color: dimgray;
+	border:2px solid darkslategray;
+	color:white!important;
+}
+
+	.btn-other a, 
+	.btn-other:hover 
+	{
+	  color: white;
+	}
+
+	.btn-other:hover
+	{
+		background:darkgray;
+		transition: 0.2s background;
+	}
+	/*
+	.btn-other:visited 
+	{
+		background-color: midnightblue;
+	}*/
+	
+	.btn-other:active
+	{
+
+		background:#000;
+		border:2px solid darkred!important;
+	}
+
+
+/*PROFILE*/
+
+.profile-img
+{
+    text-align: center;
+}
+.profile-img img
+{
+    width: 99%;
+    /*width:200px;*/
+    height: 99%;
+}
+.profile-img .file 
+{
+    position: relative;
+    overflow: hidden;
+    margin-top: -20%;
+    width: 70%;
+    border: none;
+    border-radius: 0;
+    font-size: 15px;
+    background: #212529b8;
+}
+.profile-img .file input 
+{
+    position: absolute;
+    opacity: 0;
+    right: 0;
+    top: 0;
+}
+.profile-head h5
+{
+    color: #333;
+}
+.profile-head h6
+{
+    color: #0062cc;
+}
+.profile-edit-btn
+{
+    border: none;
+    border-radius: 1.5rem;
+    width: 70%;
+    padding: 2%;
+    font-weight: 600;
+    color: #6c757d;
+    cursor: pointer;
+}
+.proile-rating
+{
+    font-size: 12px;
+    color: #818182;
+    margin-top: .3em;
+}
+.proile-rating span{
+    color: #495057;
+    font-size: 15px;
+    font-weight: 600;
+}
+.profile-head .nav-tabs{
+    margin-bottom:5%;
+}
+.profile-head .nav-tabs .nav-link{
+    font-weight:600;
+    border: none;
+}
+.profile-head .nav-tabs .nav-link.active{
+    border: none;
+    border-bottom:2px solid #0062cc;
+}
+.profile-work{
+    padding: 14%;
+    margin-top: -15%;
+}
+.profile-work p{
+    font-size: 12px;
+    color: #818182;
+    font-weight: 600;
+    margin-top: 10%;
+}
+.profile-work a{
+    text-decoration: none;
+    color: #495057;
+    font-weight: 600;
+    font-size: 14px;
+}
+.profile-work ul{
+    list-style: none;
+}
+.profile-tab label{
+    font-weight: 600;
+}
+.profile-tab p{
+    font-weight: 600;
+    color: #0062cc;
+}
+
+

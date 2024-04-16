@@ -1,0 +1,780 @@
+/*!
+=====================================================================================
+v. 11.0
+
+ * Lampkin Custom Style Sheet
+ * Copyright 2010-2024 Mike Lampkin - developer
+ * Licensed under MIT
+
+ Copyright (c) Copyright 2010-2024 Mike Lampkin - developer
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this
+software and associated documentation files (the "Software"), to deal in the Software
+without restriction, including without limitation the rights to use, copy, modify,
+merge, publish, distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to the following
+conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+=====================================================================================
+  */
+
+@charset "utf-8";
+
+/*
+First, declare your variables as property/value pairs on a selector such as the :root pseudo-class.
+*/
+@import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,700;1,300;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,700;1,700&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,300;0,700;1,300;1,700&display=swap'); */
+
+:root {
+	--headfont: 'Montserrat', sans-serif;
+	--bodyfont: 'Lato', sans-serif;
+/* --bodyfont: 'Raleway', sans-serif; */
+
+
+	--scouting_red: 		#CE1126;
+	--scouting_blue: 		#003F87;
+
+	--scouting_light_red: 		#f04257;
+	--scouting_dark_red: 		#8e0b1b;
+
+	--cubscouting_blue:		#003F87;
+	--cubscouting_yellow:	#FCD116;
+
+	--scoutsbsa_tan:		#DEB887;
+	--scoutsbsa_yellow:		#FFCC00;
+	--scoutsbsa_brown:		#996633;
+	--scoutsbsa_blue:		#003F87;
+	--scoutsbsa_red:		#CE1126;
+	--scoutsbsa_green:		#006B3F;
+
+	--venturing_green:		#006B3F;
+	--venturing_yellow:		#FCD116;
+
+	--seascout_black: 		#000000;
+	--seascout_dark_blue: 	#003366;
+	--seascout_dark_brown: 	#330000;
+	--seascout_dark_gold: 	#996600;
+	--seascout_light_yellow: #FFCC66;
+	--seascout_light_brown: #B39475;
+	--seascout_light_blue: 	#9AB3D5;
+	--seascout_dark_yellow: #FFCC00;
+	--seascout_red: 		#990000;
+	--seascout_gold: 		#CC9900;
+
+	--oa_red:				#e31837;
+	--oa_gray:				#36454f;
+
+	--district_blue:	steelblue;
+	--district_silver:	lightslategray;
+
+	--main_clr: 		var(--scouting_red);
+	--main_clr_lt:		var(--scouting_light_red);
+	--main_clr_dk:		var(--scouting_dark_red);
+
+		--step1: var(--orange);
+		--step2: var(--blue);
+		--step3: var(--green);
+		--step4: var(--yellow);
+		--step5: var(--purple);
+
+	--color-stripe: #efefef;
+	--color-hover1: #DFDFDF;
+	--color-hover2: #BFBFBF;
+	--color-hover3: #9F9F9F;
+
+	--fontsize: 12px;
+}
+
+
+
+html {
+	width: 100%;
+	height: 100vh;
+}
+
+body {
+	padding:70px 10px 0px 10px;
+}
+
+html, body {
+	/* font-family: var(--bodyfont); */
+	/* font-size: var(--fontsize); */
+	font-family: 'Lato', sans-serif;
+	font-size: 16px;
+	/* line-height: 1.5; */ /* Recommended is 1.6 */
+	font-weight: 400;
+}
+
+h1, h2, h3, h4, h5, h6, h7, h8,
+.h1, .h2, .h3, .h4, .h5, .h6, .h7, .h8 {
+	font-weight: 700;
+	font-family:  'Montserrat', sans-serif;
+	/* font-family: var(--bodyfont); */
+
+}
+
+
+/* h1, .h1 { font-size: 130%; }
+h2, .h2 { font-size: 120%; }
+h3, .h3 { font-size: 112%; }
+h4, .h4 { font-size: 106%; }
+h5, .h5 { font-size: 102%; }
+h6, .h6 { font-size: 101%; }
+h7, .h7 { font-size: 100%; }
+h8, .h8 { font-size: 100%; } */
+
+h1, .h1 { font-size: 1.60em; }
+h2, .h2 { font-size: 1.50em; }
+h3, .h3 { font-size: 1.40em; }
+h4, .h4 { font-size: 1.25em; }
+h5, .h5 { font-size: 1.125em; }
+h6, .h6 { font-size: 1.065em; }
+h7, .h7 { font-size: 1.00em; }
+h8, .h8 { font-size: 1.00em; }
+
+/*.container.hover .row :hover,
+.container-fluid.hover .row :hover {
+	background-color: var(--color-hover1);
+	}
+*/
+
+/*p, td, div, blockquote, dl, ul, ol, input, select, textarea, li, dt, dd  {
+	letter-spacing: 0px;
+}*/
+
+.small, .sm {
+	font-size:95%;
+	line-height:105%;
+}
+.micro, .xs {
+	font-size:75%;
+	/* line-height:75%; */
+}
+
+.btn-group-xs > .btn, .btn-xs {
+	padding: .25rem .4rem;
+	font-size: 75%;
+	line-height: .5;
+	border-radius: .2rem;
+	margin:0 0 .2rem 0;
+}
+
+
+a:link
+{
+	text-decoration:none;
+}
+
+a:hover
+{
+	text-decoration:none;
+}
+
+a.scroll {
+	color: darkred;
+}
+
+a.scroll:hover {
+	color: red;
+	cursor: pointer;
+}
+/*
+THIS WILL MAKE SURE YOUR 'back to top' BUTTON GOES ALL THE WAY
+*/
+#top
+{
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  z-index: -1;
+}
+
+
+hr {
+	border-color: gray;
+	height: .2px;
+	border-style: dotted;
+	border-width: 1px 0px 0px 0px;
+	}
+
+
+.fa-stack.small { font-size: 0.5em; }
+i { vertical-align: middle; }
+/*  --------------------------------------------------
+	:: COLORS
+	-------------------------------------------------- */
+
+.main-clr {
+	background-color: var(--main_clr)!important;
+	color: #fff!important;
+}
+
+.main-clr a:link, .main-clr a:visited {
+	color: #e7e7e7;
+}
+
+.main-clr:hover, .main-clr a:hover {
+	background-color: var(--main_clr_dk)!important;
+	color: #fff;
+}
+
+.text-main-clr {
+	color: var(--main_clr);
+}
+
+
+/*  --------------------------------------------------
+	:: SCOUT COLORS
+	-------------------------------------------------- */
+
+	.btn-cubscouts
+	{
+		background-color: var(--cubscouting_blue);
+		border:2px solid var(--cubscouting_yellow);
+		color:white!important;
+	}
+
+		.btn-cubscouts a,
+		.btn-cubscouts:hover
+		{
+		  color: white;
+		}
+
+		.btn-cubscouts:hover
+		{
+			background:dodgerblue;
+			transition: 0.2s background;
+		}
+
+		.btn-cubscouts:active
+		{
+			background:#000;
+			border:2px solid darkred!important;
+		}
+
+
+
+
+	.btn-scoutsbsa
+	{
+		background-color: var(--scoutsbsa_tan);
+		border:2px solid var(--scoutsbsa_green);
+		color:white!important;
+	}
+
+		.btn-scoutsbsa a,
+		.btn-scoutsbsa:hover
+		{
+		  color: white;
+		}
+
+		.btn-scoutsbsa:hover
+		{
+			background:var(--scoutsbsa_brown);
+			transition: 0.2s background;
+		}
+
+		.btn-scoutsbsa:active
+		{
+
+			background:#000;
+			border:2px solid darkred!important;
+		}
+
+
+
+
+	.btn-venturing
+	{
+		background-color: var(--venturing_green);
+		border:2px solid var(--venturing_yellow);
+		color:white!important;
+	}
+
+		.btn-venturing a,
+		.btn-venturing:hover
+		{
+		  color: white;
+		}
+
+		.btn-venturing:hover
+		{
+			background:#34421c;
+			transition: 0.2s background;
+		}
+		/*
+		.btn-venturing:visited
+		{
+			background-color: midnightblue;
+		}*/
+
+		.btn-venturing:active
+		{
+
+			background:#000;
+			border:2px solid darkred!important;
+		}
+
+
+
+
+	.btn-seascouts
+	{
+		background-color: var(--seascout_dark_blue);
+		border:2px solid var(--seascout_light_yellow);
+		color:white!important;
+	}
+
+		.btn-seascouts a,
+		.btn-seascouts:hover
+		{
+		  color: white;
+		}
+
+		.btn-seascouts:hover
+		{
+			background:black;
+			transition: 0.2s background;
+		}
+		/*
+		.btn-seascouts:visited
+		{
+			background-color: midnightblue;
+		}*/
+
+		.btn-seascouts:active
+		{
+
+			background:#000;
+			border:2px solid darkred!important;
+		}
+
+
+
+	.btn-district
+	{
+		background-color: var(--district_blue);
+		border:2px solid var(--district_silver);
+		color:white!important;
+	}
+
+		.btn-district a,
+		.btn-district:hover
+		{
+		  color: white;
+		}
+
+		.btn-district:hover
+		{
+			background:darkslategray;
+			transition: 0.2s background;
+		}
+		/*
+		.btn-district:visited
+		{
+			background-color: midnightblue;
+		}*/
+
+		.btn-district:active
+		{
+
+			background:#000;
+			border:2px solid darkred!important;
+		}
+
+
+
+	.btn-council
+	{
+		background-color: var(--district_silver);
+		border:2px solid var(--district_blue);
+		color:white!important;
+	}
+
+		.btn-council a,
+		.btn-council:hover
+		{
+		  color: white;
+		}
+
+		.btn-council:hover
+		{
+			background:dimgray;
+			transition: 0.2s background;
+		}
+		/*
+		.btn-council:visited
+		{
+			background-color: midnightblue;
+		}*/
+
+		.btn-council:active
+		{
+
+			background:#000;
+			border:2px solid darkred!important;
+		}
+
+
+	.btn-oa
+	{
+		background-color: var(--oa_red);
+		border:2px solid darkred;
+		color:white!important;
+	}
+
+		.btn-oa a,
+		.btn-oa:hover
+		{
+		  color: white;
+		}
+
+		.btn-oa:hover
+		{
+			background:darkred;
+			transition: 0.2s background;
+		}
+		/*
+		.btn-oa:visited
+		{
+			background-color: midnightblue;
+		}*/
+
+		.btn-oa:active
+		{
+
+			background:#000;
+			border:2px solid darkred!important;
+		}
+
+
+	.btn-other
+	{
+		background-color: dimgray;
+		border:2px solid darkslategray;
+		color:white!important;
+	}
+
+		.btn-other a,
+		.btn-other:hover
+		{
+		  color: white;
+		}
+
+		.btn-other:hover
+		{
+			background:darkgray;
+			transition: 0.2s background;
+		}
+		/*
+		.btn-other:visited
+		{
+			background-color: midnightblue;
+		}*/
+
+		.btn-other:active
+		{
+
+			background:#000;
+			border:2px solid darkred!important;
+		}
+
+
+/*  --------------------------------------------------
+	:: // SCOUT COLORS
+	-------------------------------------------------- */
+
+
+
+[data-toggle="collapse"] i.fa-caret-up {
+	display: inline-block;
+	color:inherit;
+	transform: rotate(180deg) ;
+	transition: all linear 0.25s;
+}
+
+[data-toggle="collapse"].collapsed i.fa-caret-up {
+	display: inline-block;
+	color:inherit;
+	transform: rotate(0deg) ;
+}
+
+
+/*  --------------------------------------------------
+	:: NAV Section
+	-------------------------------------------------- */
+
+
+.navbar-dark {
+	background-color: var(--main_clr);
+	border-bottom:3px solid #000;
+}
+
+/* .navbar-brand { */
+	/* font-weight: 900; */
+	/* font-family: var(--headfont); */
+/* } */
+
+.logo {
+	width:35px;
+	}
+
+.logo-icon
+{
+	width:18px;
+}
+
+.navbar-nav li {
+	color:#fff;
+	padding:0 10px;
+	border-radius: 5px;
+	border-top:1px solid var(--main_clr_lt);
+	border-bottom:1px solid var(--main_clr_dk);
+	}
+
+.navbar-nav li.nocap {
+	border-top:0;
+	border-bottom:0;
+	}
+
+/*    NAV-ITEMS    */
+.navbar-nav li.nav-item {
+	margin:0 3px;
+}
+
+.navbar-nav li.nav-item a {
+	color:#fff;
+}
+
+.navbar-nav li.nav-item a:hover {
+	color:#fff;
+}
+
+.navbar-nav li.nav-item a.active {
+	color:#ccc;
+}
+
+.nav-link {
+	color:#fff!important;
+}
+
+.dropdown-menu {
+	background-color:var(--main_clr_dk);
+}
+
+.navbar-nav li:hover,
+.dropdown-menu a:hover {
+	background-color:#000;
+}
+
+.navbar-nav li.active,
+.dropdown-menu a.active {
+	background-color:black;
+	color:#fff;
+}
+
+.navbar-nav li.active:hover,
+.dropdown-menu a.active:hover {
+	color:#fff;
+	background-color:#333;
+}
+
+
+/*  --------------------------------------------------
+	:: FORMS Section
+	-------------------------------------------------- */
+
+	.hideme
+	{
+		display: none;
+		visibility: none;
+	}
+	.noselect
+	{
+		-webkit-touch-callout: none; /* iOS Safari */
+		-webkit-user-select: none; /* Safari */
+		-khtml-user-select: none; /* Konqueror HTML */
+		-moz-user-select: none; /* Old versions of Firefox */
+		-ms-user-select: none; /* Internet Explorer/Edge */
+		user-select: none!important; /* Non-prefixed version, currently supported by Chrome, Edge, Opera and Firefox */
+	}
+
+/*input[type=text]
+{
+	transition: ease-in-out, width .35s ease-in-out;
+}
+
+input[type=text]:focus
+{
+	width: 250px;
+}*/
+
+input, .form-control, label, select
+{
+	font-weight: 400;
+}
+
+.required
+{
+	color: #f00;
+	/*border:.5px solid red;*/
+}
+
+label.required::after
+{
+  content: " *";
+}
+
+input:required,
+select:required
+{
+	background-color: lightyellow;
+	color: #00f;
+}
+
+.form-control:focus
+{
+	background-color: #ffc;
+}
+
+.form-control:required:focus
+{
+	background-color: mistyrose;
+}
+
+.not-required
+{
+	color:#000;
+}
+
+
+.nice-form .col-form-label
+{
+	font-style: bold;
+	font-weight: bold;
+}
+
+
+
+/*  --------------------------------------------------
+	:: ADMIN Section
+	-------------------------------------------------- */
+	.hdr {
+		font-size: .75em;
+	}
+
+	.no-deco {
+		text-decoration:none;
+	}
+
+	.filter-hilite
+	{
+		font-weight: bold;
+		color: darkgreen;
+		background-color: rgba(255,250,205,0.97);;
+	}
+	.card-header:hover
+	{
+		background: rgba(150,150,0,.3);
+	}
+
+
+	.table-active, div.active
+	{
+		background-color: gainsboro!important;
+		font-weight: bold;
+		border-color:white!important;
+	}
+
+/*  --------------------------------------------------
+	:: COLUMNS Section
+	-------------------------------------------------- */
+
+
+
+
+/*  --------------------------------------------------
+	:: GENERIC Section
+	-------------------------------------------------- */
+
+.council-strip {
+	width: 2em;
+}
+
+/*    --------------------------------------------------
+	:: Inputs & Buttons
+	-------------------------------------------------- */
+
+.no-hover,
+.no-hover:hover
+{
+	background-color:#fff ;
+}
+
+
+
+footer
+{
+	font-size:85%;
+/* 	width:60%; */
+	color:black;
+/* 	clear:both; */
+	text-align:center;
+	padding: 10px;
+	margin: 20px auto 10px auto;
+	border-top:2px solid var(--main_clr);
+}
+
+
+
+
+ul li.check {
+  list-style: none;
+}
+ul li.check:before {
+  content: '✓';
+  margin-left:-15px;
+}
+
+
+
+	/*  --------------------------------------------------
+		:: SCREEN or MOBILE ONLY
+		-------------------------------------------------- */
+
+	.screen-only
+	{
+		display: block;
+	}
+	.mobile-only
+	{
+		display: none;
+	}
+
+	@media screen and (min-width: 0px) and (max-width: 720px)
+	{
+		.screen-only
+		{
+			display: none;
+		}
+		.mobile-only
+		{
+			display: block;
+		}
+	}
+
+	/*  --------------------------------------------------
+		:: SCREEN or MOBILE ONLY
+		-------------------------------------------------- */

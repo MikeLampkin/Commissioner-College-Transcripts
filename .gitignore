@@ -1,0 +1,17 @@
+# Ignore files -- AUTO
+.icon
+.DS_Store
+.Thumb_db
+*.txt
+icon
+
+# Ignore files -- WORKING
+untitled folder/
+
+_working/
+_hold/
+_archive/
+_dbase/
+
+# Ignore files -- CUSTOM
+config_private.php
