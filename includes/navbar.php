@@ -15,10 +15,6 @@
 		<div class="collapse navbar-collapse" id="navbarNav">
 			<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
-				<li class="nav-item <?php if(strpos($pg,'home') !== false) { echo 'active';} ?>">
-					<a class="nav-link" role="button" href="/."> Home </a>
-				</li>
-
 				<li class="nav-item <?php if(strpos($pg,'transcripts') !== false) { echo 'active';} ?>">
 					<a class="nav-link" role="button" href="transcripts"> Transcripts </a>
 				</li>
@@ -34,6 +30,11 @@
 				<!-- <li class="nav-item <?php if(strpos($pg,'thesis') !== false) { echo 'active';} ?>">
 					<a class="nav-link" role="button" href="thesis"> Thesis Library </a>
 				</li> -->
+
+				<li class="nav-item <?php if(strpos($pg,'info') !== false) { echo 'active';} ?>">
+					<a class="nav-link" role="button" href="info"> Info </a>
+				</li>
+
 			</ul>
 		</div>
 
