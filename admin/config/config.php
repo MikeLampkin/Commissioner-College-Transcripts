@@ -39,7 +39,10 @@
 
 	//! ITEMS BELOW REQUIRE config_private.php
 	require 'config_private.php';
-	//Open a new connection to the MySQL server
+	$db_name 		= 'transcripts';
+	$db_user        = 'webapp';
+	$db_pass        = 'Cost@Ric@2017!';
+
 	$db_host        = 'localhost';
 	$db_database    = $db_name;
 	$db_port        = '3306';

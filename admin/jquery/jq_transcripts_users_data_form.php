@@ -121,7 +121,9 @@
 			<div class="row px-0 py-0 mx-1 mb-3">
 				<div class="h4 col-md-6 m-0 p-0">
 					<?php
-						$image = file_exists($_SERVER['DOCUMENT_ROOT'] . '/img/img_councils/215.png') ? '<img src="../img/img_councils/215.png" id="council_strip" title="Council Strip" class="council-strip">' : '';
+						$patch = getCouncilPatch($council);
+						$council_name = getCouncilFromID($council);
+						$image = file_exists('/var/www/html/img/img_councils/' . $patch . '') !== false ? '<img src="../img/img_councils/' . $patch . '" id="council_strip" title="' . $council_name . ' Council Strip" class="council-strip">' : '<img src="../img/img_councils/generic.png" id="council_strip" title="Council Strip" class="council-strip">';
 						$full_name = ($user_ID >= '1') ? fullName($user_prefix,$user_first_name,$user_nick_name,'',$user_last_name,$user_suffix) : 'ERROR: No user selected.';
 						echo $full_name;
 						echo ' ';

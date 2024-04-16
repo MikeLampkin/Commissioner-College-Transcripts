@@ -24,6 +24,27 @@ function getCouncilFromID($id)
 }
 
 
+function getCouncilPatch($id)
+{
+	$data = $id == '9999' ? 'generic.png' : $id;
+	global $con_master;
+	$sql = "
+	SELECT `council_patch`
+	FROM `councils`
+	WHERE `council_ID` = '" . $id . "'
+	";
+	$results = mysqli_query($con_master,$sql);
+	$cnt = mysqli_num_rows($results) ?? 0;
+	if( $cnt > 0 )
+	{
+		while ($row = mysqli_fetch_assoc($results))
+		{
+			$data = $row['council_patch'];
+		}
+	}
+	return $data;
+}
+
 function getAdminCouncilID($id)
 {
 	$data = '0';
