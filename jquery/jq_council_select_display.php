@@ -19,6 +19,6 @@
 	$data = file_get_contents("php://input");
 	$mydata = json_decode($data, true);
 		$my_council = $mydata['myCouncil'];
-		$return_data = getCouncilFromBsa_ID(trim($my_council));
+		$return_data = getCouncilFromID(trim($my_council));
 	echo $return_data;
 ?>

@@ -37,7 +37,7 @@ if( $cnt > 0 )
 	while( $row = mysqli_fetch_assoc($results) )
 	{
 		$user_council_ID = $row['user_council_ID'];
-		$council_name = getCouncilFromBsa_ID(trim($user_council_ID));
+		$council_name = getCouncilFromID(trim($user_council_ID));
 		$council_array[$user_council_ID] = $council_name;
 	}
 }

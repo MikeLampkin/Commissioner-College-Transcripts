@@ -47,7 +47,7 @@
 				$$value = $row[$value];
 			}
 			$e_date = date('M d, Y', strtotime($e_date));
-			$council_name = getCouncilFromBsa_ID($e_council_ID);
+			$council_name = getCouncilFromID($e_council_ID);
 
 			echo '<tr>';
 			echo '<td class="">' . $e_date . ' </td>';

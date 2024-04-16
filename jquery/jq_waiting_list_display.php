@@ -35,7 +35,7 @@
 			{
 				$$value = $row[$value];
 			}
-			$council_name = getCouncilFromBsa_ID($wl_council_ID);
+			$council_name = getCouncilFromID($wl_council_ID);
 			echo '<li>' . $council_name . '</li>';
 		}
 	}

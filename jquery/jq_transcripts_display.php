@@ -646,7 +646,7 @@ if ($select_user > '0')
 					$course_name 	= $courses['course_name'];
 					$course_council_ID 	= $courses['course_council_ID'];
 
-						$council_name = getCouncilFromBsa_ID($course_council_ID);
+						$council_name = getCouncilFromID($course_council_ID);
 						$council = str_replace('Council','', str_replace('Area','', $council_name));
 
 					$transcript_year = '';

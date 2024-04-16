@@ -48,7 +48,7 @@ while ($row = mysqli_fetch_assoc($results)) {
 		$$value = $row[$value];
 	}
 
-	$council_name = getCouncilFromBsa_ID($course_council_ID);
+	$council_name = getCouncilFromID($course_council_ID);
 	$council = str_replace('Council','', str_replace('Area','', $council_name));
 
 	echo '<tr>';
