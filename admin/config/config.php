@@ -12,13 +12,20 @@
 	$app_full_name 		= 'Commissioner College Transcript System';
 	$db_name 			= 'transcript';
 
-	$authenticate_methods = array('Simple','COH','Google','Facebook','Instagram','Reddit','Twitter','Yahoo');
+	$config_config 			= $_SERVER['DOCUMENT_ROOT'] . '/admin/config/config.php';
+	$config_functions 		= $_SERVER['DOCUMENT_ROOT'] . '/admin//includes/functions.php';
+	$config_query 			= $_SERVER['DOCUMENT_ROOT'] . '/admin//includes/query.php';
+	$config_form_elements 	= $_SERVER['DOCUMENT_ROOT'] . '/admin//includes/form_elements.php';
+	$config_arrays 			= $_SERVER['DOCUMENT_ROOT'] . '/admin//includes/arrays.php';
+	$config_functions_custom = $_SERVER['DOCUMENT_ROOT'] . '/admin//includes/functions_custom.php';
+	$config_mailme 			= $_SERVER['DOCUMENT_ROOT'] . '/admin//includes/mailme.php';
+
+	// $authenticate_methods = array('Simple','COH','Google','Facebook','Instagram','Reddit','Twitter','Yahoo');
 	$public_authenticate_methods = array('Simple');
 	$admin_authenticate_methods = array('Simple');
 
 	$login_logo 	= 'img/commissioner-college-logo.png';
 	$app_logo 		= 'img/commissioner-college-logo.png';
-
 	$app_icon 		= '<i class="fa-solid fa-truck-monster"></i>';
 
 	$show_errors = 'yes';
@@ -32,10 +39,7 @@
 
 	//! ITEMS BELOW REQUIRE config_private.php
 	require 'config_private.php';
-	$db_name 		= 'transcripts';
-	$db_user        = 'webapp';
-	$db_pass        = 'Cost@Ric@2017!';
-
+	//Open a new connection to the MySQL server
 	$db_host        = 'localhost';
 	$db_database    = $db_name;
 	$db_port        = '3306';

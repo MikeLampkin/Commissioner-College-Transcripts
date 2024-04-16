@@ -3,10 +3,12 @@
 //# ADDED: delete file
 //# ADDED: NULL to empty data
 
-	include 	 $_SERVER['DOCUMENT_ROOT'] . '/admin/config/config.php';
-	include_once $_SERVER['DOCUMENT_ROOT'] . '/admin/includes/functions.php';
-	include_once $_SERVER['DOCUMENT_ROOT'] . '/admin/includes/query.php';
-	include_once $_SERVER['DOCUMENT_ROOT'] . '/admin/includes/arrays.php';
+include 	 $_SERVER['DOCUMENT_ROOT'] . '/admin/config/config.php';
+include 	 $config_functions;
+include 	 $config_query;
+include 	 $config_form_elements;
+include 	 $config_arrays;
+include 	 $config_functions_custom;
 
 	$post_response = 'error';
 

@@ -2,13 +2,12 @@
 <?php // ** v 5.00 ** // ?>
 
 <?php
-	include 	 $_SERVER['DOCUMENT_ROOT'] . '/config/config.php';
-	include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/functions.php';
-	include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/query.php';
-	include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/form_elements.php';
-	include_once $_SERVER['DOCUMENT_ROOT'] . '/includes/arrays.php';
-
-	include_once $_SERVER['DOCUMENT_ROOT'] . "/includes/functions_custom.php";
+	include 	 $_SERVER['DOCUMENT_ROOT'] . '/admin/config/config.php';
+	include 	 $config_functions;
+	include 	 $config_query;
+	include 	 $config_form_elements;
+	include 	 $config_arrays;
+	include 	 $config_functions_custom;
 
 $today_d = date("Y-m-d");
 $today_t = date("H:i:s");
