@@ -94,7 +94,7 @@
 			WHERE 1=1
 			AND `course_council_ID` = '" . $council . "'
 			AND `course_active` = '" . $pg_active . "'
-			ORDER BY `course_code_ID`
+			ORDER BY `course_code`
 			";
 			// $data_results .= $sql;
 			$results = mysqli_query($con,$sql);

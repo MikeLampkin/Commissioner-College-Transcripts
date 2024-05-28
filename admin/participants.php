@@ -30,12 +30,14 @@
 		<span class="btn btn-primary btn-sm" id="reloadPage"><i class="fa-solid fa-arrows-rotate" id="reloadIcon"></i> Refresh Page</span>
 	</div>
 	<div class="col-md-6">
+	<form>
 			<div class="input-group mb-1">
 				<input type="text" class="form-control my-0 border" id="search_terms" name="search_terms" placeholder="Search anything.">
 				<button id="search_submit" class="btn btn-success" ><i class="fa-solid fa-search" aria-hidden="true"></i> Search </button>
-				<span id="search_clear" class="btn btn-danger clear-search"><i class="fa-solid fa-search-minus" aria-hidden="true"></i></a>
+				<span id="search_clear" class="btn btn-danger clear-search"><i class="fa-solid fa-search-minus" aria-hidden="true"></i></span>
 			</div>
 			<small><small>Put a comma between separate search terms.</small></small>
+			</form>
 	</div>
 	<div id="limitAmount" class="col-md-3 text-end"></div>
 </div>
@@ -408,6 +410,7 @@
 			let thisField = $(this).data('field');
 			let thisValue = $(this).data('value');
 
+			console.log('action item');
 				let parameters = {
 					'process' 	: 'yes',
 					'id_field' 	: 'user_ID',

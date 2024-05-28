@@ -1,6 +1,6 @@
 //! ========== AJAX
-//! ========== FEB 2024
-//! ========== v 2.6
+//! ========== APR 2024
+//! ========== v 3.32
 
 let pgPath = window.location.pathname;
 let pgName = pgPath.split("/").pop();
@@ -16,19 +16,29 @@ const modalButtonUnDelete = '<button id="process-form" class="btn btn-info" type
 const modalButtonYes = '<button id="process-form" class="btn btn-primary" type="submit" role="button" data-bs-dismiss="modal"> <i class="fas fa-save"></i> Y E S </button>';
 const modalButtonClose = '<button type="button" class="btn btn-secondary" type="cancel" data-bs-dismiss="modal"><i class="fa-regular fa-rectangle-xmark"></i> Close</button>';
 
+let customSearch = typeof(localStorage.getItem('customSearch')) != "undefined" && localStorage.getItem('customSearch') !== null ? localStorage.getItem('customSearch') : 'all';
+localStorage.setItem('customSearch',customSearch);
+
 let fontSize = typeof(localStorage.getItem('fontSize')) != "undefined" && localStorage.getItem('fontSize') !== null ? localStorage.getItem('fontSize') : '15';
 let limitNum = typeof(localStorage.getItem('limitNum')) != "undefined" && localStorage.getItem('limitNum') !== null ? localStorage.getItem('limitNum') : '50';
 let pgNum = typeof(localStorage.getItem('pgNum')) != "undefined" && localStorage.getItem('pgNum') !== null ? localStorage.getItem('pgNum') : '1';
 let pgSort = typeof(localStorage.getItem('pgSort')) != "undefined" && localStorage.getItem('pgSort') !== null ? localStorage.getItem('pgSort') : '';
 let pgActive = typeof(localStorage.getItem('pgActive')) != "undefined" && localStorage.getItem('pgActive') !== null ? localStorage.getItem('pgActive') : 'yes';
 
-localStorage.setItem("fontSize",fontSize);
-localStorage.setItem("limitNum",limitNum);
-localStorage.setItem("pgNum",pgNum);
-localStorage.setItem("pgSort",'');
-localStorage.setItem("pgActive",pgActive);
+localStorage.setItem('fontSize',fontSize);
+localStorage.setItem('limitNum',limitNum);
+localStorage.setItem('pgNum',pgNum);
+localStorage.setItem('pgSort',pgSort);
+localStorage.setItem('pgActive',pgActive);
 
-let success_msg = '<div class="alert alert-success"><h4>Success</h4></div> ';
+//# ------ THESE WORK TOGETHER
+let referringURL = typeof(localStorage.getItem('referringURL')) != 'undefined' && localStorage.getItem('referringURL') !== null ? localStorage.getItem('referringURL') : '';
+localStorage.setItem('referringURL',referringURL);
+let newPage = typeof(localStorage.getItem('newPage')) != 'undefined' && localStorage.getItem('newPage') !== null ? localStorage.getItem('newPage') : 'no';
+localStorage.setItem('newPage',newPage);
+//# ------ THESE WORK TOGETHER
+
+
 
 const pepper = 'trustworthyloyalhelpfulfriendlycourteouskindobedientthriftybravecleanreverend';
 
@@ -60,7 +70,7 @@ function scrollToAnchor(aid){
 
 function copyToClipboard(itemID)
 {
-	let copiedtext = $('#'+itemID).val();
+	let copiedtext = $(itemID).val();
 	if (navigator.clipboard) {
 		navigator.clipboard.writeText(copiedtext)
 			.then(() => {
@@ -97,6 +107,8 @@ function copyToClipboardA(element)
 	document.execCommand("copy");
 	$temp.remove();
 }
+
+
 //! ===========>> TIME/DATE <<=============
 //! ===========>> TIME/DATE <<=============
 //! ===========>> TIME/DATE <<=============
@@ -379,7 +391,7 @@ function clearAll()
 
 	function limitAmt(vars='')
 	{
-		let limitArray = length.vars = 1 ? vars : ['10','25','50','100'];
+		let limitArray = length.vars > 1 ? vars : ['10','25','50','100'];
 		// let limitArray = ['10','25','50','100','ALL'];
 		let returndata = '<small>Record count: </small>';
 		let limitNum = localStorage.getItem('limitNum') ?? 50;
@@ -578,7 +590,7 @@ function unArchiveItem(thisID,thisIDField,thisTable,thisField,thisValue)
 //! ===========>> PROCESS <<=============
 function processForm(thisID)
 {
-	// console.log('processing: ' + thisID);
+	console.log('processing: ' + thisID);
 	let formData = document.getElementById(thisID);
 	let dataSet = new FormData(formData);
 
@@ -591,10 +603,11 @@ function processForm(thisID)
 		processData: false,
 		success:	function(response)
 		{
+			// console.log(response);
 			let trimResponse = response.trim();
 			if( trimResponse == 'success' )
 			{
-				displayMessage(trimResponse);
+				toastMessage(trimResponse,'')
 				refreshPage();
 			}
 			else
@@ -608,18 +621,10 @@ function processForm(thisID)
 		}
 	});
 }
-// ===========>> PROCESS <<=============
-// ===========>> PROCESS <<=============
-// ===========>> PROCESS <<=============
+//! ===========>> PROCESS <<=============
+//! ===========>> PROCESS <<=============
+//! ===========>> PROCESS <<=============
 
-
-function refreshAjax() {
-	// console.log('ajaxing ====>');
-
-	viewActiveBtns();
-	limitAmt();
-	randomIcon();
-};
 
 
 function validTest(formName)
@@ -646,17 +651,6 @@ function validTest(formName)
 		}
 	});
 }
-
-
-
-
-
-
-
-
-
-
-
 
 function countChars(limit,field,output)
 {
@@ -690,9 +684,6 @@ function checkTime(i)
 	if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
 	return i;
 }
-
-
-
 
 function toggleAllChecklist(source)
 {
@@ -733,6 +724,16 @@ function toggleCSS(item,css1)
 {
 	var x = document.getElementById(item);
 	x.classList.toggle(css1);
+}
+
+function hideShow(id)
+{
+	let x = document.getElementById("myDIV");
+	if(x.style.display === "none") {
+		x.style.display = "block";
+	} else {
+		x.style.display = "none";
+	}
 }
 
 function swapCSS(item,css1,css2)
@@ -894,9 +895,6 @@ function insertDeactivate(obj)
 	// document.getElementById("data_entry").submit();
 }
 
-
-
-
 function clearForm(form,pg='')
 {
 	$("#"+form).trigger("reset");
@@ -916,3 +914,51 @@ function toggleAll(checkItem,source)
 	checkboxes[i].checked = source.checked;
 	}
 }
+
+function displayCustomSearchBtn()
+{
+	$('.custom-search').removeClass('active');
+	let customSearch = localStorage.getItem("customSearch");
+	if( customSearch && customSearch.indexOf(',') )
+	{
+		let customSearchArray = customSearch.split(',');
+		for( let i=0; i<customSearchArray.length; i++ )
+		{
+			$('#search-btn-'+customSearchArray[i]).addClass('active');
+		}
+	}
+	else
+	{
+		$('#search-btn-'+customSearch).addClass('active');
+	}
+}
+
+function checkPage(page,defaultVar)
+{
+	let currentPage = localStorage.getItem("currentPage") ?? '';
+	if( currentPage !== page )
+	{
+		localStorage.setItem('currentPage',page);
+		localStorage.removeItem("limitNum");
+		localStorage.setItem("limitNum",50);
+		localStorage.removeItem("pgSort");
+		localStorage.setItem("pgSort",defaultVar);
+		localStorage.removeItem("pgNum");
+		localStorage.setItem("pgNum",1);
+	}
+}
+
+function refreshAjax() {
+	// console.log('ajaxing ====>');
+
+	$('#displayResults').html('<span class="h4 m-2"> <i class="fa-solid fa-spinner fa-spin"></i> Thinking...</span>');
+
+
+	viewActiveBtns();
+	limitAmt();
+	randomIcon();
+	displayCustomSearchBtn();
+
+	$(".pagination_display").html('');
+
+};

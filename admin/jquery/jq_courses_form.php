@@ -76,8 +76,6 @@
 	<input type="hidden" class="form-control" name="course_ID" id="course_ID" value="<?php echo $this_id; ?>">
 
 	course code: <input type="text" name="course_code" id="course_code" value="<?php echo $course_code; ?>" /><br >
-	course code ID: <input type="text" name="course_code_ID" id="course_code_ID" value="<?php echo $course_code_ID; ?>" /><br >
-	verify course code ID: <input type="text" name="verify_course_code_ID" id="verify_course_code_ID" /><br >
 
 	<div class="row mx-0">
 
@@ -295,8 +293,6 @@ function calcCourseCodeID()
 	let courseNum = $('#course_number').val();
 	let council = $('#course_council_ID').val();
 	let newCode = '1' +courseTypeCode + courseNum + courseCodeExt + council;
-	$('#verify_course_code_ID').val(newCode);
-
 }
 
 	//? ===========>> document ready <<=============

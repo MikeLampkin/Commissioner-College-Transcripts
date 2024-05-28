@@ -1,6 +1,6 @@
 //! ========== AJAX
-//! ========== FEB 2024
-//! ========== v 2.7
+//! ========== APR 2024
+//! ========== v 3.32
 
 
 //> ***************************************************************************************
@@ -122,17 +122,57 @@ $(document).ready(function()
 	});
 	//! ===========>> LOWERCASE USER EMAIL  <<================
 
-	//! ===========>> LIMIT  <<================
-	$(document).on("click", '.limit-btn', function(e)
+
+	//! ===========>> CUSTOM SEARCH  <<================
+	$(document).on("click", '.custom-search', function(e)
 	{
-		localStorage.removeItem("limitNum");
-		let thisData = $(this).data('limit');
-		localStorage.setItem("limitNum",thisData);
-		localStorage.removeItem('pgNum');
-		localStorage.setItem('pgNum',1);
+		let thisData = $(this).data('info');
+		if( thisData !== 'all' )
+		{
+			let customSearch = localStorage.getItem('customSearch');
+			let customSearchArray = customSearch.split(',');
+				customSearchArray = $.grep(customSearchArray, function(value) {
+				return value != 'all';
+			  });
+
+			customSearchArray.sort();
+			let index = customSearchArray.includes(thisData);
+			if( index == true ) //! If ID is in the array, REMOVE it
+			{
+				customSearchArray.sort();
+				let newArray = [];
+				let x=0;
+				for( let i=0; i<customSearchArray.length; i++ )
+				{
+					let thisItem = customSearchArray[i];
+					if( thisItem !== thisData )
+					{
+						newArray[x] = customSearchArray[i];
+						x++;
+					}
+				}
+				customSearchArray = newArray;
+				let newCustomSearch = customSearchArray.toString();
+				localStorage.removeItem('customSearch');
+				localStorage.setItem('customSearch',newCustomSearch);
+			}
+			else  //! ..otherwise ADD it
+			{
+				customSearchArray.push(thisData);
+				customSearchArray.sort();
+				let newCustomSearch = customSearchArray.toString();
+				localStorage.removeItem('customSearch');
+				localStorage.setItem('customSearch',newCustomSearch);
+			}
+		}
+		else
+		{
+			localStorage.removeItem('customSearch');
+			localStorage.setItem('customSearch','all');
+		}
 		refreshPage();
 	});
-	//! ===========>> LIMIT  <<================
+	//! ===========>> CUSTOM SEARCH  <<================
 
 	//! ===========>> DEACTIVATE  <<================
 	$(document).on("click", '.deactivate-item', function(e)
@@ -170,5 +210,48 @@ $(document).ready(function()
 	});
 	//! ===========>> copyToClipboard  <<================
 
+	//! ===========>> REFERRING URL <<=============
+	let currentURL = $('#referring').val();
+	let recentURL = localStorage.getItem('referringURL');
+	if( currentURL !== recentURL )
+	{
+		localStorage.removeItem('referringURL');
+		localStorage.setItem('referringURL',currentURL);
+		localStorage.removeItem('newPage');
+		localStorage.setItem('newPage','yes');
+	}
+	else
+	{
+		localStorage.setItem('newPage','no');
+	}
+	//! ===========>> REFERRING URL <<=============
 
+
+		//! ===========>> SORT
+		$(document).on("click", '.sort-table', function(e) {
+			localStorage.removeItem("pgSort");
+			let thisData = $(this).data('sort');
+			localStorage.setItem("pgSort", thisData);
+			refreshPage();
+		});
+		//! ===========>> SORT
+
+		//! ===========>> LIMIT
+		$(document).on("click", '.limit-btn', function(e) {
+			localStorage.removeItem("limitNum");
+			let thisData = $(this).data('limit');
+			localStorage.setItem("limitNum", thisData);
+			refreshPage();
+		});
+		//! ===========>> LIMIT
+
+		//! ===========>> editItem
+		$(document).on("click", '.edit-item', function(e) {
+			$('.tooltip').remove();
+			$('.modal-dialog').addClass('modal-xl');
+			let thisID = $(this).data('info');
+			// console.log('thisID: ' +thisID);
+			displayEntryForm(thisID);
+		});
+		//! ===========>> editItem
 });

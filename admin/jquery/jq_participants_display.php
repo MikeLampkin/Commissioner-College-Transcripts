@@ -383,7 +383,7 @@
 			/* actionButtons === actionButtons === actionButtons */
 			$button_set = '';
 
-			$button_set .= '<span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-title="Edit"><button id="editItem' . $$var_ID . '" data-info="' . $$var_ID . '" class="btn btn-xs btn-success m-1 list-text text-nowrap edit-item" data-bs-toggle="modal" data-bs-target="#modalAlert"><i class="fa-solid fa-edit list-text text-nowrap" aria-hidden="true"></i> Edit</a></button></span>&nbsp;';
+			$button_set .= '<span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-title="Edit"><button title="Edit" id="editItem' . $$var_ID . '" data-info="' . $$var_ID . '" class="btn btn-xs btn-success m-1 list-text text-nowrap edit-item" data-bs-toggle="modal" data-bs-target="#modalAlert"><i class="fa-solid fa-edit list-text text-nowrap" aria-hidden="true"></i> Edit</a></button></span>&nbsp;';
 
 			$action_buttons_value_array = array(
 				'deceased' 	=> 'yes|no',
@@ -425,7 +425,7 @@
 				$clr_array = explode('|',$action_buttons_color_array[$key]);
 				$clr = $field_value == $val_array[1] ? $clr_array[1] : $clr_array[0];
 
-				$button_set .= '<span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-title="' . $tips . '"><button type="button" class="btn btn-' . $clr . ' btn-xs list-text text-nowrap action-item" id="' . $key . 'Item' . $field_value . '' . $user_ID . '" data-info="' . $$var_ID . '" data-idfield="' . $var_ID . '" data-table="' . $db_table . '" data-field="' . $field_key . '" data-value="' . $field_value_opp . '"><i class="fa-solid ' . $icon . '"></i></a> </button></span>&nbsp;';
+				$button_set .= '<span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-title="' . $tips . '"><button title="' . $key . '" type="button" class="btn btn-' . $clr . ' btn-xs list-text text-nowrap action-item" id="' . $key . 'Item' . $field_value . '' . $user_ID . '" data-info="' . $$var_ID . '" data-idfield="' . $var_ID . '" data-table="' . $db_table . '" data-field="' . $field_key . '" data-value="' . $field_value_opp . '"><i class="fa-solid ' . $icon . '"></i></a> </button></span>&nbsp;';
 			}
 
 			$data_results_table .=   '<td class="list-text text-nowrap text-end" nowrap>' . $button_set . '</td>';

@@ -110,13 +110,14 @@
 ?>
 
 		<hr />
-		<form class="nice-form col-sm-12 col-md-9 mx-auto" id="transaction_data" >
+		<form class="nice-form col-sm-12 col-md-9 mx-auto" id="transaction_data"  method="post" enctype="application/x-www-form-urlencoded">
 			<input type="hidden" class="form-control" name="process" value="yes">
 
-			<input type="hidden" class="form-control" name="id_field" value="user_ID">
-			<input type="hidden" class="form-control" name="db_table" value="users">
+			<input type="hidden" class="form-control" name="id_field" id="id_field" value="user_ID">
+			<input type="hidden" class="form-control" name="db_table" id="db_table" value="users">
 			<input type="hidden" class="form-control" name="user_ID" id="user_ID" value="<?php echo $user_ID; ?>">
-			<input type="hidden" class="form-control" name="action" value="<?php echo $form_action;?>">
+			<input type="hidden" class="form-control" name="action" id="action" value="<?php echo $form_action;?>">
+			<input type="hidden" class="form-control" name="user_council_ID" id="user_council_ID" value="<?php echo $user_council_ID;?>">
 
 			<div class="row px-0 py-0 mx-1 mb-3">
 				<div class="h4 col-md-6 m-0 p-0">
@@ -204,25 +205,32 @@
 				$active_course = 'yes';
 				$active_course_sql = $active_course !== 'no' ? "AND LOWER(`active_course`) = 'yes'" : "AND LOWER(`active_course`) = 'no'";
 
-				$getNonCouncilCourses_array = array();
-				$getNonCouncilCourses_sql = "
+				$ooc_transcript_courses_array = array();
+				$ooc_course_array = array();
+				$ooc_transcript_courses_sql = "
 					SELECT *
 					FROM `transcripts`
 					WHERE 1=1
-					AND `transcript_user_ID` = '" . $user_ID . "'
+					AND `transcript_user_ID` = '" . $user_ID . "'1=1
+					AND LOWER(`course_active`) = '" . $active_course . "'
+					AND (
+						`course_council_ID` <> '" . $council . "'
+						OR
+						`course_council_ID` <> '999'
+					)
 					";
-				$getNonCouncilCourses = mysqli_query($con,$getNonCouncilCourses_sql);
-				$getNonCouncilCourses_cnt = mysqli_num_rows($getNonCouncilCourses) ?? 0;
-				if( $getNonCouncilCourses_cnt > 0 )
+				$ooc_transcript_courses = mysqli_query($con,$ooc_transcript_courses_sql);
+				$ooc_transcript_courses_cnt = mysqli_num_rows($ooc_transcript_courses) ?? 0;
+				if( $ooc_transcript_courses_cnt > 0 )
 				{
-					while($data = mysqli_fetch_assoc($getNonCouncilCourses))
+					while($data = mysqli_fetch_assoc($ooc_transcript_courses))
 					{
 						$transcript_course_ID = $data['transcript_course_ID'];
 						$transcript_year= $data['transcript_year'];
-						$getNonCouncilCourses_array[$transcript_course_ID] = $transcript_year;
+						$ooc_transcript_courses_array[$transcript_course_ID] = $transcript_year;
+						$ooc_course_array[] = $transcript_course_ID;
 					}
 				}
-				$x=0;
 				?>
 			<div class="mx-auto">
 				<div class="row px-0 py-0 mx-1">
@@ -242,9 +250,7 @@
 						<tbody>
 						<?php
 
-
-
-						$getAllCourses_sql = "
+							$all_courses_sql = "
 							SELECT *
 							FROM `courses`
 							WHERE 1=1
@@ -256,12 +262,12 @@
 							)
 							ORDER BY `course_code`
 							";
-							// echo $getAllCourses_sql . '<br />';
-							$getAllCourses = mysqli_query($con,$getAllCourses_sql);
+							// echo $all_courses_sql . '<br />';
+							$all_courses = mysqli_query($con,$all_courses_sql);
 
-							while($courses 	= mysqli_fetch_assoc($getAllCourses))
+							while($courses 	= mysqli_fetch_assoc($all_courses))
 							{
-								$thiscoID 	= $courses['course_ID'];
+								$course_ID 	= $courses['course_ID'];
 								$course_code 	= $courses['course_code'];
 								$course_type 	= $courses['course_type'];
 								$course_number 	= $courses['course_number'];
@@ -274,40 +280,103 @@
 									$transcript_year = '';
 									$data_marker = '';
 
-								$getMyTranscripts_sql = "
+								$this_transcripts_sql = "
 								SELECT *
 								FROM `transcripts`
 								WHERE 1=1
 								AND `transcript_user_ID` = '" . $user_ID . "'
-								AND `transcript_course_ID` = '" . $thiscoID . "'
+								AND `transcript_course_ID` = '" . $course_ID . "'
 								AND LOWER(`transcript_active`) = 'yes'
 								";
-								$getMyTranscripts = mysqli_query($con,$getMyTranscripts_sql);
-								$transcript_cnt = mysqli_num_rows($getMyTranscripts) ?? 0;
+								$this_transcripts = mysqli_query($con,$this_transcripts_sql);
+								$transcript_cnt = mysqli_num_rows($this_transcripts) ?? 0;
 
 								if( $transcript_cnt > 0 )
 								{
-									while($transcripts = mysqli_fetch_assoc($getMyTranscripts))
+									while($transcripts = mysqli_fetch_assoc($this_transcripts))
 									{
 										$transcript_year = $transcripts['transcript_year'];
 									}
 
 									$data_marker = "fw-bolder table-active" ;
-									$x++;
 								}
 
-								echo '
-									<input type="hidden" name="course_ID[]" id="course_ID' . $thiscoID . '" value="' . $thiscoID . '">
-									<input type="hidden" name="course_type[]" id="course_type' . $course_type . '" value="' . $course_type . '">
-									<input type="hidden" name="course_number[]" id="course_number' . $course_number . '" value="' . $course_number . '">
+							echo '
+									<input type="hidden" name="course_ID[]"  value="' . $course_ID . '">
+									<input type="hidden" name="course_type[]"  value="' . $course_type . '">
+									<input type="hidden" name="course_number[]"  value="' . $course_number . '">
+									<input type="hidden" name="course_council_ID[]" value="' . $course_council_ID . '">
 								<tr class="form-group my-0">
 									<td class="border ' . $data_marker . '"> ' . $course_type . ' ' . $course_number . ' [' . trim($council_name) . ']</td>
 									<td class="border ' . $data_marker . '"> ' . $course_name . '</td>
 									<td class="border ' . $data_marker . '">
-										<input type="text" class="form-control form-control-sm" name="course_year[]" id="course_year" value="' . $transcript_year . '">
+										<input type="text" class="form-control form-control-sm" name="course_year[]" value="' . $transcript_year . '">
 									</td>
 								</tr>';
 							}
+
+
+							$ooc_courses_sql = "
+							SELECT *
+							FROM `courses`
+							WHERE 1=1
+							AND LOWER(`course_active`) = '" . $active_course . "'
+							AND `course_ID` IN ('" . $ooc_course_list . "')
+							ORDER BY `course_code`
+							";
+							// echo $ooc_courses_sql . '<br />';
+							$ooc_courses = mysqli_query($con,$ooc_courses_sql);
+
+							while($courses 	= mysqli_fetch_assoc($ooc_courses))
+							{
+								$course_ID 	= $courses['course_ID'];
+								$course_code 	= $courses['course_code'];
+								$course_type 	= $courses['course_type'];
+								$course_number 	= $courses['course_number'];
+								$course_name 	= $courses['course_name'];
+								$course_council_ID 	= $courses['course_council_ID'];
+									$council_name	= getCouncilFromID($course_council_ID);
+									$council_name 	= str_replace('Area', '', $council_name);
+									$council_name 	= str_replace('Council', '', $council_name);
+
+									$transcript_year = '';
+									$data_marker = '';
+
+								$this_transcripts_sql = "
+								SELECT *
+								FROM `transcripts`
+								WHERE 1=1
+								AND `transcript_user_ID` = '" . $user_ID . "'
+								AND `transcript_course_ID` = '" . $course_ID . "'
+								AND LOWER(`transcript_active`) = 'yes'
+								";
+								$this_transcripts = mysqli_query($con,$this_transcripts_sql);
+								$transcript_cnt = mysqli_num_rows($this_transcripts) ?? 0;
+
+								if( $transcript_cnt > 0 )
+								{
+									while($transcripts = mysqli_fetch_assoc($this_transcripts))
+									{
+										$transcript_year = $transcripts['transcript_year'];
+									}
+
+									$data_marker = "fw-bolder table-active" ;
+								}
+
+							echo '
+									<input type="hidden" name="course_ID[]"  value="' . $course_ID . '">
+									<input type="hidden" name="course_type[]"  value="' . $course_type . '">
+									<input type="hidden" name="course_number[]"  value="' . $course_number . '">
+									<input type="hidden" name="course_council_ID[]" value="' . $course_council_ID . '">
+								<tr class="form-group my-0">
+									<td class="border ' . $data_marker . '"> ' . $course_type . ' ' . $course_number . ' [' . trim($council_name) . ']</td>
+									<td class="border ' . $data_marker . '"> ' . $course_name . '</td>
+									<td class="border ' . $data_marker . '">
+										<input type="text" class="form-control form-control-sm" name="course_year[]" value="' . $transcript_year . '">
+									</td>
+								</tr>';
+							}
+
 						?>
 						</tbody>
 					</table>

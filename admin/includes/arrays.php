@@ -9,9 +9,10 @@
 	$councils_fields_array = query('getColumns', 'councils', 'master', '', '', '');
 	$districts_fields_array = query('getColumns', 'districts', $db_name, '', '', '');
 
-?>
+	$users_awards_fields_array = ['user_basic','user_arrowhead','user_comm_key','user_distinguished','user_excellence','user_bcs','user_mcs','user_dcs'];
+	$transcripts_safety_fields_array = query('getColumns', 'transcripts_safety', $db_name, '', '', '');
 
-<?php
+
 //# -------- PERMANENT -----------------------------================
 $yesno_array = array(
 'yes' => 'Yes',

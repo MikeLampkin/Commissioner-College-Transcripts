@@ -322,19 +322,16 @@
 			let councilSelect = localStorage.getItem('councilSelect');
 
 			let formChunk = '<tr class="form-group my-0">';
-					formChunk += '<input type="hidden" name="course_ID[]" id="course_ID'+addMarker+'">';
-					formChunk += '<input type="hidden" name="course_type[]" id="course_type'+addMarker+'">';
-					formChunk += '<input type="hidden" name="course_number[]" id="course_number'+addMarker+'">';
-					formChunk += '<td class="border border-success">';
-						formChunk += '<select class="form-select form-select-sm select-out-council" data-info="'+addMarker+'" id="selectOutCouncil'+addMarker+'"></select>';
-					formChunk += '</td>';
-					formChunk += '<td class="border border-success" id="info' + addMarker + '">';
-						formChunk += '<i class="fa-solid fa-hand-point-left"></i> Select a Council' + councilSelect + '| addMarker: ' +addMarker;
-					formChunk += '</td>';
-					formChunk += '<td class="border border-success">';
+				formChunk += '<td class="border border-success">';
+				formChunk += '<select class="form-select form-select-sm select-out-council" name="course_council_ID[]" data-info="'+addMarker+'" id="selectOutCouncil'+addMarker+'"></select>';
+				formChunk += '</td>';
+				formChunk += '<td class="border border-success" id="info' + addMarker + '">';
+					formChunk += '<i class="fa-solid fa-hand-point-left"></i> Select a Council' + councilSelect + '| addMarker: ' +addMarker;
+				formChunk += '</td>';
+				formChunk += '<td class="border border-success">';
 						formChunk += '<input type="text" class="form-control form-control-sm" name="course_year[]" id="course_year'+addMarker+'" value="">';
-					formChunk += '</td>';
-				formChunk += '</tr>';
+				formChunk += '</td>';
+			formChunk += '</tr>';
 			// $('#addFormItem').append(formChunk);
 			$('#transcriptsTable tr:last').after(formChunk)
 			let mydata = {
@@ -379,7 +376,7 @@
 				data: 		JSON.stringify(mydata),
 				success:	function(response)
 				{
-					$('#info'+thisMarker).html('<select class="form-select form-select-sm select-out-course" data-info="'+thisMarker+'" id="selectOutCourse'+thisMarker+'">'+ response + '</select>');
+					$('#info'+thisMarker).html('<select class="form-select form-select-sm select-out-course" data-info="'+thisMarker+'" name="course_ID[]" id="selectOutCourse'+thisMarker+'">'+ response + '</select>');
 				},
 				error: function(response)
 				{
@@ -387,7 +384,13 @@
 				}
 			});
 		});
-
+		// $(document).on("change", '.select-out-course', function(e) {
+		// 	let thisVal = $(this).val();
+		// 	let thisMarker = $(this).data('info');
+		// 	$('#course_ID'+thisMarker).val(thisVal);
+		// 	let thisTranscriptCouncil = $('#selectOutCouncil'+thisMarker).val();
+		// 	console.log('changed');
+		// });
 		//! ===========>> addNewFormItem
 
 		//! ===========>> Process Transcripts
@@ -397,23 +400,16 @@
 			console.log('submit-transcript');
 			let marker = Math.floor(randomNumber(0, 255));
 
-			let councilSelect = localStorage.getItem('councilSelect');
-
-			let formData = document.getElementById('transaction_data');
-			let dataSet = new FormData(formData);
-
-			let mydata = {
-			adminUser:adminUser,
-			formData:formData,
-			};
+			var formData = $('#transaction_data').serialize();
 
 			$.ajax({
 				url: 		"jquery/jq_transcripts_users_processor.php?"+ marker,
 				method: 	"POST",
-				dataType:	"text",
-				data: 		JSON.stringify(mydata),
+				data:		formData,
+				type: 		'POST',
 				success:	function(response)
 				{
+					window.scrollTo(0,0);
 					$('#processResults').html(response);
 				},
 				error: function(response)
