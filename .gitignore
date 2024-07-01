@@ -19,6 +19,7 @@ _dbase/
 # Ignore files -- CUSTOM
 config_private.php
 Icon
+Icon?
 updates.php
 update_*
 
