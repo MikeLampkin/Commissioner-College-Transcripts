@@ -4,7 +4,7 @@
 <nav id="mainnav" class="navbar navbar-expand-md navbar-dark fixed-top">
 	<div class="container-fluid">
 
-		<a class="navbar-brand" href="https://cts.scoutcrest.org/" data-toggle="tooltip" data-placement="bottom" title="Home">
+		<a class="navbar-brand" href="https://commissionercollege.com/" data-toggle="tooltip" data-placement="bottom" title="Home">
 			<i class="fas fa-user-graduate fas-box"></i> ::CTS::
 		</a>
 
@@ -40,8 +40,6 @@
 
 		<div class="" id="navbarNavRight">
 			<div class="navbar-text text-center px-4"><span class="h6"><?php echo $app_full_name; ?></span> <span class="" id="navLoc"></span></div>
-
-			<!-- <div class="navbar-brand"> Commissioner Transcript System </div> -->
 		</div>
 
 	</div>

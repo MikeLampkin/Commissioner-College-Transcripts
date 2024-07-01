@@ -106,6 +106,7 @@ echo $request_geodata;
 			success: function(response) {
 				$('#modalLabel').html('Join the Waiting List!');
 				$('#modalData').html(response);
+				$('#modalFooter').hide();
 			},
 			error: function(response) {
 				console.log('ERROR: ' + response);
@@ -182,6 +183,7 @@ echo $request_geodata;
 			success: function(response) {
 				$('#modalLabel').html('Submit Your Commissioner College!');
 				$('#modalData').html(response);
+				$('#modalFooter').hide();
 			},
 			error: function(response) {
 				console.log('ERROR: ' + response);

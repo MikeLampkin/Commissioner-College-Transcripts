@@ -10,7 +10,7 @@
 				<div class="modal-body">
 					<div class="" id="modalData"><h4> <i class="fa-solid fa-spinner fa-spin"></i> Loading </h4></div>
 				</div>
-				<div class="modal-footer"><div class="" id="modalFooter"></div></div>
+				<div class="modal-footer" class="" id="modalFooter"></div>
 			</div>
 		</div>
 	</div>

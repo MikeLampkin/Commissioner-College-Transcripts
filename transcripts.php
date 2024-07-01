@@ -302,7 +302,6 @@ $(document).ready(function() {
 		displayUsers();
 		// submitSearch(newSearchTerms);
 	});
-
 	//! ===========>> SEARCH
 
 	//! ===========>> selectUser

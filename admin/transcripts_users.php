@@ -259,6 +259,9 @@
 		});
 	}
 
+	function addFormChunk() {
+
+	}
 
 	function refreshPage() {
 		refreshAjax();
