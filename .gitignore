@@ -18,6 +18,10 @@ _dbase/
 
 # Ignore files -- CUSTOM
 config_private.php
+Icon
+updates.php
+update_*
+
 
 # Files that might appear in the root of a volume
 .DocumentRevisions-V100
