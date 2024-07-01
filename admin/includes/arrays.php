@@ -1,17 +1,31 @@
 <?php
-	$waiting_list_fields_array = query('getColumns', 'waiting_list', $db_name, '', '', '');
+	$table_array = array(
+		'admin_levels',
+		'admin_msg',
+		'admin_users',
+		'attempts',
+		'colors',
+		'courses',
+		'deans',
+		'districts',
+		'download_links',
+		'events',
+		'transcripts',
+		'transcripts_safety',
+		'users',
+		'waiting_list',
+	);
+	foreach( $table_array AS $key => $value )
+	{
+		$array_name = $value . '_fields_array';
+		$$array_name = query('getColumns', $value, $db_name, '', '', '');
+	}
 
-	$users_fields_array = query('getColumns', 'users', $db_name, '', '', '');
-	$events_fields_array = query('getColumns', 'events', $db_name, '', '', '');
-	$courses_fields_array = query('getColumns', 'courses', $db_name, '', '', '');
-	$transcripts_fields_array = query('getColumns', 'transcripts', $db_name, '', '', '');
-
+	$awards_fields_array = query('getColumns', 'awards', 'master', '', '', '');
 	$councils_fields_array = query('getColumns', 'councils', 'master', '', '', '');
-	$districts_fields_array = query('getColumns', 'districts', $db_name, '', '', '');
+	$positions_fields_array = query('getColumns', 'positions', 'master', '', '', '');
 
 	$users_awards_fields_array = ['user_basic','user_arrowhead','user_comm_key','user_distinguished','user_excellence','user_bcs','user_mcs','user_dcs'];
-	$transcripts_safety_fields_array = query('getColumns', 'transcripts_safety', $db_name, '', '', '');
-
 
 //# -------- PERMANENT -----------------------------================
 $yesno_array = array(
