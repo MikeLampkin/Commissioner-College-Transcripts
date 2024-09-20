@@ -45,9 +45,6 @@
 				<div class="selectors" id="deceasedSelectForm" class="selector" data-field="user_deceased" data-term="deceased" data-tooltip="Deceased or living"></div>
 			</div>
 			<div class="col-md-3 selector_box">
-				<div class="selectors" id="councilSelectForm" class="selector" data-field="user_council_ID" data-term="council" data-tooltip="Current Council"></div>
-			</div>
-			<div class="col-md-3 selector_box">
 				<div class="selectors" id="activeSelectForm" class="selector" data-field="user_active" data-term="active" data-tooltip="Database listing"></div>
 			</div>
 
@@ -62,8 +59,8 @@
 <div id="displayResults" class="col-md-12">
 	<h4> <i class="fa-solid fa-spinner fa-spin"></i> Thinking...</h4>
 </div>
-<div id="processResults" class="col-md-12">
-</div>
+
+<!-- <div id="processResults" class="col-md-12"></div> -->
 
 <script>
 	let thisPage = 'transcripts_users';
@@ -79,12 +76,6 @@
 		'active' : 'user_active'
 	};
 
-	const adminUser = $('#adminUser').val();
-	const adminCouncilID = $('#adminCouncilID').val();
-
-	localStorage.setItem("adminUser", adminUser);
-	localStorage.setItem("adminCouncilID", adminCouncilID);
-
 	let transcriptsUser = typeof(localStorage.getItem('transcriptsUser')) != "undefined" && localStorage.getItem('transcriptsUser') != null ? localStorage.getItem('transcriptsUser') : '';
 	localStorage.setItem("transcriptsUser",transcriptsUser);
 	// $('#transcripts_user').val(transcriptsUser);
@@ -95,9 +86,6 @@
 	let statusSelect = typeof(localStorage.getItem('statusSelect')) != "undefined" && localStorage.getItem('statusSelect') != null ? localStorage.getItem('statusSelect') : 'active';
 	localStorage.setItem("statusSelect",statusSelect);
 
-	let councilSelect = typeof(localStorage.getItem('councilSelect')) != "undefined" && localStorage.getItem('councilSelect') != null ? localStorage.getItem('councilSelect') : '';
-	localStorage.setItem("councilSelect",councilSelect);
-
 	let activeSelect = typeof(localStorage.getItem('activeSelect')) != "undefined" && localStorage.getItem('activeSelect') != null ? localStorage.getItem('activeSelect') : 'yes';
 	localStorage.setItem("activeSelect",activeSelect);
 
@@ -107,10 +95,11 @@
 		let sessionVal = vars;
 
 		let tooltip = $('#'+selectTerm+'SelectForm').data('tooltip');
+		let adminCouncilSelect = localStorage.getItem('adminCouncilSelect');
 
 		let mydata = {
 			adminUser:adminUser,
-			adminCouncilID:adminCouncilID,
+			adminCouncilSelect:adminCouncilSelect,
 			dbTable:dbTable,
 			selectField:selectField,
 			selectTerm:selectTerm,
@@ -182,18 +171,16 @@
 		let activeSelect = localStorage.getItem('activeSelect');
 		let statusSelect = localStorage.getItem('statusSelect');
 		let deceasedSelect = localStorage.getItem('deceasedSelect');
-		let councilSelect = localStorage.getItem('councilSelect');
+		let adminCouncilSelect = localStorage.getItem('adminCouncilSelect');
 
 		let mydata = {
 				adminUser:adminUser,
-				adminCouncilID:adminCouncilID,
+				adminCouncilSelect:adminCouncilSelect,
 
 				transcriptsUser:transcriptsUser,
 				activeSelect:activeSelect,
 				statusSelect:statusSelect,
-				councilSelect:councilSelect,
 				deceasedSelect:deceasedSelect,
-				pgActive:pgActive,
 				limitNum:limitNum,
 				pgNum:pgNum,
 				pgSort:pgSort,
@@ -224,18 +211,16 @@
 		let activeSelect = localStorage.getItem('activeSelect');
 		let statusSelect = localStorage.getItem('statusSelect');
 		let deceasedSelect = localStorage.getItem('deceasedSelect');
-		let councilSelect = localStorage.getItem('councilSelect');
+		let adminCouncilSelect = localStorage.getItem('adminCouncilSelect');
 
 		let mydata = {
 			adminUser:adminUser,
-			adminCouncilID:adminCouncilID,
+			adminCouncilSelect:adminCouncilSelect,
 
 			transcriptsUser:transcriptsUser,
 			activeSelect:activeSelect,
 			statusSelect:statusSelect,
-			councilSelect:councilSelect,
 			deceasedSelect:deceasedSelect,
-			pgActive:pgActive,
 			limitNum:limitNum,
 			pgNum:pgNum,
 			pgSort:pgSort,
@@ -322,14 +307,24 @@
 
 		$(document).on("click", '#addNewFormItem', function(e) {
 			let addMarker = Math.floor(randomNumber(0, 255));
-			let councilSelect = localStorage.getItem('councilSelect');
+			let adminCouncilSelect = localStorage.getItem('adminCouncilSelect');
 
 			let formChunk = '<tr class="form-group my-0">';
+				formChunk += '<input type="hidden" name="course_ID[]" id="course_id_'+addMarker+'">';
+				formChunk += '<input type="hidden" name="course_type[]" id="course_type_'+addMarker+'">';
+				formChunk += '<input type="hidden" name="course_number[]" id="course_number_'+addMarker+'">';
+				formChunk += '<input type="hidden" name="course_council_ID[]" id="course_council_'+addMarker+'">';
+
 				formChunk += '<td class="border border-success">';
+				formChunk += '<div class="row">';
+				formChunk += '<div class=" col-md-11">';
 				formChunk += '<select class="form-select form-select-sm select-out-council" name="course_council_ID[]" data-info="'+addMarker+'" id="selectOutCouncil'+addMarker+'"></select>';
+				formChunk += '</div>';
+				formChunk += '<div class="col-md-1"><i class="fa-solid fa-circle-xmark text-danger" id="removeOutCouncil'+addMarker+'"></i></div>';
+				formChunk += '</div>';
 				formChunk += '</td>';
 				formChunk += '<td class="border border-success" id="info' + addMarker + '">';
-					formChunk += '<i class="fa-solid fa-hand-point-left"></i> Select a Council' + councilSelect + '| addMarker: ' +addMarker;
+					formChunk += '<i class="fa-solid fa-hand-point-left"></i> Select a Council| addMarker: ' +addMarker;
 				formChunk += '</td>';
 				formChunk += '<td class="border border-success">';
 						formChunk += '<input type="text" class="form-control form-control-sm" name="course_year[]" id="course_year'+addMarker+'" value="">';
@@ -339,8 +334,7 @@
 			$('#transcriptsTable tr:last').after(formChunk)
 			let mydata = {
 				adminUser:adminUser,
-				adminCouncilID:adminCouncilID,
-				councilSelect:councilSelect,
+				adminCouncilSelect:adminCouncilSelect,
 			};
 			let marker = Math.floor(randomNumber(0, 255));
 
@@ -363,11 +357,12 @@
 		$(document).on("change", '.select-out-council', function(e) {
 			let thisMarker = $(this).data('info');
 			let thisTranscriptCouncil = $('#selectOutCouncil'+thisMarker).val();
+			let adminCouncilSelect = localStorage.getItem('adminCouncilSelect');
+
 			console.log('changed');
 			let mydata = {
 				adminUser:adminUser,
-				adminCouncilID:adminCouncilID,
-				councilSelect:councilSelect,
+				adminCouncilSelect:adminCouncilSelect,
 				transcriptCouncil:thisTranscriptCouncil
 			};
 			let marker = Math.floor(randomNumber(0, 255));

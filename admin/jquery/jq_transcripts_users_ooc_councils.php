@@ -12,10 +12,7 @@
 	$data = file_get_contents("php://input");
 	$mydata = json_decode($data, true);
 		$admin_user = $mydata['adminUser'];
-		$admin_council_ID = $mydata['adminCouncilID'];
-		// $transcript_council = $mydata['transcriptCouncil'];
-
-		$council = $mydata['councilSelect'];
+		$admin_council_select = $mydata['adminCouncilSelect'];
 
 	$output_array = array();
 	$sql = "
@@ -23,7 +20,7 @@
 	FROM `transcripts`
 	WHERE 1=1
 	AND `transcript_council_ID` <> '999'
-	AND `transcript_council_ID` <> '" . $council . "'
+	AND `transcript_council_ID` <> '" . $admin_council_select . "'
 	AND `transcript_active` = 'yes'
 	";
 	$results = mysqli_query($con,$sql);

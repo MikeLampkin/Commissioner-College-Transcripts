@@ -18,7 +18,7 @@
 	$data = file_get_contents("php://input");
 	$mydata = json_decode($data, true);
 		$admin_user = $mydata['adminUser'];
-		$admin_council_ID = $mydata['adminCouncilID'];
+		$admin_council_select = $mydata['adminCouncilSelect'];
 		$this_id = $mydata['thisID'];
 		// $council = $mydata['councilSelect'];
 
@@ -32,7 +32,6 @@
 	//! CHECK ADMIN LEVEL ACCESS  ==========================
 	$my_admin_level = 100;
 	$my_admin_level = getAdminLevel($admin_user);
-	$my_admin_council_ID = getAdminCouncilID($admin_user);
 	//! CHECK ADMIN LEVEL ACCESS  ==========================
 
 	$sql = "
@@ -267,9 +266,10 @@
 						$data_array = array();
 						while( $data = mysqli_fetch_assoc($results) )
 						{
-							$data_array[$data['council_ID']] = $data['council_name'] . ' [' . $data['council_ID'] . ']';
+							$data_array[$data['council_ID']] = $data['council_name'] . ' [' . $data['council_bsa_ID'] . ']';
 						}
 
+						$council_select_disabled = 'disabled';
 						$field_var 		= 'user_council_ID';
 						$field_name 	= 'Council';
 						$field_type 	= 'select';
@@ -277,7 +277,7 @@
 						$required 		= 'required';
 						$placeholder 	= '';
 						$tabindex		= '';
-						$disabled		= ''; // Optional
+						$disabled		= $council_select_disabled; // Optional
 						$addl_var		= $data_array; // Optional
 						$tooltip		= ''; // Optional
 						$footie			= ''; // Optional
@@ -290,31 +290,23 @@
 
 				<div class="mb-1 col-md-3">
 					<?php
-
-						$field_var 		= 'user_district';
-						$field_name 	= 'District <a id="getDistricts" class="xs bg-aliceblue"><i class="fa-sharp fa-solid fa-circle-question"></i></a>';
-						$field_type 	= 'text';
-						$field_size 	= '64';
-						$required 		= '';
-						$placeholder 	= '';
-						$tabindex		= '';
-						$disabled		= ''; // Optional
-						// $addl_var		= $data_array; // Optional
-						$tooltip		= ''; // Optional
-						$footie			= ''; // Optional
-						$typeahead		= ''; // Optional
-						$form_id 		= 'data_entry';
-						$javascript 	= '';
-						formElements($field_var,$$field_var,$field_name,$field_type,$placeholder,$required,$field_size,$tabindex,$disabled,$addl_var,$tooltip,$footie,$typeahead,$form_id,$javascript);
-					?>
-				</div>
-
-				<div class="mb-1 col-md-3">
-					<input type="hidden" id="js_user_district_ID" value="<?php echo $user_district_ID; ?>">
-					<?php
+						$sql = "
+						SELECT *
+						FROM `districts`
+						WHERE 1=1
+						AND `district_active` = 'yes'
+						AND `district_council_ID` = '" . $admin_council_select . "'
+						ORDER BY `district_name`
+						";
+						$results = mysqli_query($con,$sql);
 						$data_array = array();
+						while( $row = mysqli_fetch_assoc($results) )
+						{
+							$data_array[$row['district_ID']] = $row['district_name'];
+						}
+
 						$field_var 		= 'user_district_ID';
-						$field_name 	= 'District ' . $user_district_ID . '<a id="getDistricts" class="xs bg-aliceblue"><i class="fa-sharp fa-solid fa-circle-question"></i></a>';
+						$field_name 	= 'District ' . $user_district_ID;
 						$field_type 	= 'select';
 						$field_size 	= '64';
 						$required 		= '';

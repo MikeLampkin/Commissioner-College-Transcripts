@@ -150,7 +150,7 @@ $jedi_pg_array = array(
 
 		<!-- <div class="" id="navbarNavRight"> -->
 
-			<div class="navbar-text text-center px-4"><span class="h6"><?php echo getCouncilFromID($admin_council_ID); ?> Admin</span> <span class="" id="navLoc"></span></div>
+			<div class="navbar-text text-center px-4"><span class="h6"><span class="" id="navLoc"></span></div>
 			<div class="navbar-text text-center m-0 p-0" style="font-size:10px;line-height:1.25">
 				<a class="mx-auto text-white" href="?logout"><?php echo $app_icon ;?> <?php echo ucwords($app_short_name); ?></a>
 				<br/ >
@@ -190,3 +190,92 @@ $jedi_pg_array = array(
 		}
 	}
 ?>
+
+<script>
+	let adminUser = $('#adminUser').val();
+	localStorage.setItem("adminUser", adminUser);
+
+	let adminCouncilID = $('#adminCouncilID').val();
+	let adminCouncilSelect = typeof(localStorage.getItem('adminCouncilSelect')) != "undefined" && localStorage.getItem('adminCouncilSelect') != null ? localStorage.getItem('adminCouncilSelect') : adminCouncilID;
+	localStorage.setItem("adminCouncilSelect", adminCouncilSelect);
+
+	function navCouncilDisplay()
+	{
+		let adminCouncilSelect = localStorage.getItem('adminCouncilSelect');
+		let marker = Math.floor(randomNumber(0, 255));
+
+		let mydata = {
+			adminUser:adminUser,
+			adminCouncilSelect:adminCouncilSelect
+		};
+
+		$.ajax({
+			url: "jquery/jq_nav_council_display.php?"+ marker,
+			method: "POST",
+			dataType: "text",
+			data: JSON.stringify(mydata),
+			success: function(response) {
+				$('#navLoc').html(response + ' Admin');
+			},
+			error: function(response) {
+				console.log('ERROR: ' + response);
+			}
+		});
+	}
+
+	function navCouncilSelect()
+	{
+		let adminCouncilSelect = localStorage.getItem('adminCouncilSelect');
+		let marker = Math.floor(randomNumber(0, 255));
+
+		let mydata = {
+			adminUser:adminUser,
+			adminCouncilSelect:adminCouncilSelect
+		};
+
+		$.ajax({
+			url: "jquery/jq_nav_council_form.php?"+ marker,
+			method: "POST",
+			dataType: "text",
+			data: JSON.stringify(mydata),
+			success: function(response) {
+				$('#modalLabel').html('Please Select a Council to Admin');
+				$('#modalData').html(response);
+				$('#modalFooter').hide();
+				$('#modalAlert').modal('show');
+			},
+			error: function(response) {
+				console.log('ERROR: ' + response);
+			}
+		});
+	}
+
+//? ===========>> document ready <<=============
+$(document).ready(function()
+{
+	navCouncilDisplay();
+
+	let councilMultiArray = adminCouncilID.split(',');
+	if( councilMultiArray.length > 1 || adminCouncilID == 9999 )
+	{
+		$(document).on("click", '#navLoc', function(e) {
+			e.preventDefault();
+			navCouncilSelect();
+		});
+	}
+
+	if( adminCouncilSelect == 9999 )
+	{
+		navCouncilSelect();
+	}
+
+	$(document).on("click", '#change_council_submit', function(e) {
+		e.preventDefault();
+		let newValue = $('#change_council_form').val();
+		localStorage.removeItem("adminCouncilSelect");
+		localStorage.setItem("adminCouncilSelect", newValue);
+		$('#modalAlert').modal('hide');
+		navCouncilDisplay();
+	});
+});
+</script>

@@ -78,16 +78,12 @@
 	const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 	let today = new Date();
 
-	const adminUser = $('#adminUser').val();
-	const adminCouncilID = $('#adminCouncilID').val();
 
 	const selectors_array = {
 		'council' : 'user_council_ID',
 		'active' : 'user_active'
 	};
 
-	localStorage.setItem("adminUser", adminUser);
-	localStorage.setItem("adminCouncilID", adminCouncilID);
 
 	// let searchTerms = typeof(localStorage.getItem('searchTerms')) != "undefined" && localStorage.getItem('searchTerms') != null ? localStorage.getItem('searchTerms') : '';
 	// localStorage.setItem("searchTerms",searchTerms);
@@ -112,7 +108,7 @@
 
 		let mydata = {
 			adminUser:adminUser,
-			adminCouncilID:adminCouncilID,
+			adminCouncilSelect:adminCouncilSelect,
 			dbTable:dbTable,
 			selectField:selectField,
 			selectTerm:selectTerm,
@@ -189,7 +185,7 @@
 
 		let mydata = {
 			adminUser:adminUser,
-			adminCouncilID:adminCouncilID,
+			adminCouncilSelect:adminCouncilSelect,
 			searchTerms:searchTerms,
 			activeSelect:activeSelect,
 			councilSelect:councilSelect,
@@ -225,7 +221,7 @@
 		let mydata = {
 			thisID:thisID,
 			adminUser:adminUser,
-			adminCouncilID:adminCouncilID,
+			adminCouncilSelect:adminCouncilSelect,
 			councilSelect:councilSelect,
 		};
 

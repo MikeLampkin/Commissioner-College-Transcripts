@@ -14,6 +14,7 @@
 	$var_active 	= 'district_active';
 
 	$display_array = array(
+		'noid'	=> '#',
 		'district_name'	=> 'Name',
 		'council_name' 	=> 'Council',
 	);
@@ -24,22 +25,19 @@
 	$data = file_get_contents("php://input");
 	$mydata = json_decode($data, true);
 		$admin_user = $mydata['adminUser'];
-		$council = $mydata['councilSelect'];
-		$pg_active = $mydata['pgActive'];
+		$admin_council_select = $mydata['adminCouncilSelect'];
+		$active = $mydata['activeSelect'];
 		$this_id = $mydata['thisID'];
 
 		$sort_field = '';
 		$sort_dir = '';
 
-	$active_sql = $pg_active !== 'no' ? "AND `" . $var_active . "` = 'yes'" : "AND `" . $var_active . "` = 'no'";
+	$active_sql = $active !== 'all' && strlen($active) > 0 ? "AND LOWER(`" . $var_active . "`) LIKE '" . $active . "'" : "";
 
 	//! CHECK ADMIN LEVEL ACCESS  ==========================
 	$my_admin_level = 100;
 	$my_admin_level = getAdminLevel($admin_user);
-	$my_admin_council_ID = getAdminCouncilID($admin_user);
 	//! CHECK ADMIN LEVEL ACCESS  ==========================
-	// echo 'You are admin for ' . $my_admin_council_ID . '<br> ';
-	// echo 'Your admin level ' . $my_admin_level . '<br> ';
 
 	$data_results .= '
 		<table class="table table-striped table-bordered table-hover table-sm">
@@ -82,8 +80,8 @@
 	SELECT *
 	FROM `districts`
 	WHERE 1=1
-	AND `district_council_ID` = '" . $council . "'
-	AND `district_active` = '" . $pg_active . "'
+	AND `district_council_ID` = '" . $admin_council_select . "'
+	" . $active_sql . "
 	ORDER BY `district_name`
 	";
 	// $data_results .= $sql;
@@ -92,15 +90,18 @@
 
 	if( $cnt > 0 )
 	{
+		$x=0;
 		while( $row = mysqli_fetch_assoc($results) )
 		{
+			$x++;
 			$data_results .= '<tr>';
 			foreach( $districts_fields_array as $key => $value )
 			{
 				$$value = $row[$value];
 			}
-		// 	//! =========== CUSTOM VARIABLES ==========
+			// 	//! =========== CUSTOM VARIABLES ==========
 
+			$noid = $x;
 			$council_name = getCouncilFromID($district_council_ID);
 			// $council_name = $district_council_ID !== '999' ? getCouncilFromID($district_council_ID) : getCouncilFromID($council);
 
@@ -117,19 +118,26 @@
 			}
 
 			/* actionButtons === actionButtons === actionButtons */
+			//  && $admin_user !== $admin_user_ID
 			$button_set = '';
 
-			$button_set .= '<span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-title="Edit"><button id="editItem' . $$var_ID . '" data-info="' . $$var_ID . '" class="btn btn-xs btn-success m-1 list-text text-nowrap edit-item" data-bs-toggle="modal" data-bs-target="#modalAlert"><i class="fas fa-edit list-text text-nowrap" aria-hidden="true"></i> Edit</a></button></span>&nbsp;';
-
-			if( strtolower($$var_active) !== 'no' )
+			if( $my_admin_level >= $level_code )
 			{
-			$button_set .= '<span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-title="Deactivate"><button type="button" class="btn btn-danger btn-xs list-text text-nowrap deactivate-item" id="deactivateItem' . $$var_ID . '" data-info="' . $$var_ID . '" data-idfield="' . $var_ID . '" data-table="' . $db_table . '" data-field="' . $var_active . '" data-value="no"  data-bs-toggle="modal" data-bs-target="#modalAlert"><i class="fa-solid fa-trash-can list-text text-nowrap"></i></a></button></span>&nbsp;';
-			}
-			else
-			{
-				$button_set .= '<span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-title="Reactivate"><button type="button" class="btn btn-primary btn-xs list-text text-nowrap reactivate-item" id="reactivateItem' . $$var_ID . '" data-info="' . $$var_ID . '" data-idfield="' . $var_ID . '" data-table="' . $db_table . '" data-field="' . $var_active . '" data-value="yes"  data-bs-toggle="modal" data-bs-target="#modalAlert"><i class="fa-solid fa-recycle list-text text-nowrap"></i></a></button></span>&nbsp;';
-			}
+				$button_set .= '<span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-title="Edit"><button id="editItem' . $$var_ID . '" data-info="' . $$var_ID . '" class="btn btn-success btn-sm m-1 list-text text-nowrap edit-item" data-bs-toggle="modal" data-bs-target="#modalAlert"><i class="fas fa-edit list-text text-nowrap" aria-hidden="true"></i> Edit</a></button></span>&nbsp;';
 
+				if( $admin_user !== $admin_user_ID )
+				{
+					$var_active_opp = strtolower($$var_active) == 'yes' ? 'no' : 'yes';
+					$active_btn_term = strtolower($$var_active) == 'yes' ? 'deactivate' : 'activate';
+					$active_btn_clr = strtolower($$var_active) == 'yes' ? 'danger' : 'primary';
+					$active_btn_icn = strtolower($$var_active) == 'yes' ? 'fa-trash-can' : 'fa-recycle';
+					$button_set .= '<span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-title="' . ucfirst($active_btn_term) . '"><button type="button" class="btn btn-' . $active_btn_clr . ' btn-sm list-text text-nowrap ' . $active_btn_term . '-item" id="' . $active_btn_term . 'Item' . $$var_ID . '" data-info="' . $$var_ID . '" data-idfield="' . $var_ID . '" data-table="' . $db_table . '" data-field="' . $var_active . '" data-value="' . $var_active_opp . '"  data-bs-toggle="modal" data-bs-target="#modalAlert"><i class="fa-solid ' . $active_btn_icn . ' list-text text-nowrap"></i></a></button></span>&nbsp;';
+				}
+				else
+				{
+						$button_set .= '<button type="button" class="btn btn-secondary btn-sm list-text text-nowrap"><i class="fa-solid fa-trash-can list-text text-nowrap"></i></a></button></span>&nbsp;';
+				}
+			}
 			$data_results .=   '<td class="list-text text-nowrap text-end" nowrap>' . $button_set . '</td>';
 			/* actionButtons === actionButtons === actionButtons */
 

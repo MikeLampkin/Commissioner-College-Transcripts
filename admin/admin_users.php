@@ -89,14 +89,6 @@ if( $admin_council_ID == '9999' )
 	const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 	let today = new Date();
 
-	let adminUser = $('#adminUser').val();
-	let adminCouncilID = $('#adminCouncilID').val();
-
-	localStorage.setItem("adminUser", adminUser);
-	localStorage.setItem("adminCouncilID", adminCouncilID);
-
-	let adminCouncilSelect = typeof(localStorage.getItem('adminCouncilSelect')) != "undefined" && localStorage.getItem('adminCouncilSelect') != null ? localStorage.getItem('adminCouncilSelect') : adminCouncilID;
-	localStorage.setItem("adminCouncilSelect",adminCouncilSelect);
 
 	function getList() {
 		let marker = Math.floor(randomNumber(0, 255));

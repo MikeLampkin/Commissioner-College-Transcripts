@@ -1,7 +1,7 @@
 //! ========== AJAX
-//! ========== APR 2024
-//! ========== v 3.32
-
+//! ========== May 2024
+//! ========== v 3.5
+//# deactivate/reactivate | checkPage |
 
 //> ***************************************************************************************
 //> LISTENERS
@@ -14,6 +14,7 @@ $(document).ready(function()
 		autohide: false
 	});
 
+	showAlert();
 
 	$(document).ajaxComplete(function(e)
 	{
@@ -76,7 +77,8 @@ $(document).ready(function()
 	$(document).on("click", '#process-form', function(e)
 	{
 		e.preventDefault();
-		const thisFormID = $(this).closest("form[id]").attr('id') ?? 'data_entry';
+		console.log('=>>> POST OLD <<<=');
+		const thisFormID = $(this).data('form') ?? 'data_entry';
 		if( thisFormID.length > 0 )
 		{
 			processForm(thisFormID);
@@ -87,6 +89,25 @@ $(document).ready(function()
 		}
 	});
 	//! ===========>> PROCESS  <<================
+
+	//! ===========>> NEW PROCESS  <<================
+	$(document).on("click", '#form-process', function(e) {
+		e.preventDefault();
+		let thisFormID = $(this).closest("form[id]").attr('id') ?? 'data_entry';
+		let thisTest = $(this).data('test') !== null && $(this).data('test') !== 'undefined' ? $('#test').val() : 'no';
+		let formData = $('#'+thisFormID).serializeArray();
+		formProcess(formData,thisTest);
+	});
+	//! ===========>> NEW PROCESS  <<================
+
+	//! ===========>> NEW PROCESS active-process  <<================
+	$(document).on("click", '#active-process', function(e) {
+		e.preventDefault();
+		let thisTest = $(this).data('test') !== null && $(this).data('test') !== 'undefined' ? $('#test').val() : 'no';
+		let formData = $('#active_edit').serializeArray();
+		formProcess(formData,thisTest);
+	});
+	//! ===========>> NEW PROCESS active-process <<================
 
 	//! ===========>> reloadPage click  <<================
 	$(document).on("click", '#reloadPage', function(e)
@@ -183,13 +204,14 @@ $(document).ready(function()
 		let thisTable = $(this).data('table');
 		let thisField = $(this).data('field');
 		let thisValue = $(this).data('value');
+		let thisMsg = $(this).data('msg');
 		let thisFormID = $(this).data('form');
-		preArchiveItem(thisID,thisIDField,thisTable,thisField,thisValue,thisFormID);
+		preDeactivateItem(thisID,thisIDField,thisTable,thisField,thisValue,thisFormID,thisMsg);
 	});
 	//! ===========>> DEACTIVATE  <<================
 
 	//! ===========>> REACTIVATE  <<================
-	$(document).on("click", '.unarchive-item', function(e)
+	$(document).on("click", '.reactivate-item', function(e)
 	{
 		e.preventDefault();
 		let thisID = $(this).data('info');
@@ -197,8 +219,9 @@ $(document).ready(function()
 		let thisTable = $(this).data('table');
 		let thisField = $(this).data('field');
 		let thisValue = $(this).data('value');
+		let thisMsg = $(this).data('msg');
 		let thisFormID = $(this).data('form');
-		unArchiveItem(thisID,thisIDField,thisTable,thisField,thisValue,thisFormID);
+		preReactivateItem(thisID,thisIDField,thisTable,thisField,thisValue,thisFormID,thisMsg);
 	});
 	//! ===========>> ARCHIVE  <<================
 
@@ -239,8 +262,10 @@ $(document).ready(function()
 		//! ===========>> LIMIT
 		$(document).on("click", '.limit-btn', function(e) {
 			localStorage.removeItem("limitNum");
+			localStorage.removeItem("pgNum");
 			let thisData = $(this).data('limit');
 			localStorage.setItem("limitNum", thisData);
+			localStorage.setItem("pgNum",1);
 			refreshPage();
 		});
 		//! ===========>> LIMIT
@@ -254,4 +279,13 @@ $(document).ready(function()
 			displayEntryForm(thisID);
 		});
 		//! ===========>> editItem
+
+
+		//! ===========>> alertDismiss
+		$(document).on("click", '.admin-alert', function(e) {
+			let thisID = $(this).attr('id');
+			localStorage.removeItem("alertDismiss");
+			localStorage.setItem("alertDismiss", thisID);
+		});
+		//! ===========>> alertDismiss
 });

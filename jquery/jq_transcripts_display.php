@@ -50,10 +50,10 @@
 	{
 		global $con;
 		$sql = "
-		SELECT DISTINCT(`transcript_course_code_ID`) AS `transcript_course_code_ID`
+		SELECT DISTINCT(`transcript_course_ID`) AS `transcript_course_ID`
 		FROM `transcripts`
 			JOIN `courses`
-			ON `transcript_course_code_ID` = `course_code_ID`
+			ON `transcript_course_ID` = `course_ID`
 		WHERE `transcript_user_ID` = '" . $userID . "'
 		AND `course_type` LIKE '" . strtoupper($course_type) . "'
 		";
@@ -100,7 +100,7 @@ if ($select_user > '0')
 	SELECT *
 	FROM `users`
 	WHERE `user_ID` = '" . $select_user . "'
-	and `user_active` = 'yes'
+	AND  LOWER(`user_active`) LIKE 'yes'
 	";
 	$get_user_results = mysqli_query($con, $get_user_sql);
 	while( $row = mysqli_fetch_assoc($get_user_results) )
@@ -609,7 +609,7 @@ if ($select_user > '0')
 				//! Get all national courses, myCouncil courses, PLUS any other courses I've completed.
 				$my_course_list_array = array();
 				$get_my_courses_sql = "
-				SELECT DISTINCT(`transcript_course_code_ID`) AS `transcript_course_code_ID`
+				SELECT DISTINCT(`transcript_course_ID`) AS `transcript_course_ID`
 				FROM `transcripts`
 				WHERE `transcript_user_ID` = '" . $select_user . "'
 				";
@@ -617,8 +617,8 @@ if ($select_user > '0')
 				$get_my_courses_cnt=0;$get_my_courses_cnt = @mysqli_num_rows($get_my_courses);
 				while($row 	= mysqli_fetch_assoc($get_my_courses))
 				{
-					$transcript_course_code_ID = $row['transcript_course_code_ID'];
-					$my_course_list_array[] = $transcript_course_code_ID;
+					$transcript_course_ID = $row['transcript_course_ID'];
+					$my_course_list_array[] = $transcript_course_ID;
 				}
 				$my_course_list = implode("','", $my_course_list_array);
 
@@ -629,7 +629,7 @@ if ($select_user > '0')
 				AND
 				(`course_council_ID` = '999'
 				OR `course_council_ID` = '" . $my_council . "'
-				OR `course_code_ID` IN ('" . $my_course_list . "')
+				OR `course_ID` IN ('" . $my_course_list . "')
 				)
 				AND `course_active` = 'yes'
 				ORDER BY `course_code`
@@ -639,7 +639,7 @@ if ($select_user > '0')
 
 				while($courses 	= mysqli_fetch_assoc($get_all_courses))
 				{
-					$course_code_ID 	= $courses['course_code_ID'];
+					$course_ID 	= $courses['course_ID'];
 					$course_code 	= $courses['course_code'];
 					$course_type 	= $courses['course_type'];
 					$course_number 	= $courses['course_number'];
@@ -655,7 +655,7 @@ if ($select_user > '0')
 					SELECT *
 					FROM `transcripts`
 					WHERE `transcript_user_ID` = '" . $select_user . "'
-					AND `transcript_course_code_ID` = '" . $course_code_ID . "'
+					AND `transcript_course_ID` = '" . $course_ID . "'
 					AND `transcript_active` = 'yes'
 					";
 

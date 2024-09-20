@@ -60,16 +60,13 @@
 		<div class="row">
 
 			<div class="col-md-3 selector_box">
-				<div class="selectors" id="statusSelectForm" class="selector" data-field="user_status" data-term="status" data-tooltip="Registration status"></div>
+				<div class="selectors" id="statusSelectForm" class="selector" data-field="user_status" data-term="status" data-tooltip="Registration Status"></div>
 			</div>
 			<div class="col-md-3 selector_box">
-				<div class="selectors" id="deceasedSelectForm" class="selector" data-field="user_deceased" data-term="deceased" data-tooltip="Deceased or living"></div>
+				<div class="selectors" id="deceasedSelectForm" class="selector" data-field="user_deceased" data-term="deceased" data-tooltip="Deceased or Living"></div>
 			</div>
 			<div class="col-md-3 selector_box">
-				<div class="selectors" id="councilSelectForm" class="selector" data-field="user_council_ID" data-term="council" data-tooltip="Current Council"></div>
-			</div>
-			<div class="col-md-3 selector_box">
-				<div class="selectors" id="activeSelectForm" class="selector" data-field="user_active" data-term="active" data-tooltip="Database listing"></div>
+				<div class="selectors" id="dataSelectForm" class="selector" data-field="user_active" data-term="active" data-tooltip="Live Data"></div>
 			</div>
 
 		</div>
@@ -93,18 +90,11 @@
 	const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 	let today = new Date();
 
-	const adminUser = $('#adminUser').val();
-	const adminCouncilID = $('#adminCouncilID').val();
-
 	const selectors_array = {
 		'deceased' : 'user_deceased',
 		'status' : 'user_status',
-		'council' : 'user_council_ID',
-		'active' : 'user_active'
+		'data' : 'user_active'
 	};
-
-	localStorage.setItem("adminUser", adminUser);
-	localStorage.setItem("adminCouncilID", adminCouncilID);
 
 	let searchTerms = typeof(localStorage.getItem('searchTerms')) != "undefined" && localStorage.getItem('searchTerms') != null ? localStorage.getItem('searchTerms') : '';
 	localStorage.setItem("searchTerms",searchTerms);
@@ -116,26 +106,22 @@
 	let statusSelect = typeof(localStorage.getItem('statusSelect')) != "undefined" && localStorage.getItem('statusSelect') != null ? localStorage.getItem('statusSelect') : 'active';
 	localStorage.setItem("statusSelect",statusSelect);
 
-	let councilSelect = typeof(localStorage.getItem('councilSelect')) != "undefined" && localStorage.getItem('councilSelect') != null ? localStorage.getItem('councilSelect') : '';
-	localStorage.setItem("councilSelect",councilSelect);
-
-	let activeSelect = typeof(localStorage.getItem('activeSelect')) != "undefined" && localStorage.getItem('activeSelect') != null ? localStorage.getItem('activeSelect') : 'yes';
-	localStorage.setItem("activeSelect",activeSelect);
+	let dataSelect = typeof(localStorage.getItem('dataSelect')) != "undefined" && localStorage.getItem('dataSelect') != null ? localStorage.getItem('dataSelect') : 'yes';
+	localStorage.setItem("dataSelect",dataSelect);
 
 	function displaySearchTerms() {
 		let searchTerms = localStorage.getItem('searchTerms') ?? '';
 		$('#search_terms').val(searchTerms);
 	}
 
-	function getSelector(selectField='user_active',selectTerm='active',dbTable='users',vars='')
+	function getSelector(selectField='user_active',selectTerm='data',dbTable='users',vars='')
 	{
 		let sessionVal = vars;
-
 		let tooltip = $('#'+selectTerm+'SelectForm').data('tooltip');
 
 		let mydata = {
 			adminUser:adminUser,
-			adminCouncilID:adminCouncilID,
+			adminCouncilSelect:adminCouncilSelect,
 			dbTable:dbTable,
 			selectField:selectField,
 			selectTerm:selectTerm,
@@ -207,18 +193,17 @@
 		let pgNum = localStorage.getItem('pgNum');
 		let pgSort = localStorage.getItem('pgSort');
 
-		let activeSelect = localStorage.getItem('activeSelect');
+		let dataSelect = localStorage.getItem('dataSelect');
 		let statusSelect = localStorage.getItem('statusSelect');
 		let deceasedSelect = localStorage.getItem('deceasedSelect');
-		let councilSelect = localStorage.getItem('councilSelect');
+		let adminCouncilSelect = localStorage.getItem('adminCouncilSelect');
 
 		let mydata = {
 			adminUser:adminUser,
-			adminCouncilID:adminCouncilID,
+			adminCouncilSelect:adminCouncilSelect,
 			searchTerms:searchTerms,
-			activeSelect:activeSelect,
+			dataSelect:dataSelect,
 			statusSelect:statusSelect,
-			councilSelect:councilSelect,
 			deceasedSelect:deceasedSelect,
 			pgActive:pgActive,
 			limitNum:limitNum,
@@ -247,13 +232,12 @@
 	function displayEntryForm(thisID) {
 		let marker = Math.floor(randomNumber(0, 255));
 
-		let councilSelect = localStorage.getItem('councilSelect');
+		let adminCouncilSelect = localStorage.getItem('adminCouncilSelect');
 
 		let mydata = {
 			thisID:thisID,
 			adminUser:adminUser,
-			adminCouncilID:adminCouncilID,
-			councilSelect:councilSelect,
+			adminCouncilSelect:adminCouncilSelect,
 		};
 
 		$.ajax({
@@ -270,9 +254,6 @@
 				}
 				$('#modalData').html(response);
 				$('#modalFooter').html(modalButtonSave+ ' ' +modalButtonClose);
-
-				let formCouncil = $('#user_council_ID').val();
-				districtSelector(formCouncil);
 			},
 			error: function(response) {
 				console.log('ERROR: ' + response);
@@ -280,32 +261,6 @@
 		});
 	}
 
-	function districtSelector(thisID) {
-		let marker = Math.floor(randomNumber(0, 255));
-
-		let districtSelect = $('#js_user_district_ID').val();
-
-		let mydata = {
-			thisID:thisID,
-			adminUser:adminUser,
-			adminCouncilID:adminCouncilID,
-			councilSelect:thisID,
-			districtSelect:districtSelect,
-		};
-
-		$.ajax({
-			url: "jquery/jq_districts_selector.php?"+ marker,
-			method: "POST",
-			dataType: "text",
-			data: JSON.stringify(mydata),
-			success: function(response) {
-				$('#user_district_ID').html(response);
-			},
-			error: function(response) {
-				console.log('ERROR: ' + response);
-			}
-		});
-	}
 
 	function quickSubmit(parameters)
 	{
@@ -454,12 +409,12 @@
 		//! ===========>> caret
 		$(document).on("click", '.card-header', function(e) {
 			let thisID = $(this).data('bs-target').replace('#','');
-	// console.log('thisID: ' +thisID);
-	let newTarget = 'caret_' + thisID;
-	// console.log('newTarget: ' +newTarget);
+			// console.log('thisID: ' +thisID);
+			let newTarget = 'caret_' + thisID;
+			// console.log('newTarget: ' +newTarget);
 
-	let thisInfo = $('#'+thisID).attr('class');
-	// console.log('thisInfo: ' +thisInfo);
+			let thisInfo = $('#'+thisID).attr('class');
+			// console.log('thisInfo: ' +thisInfo);
 
 			if( $('#'+thisID ).hasClass('show') )
 			{
@@ -470,13 +425,6 @@
 		});
 		//! ===========>> caret
 
-
-		//! ===========>> District Selector
-		$(document).on("change", '#user_council_ID', function(e) {
-			let thisCouncil = $(this).val();
-			districtSelector(thisCouncil);
-		});
-		//! ===========>> District Selector
 	});
 </script>
 

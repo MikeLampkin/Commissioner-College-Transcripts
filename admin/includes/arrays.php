@@ -27,6 +27,13 @@
 
 	$users_awards_fields_array = ['user_basic','user_arrowhead','user_comm_key','user_distinguished','user_excellence','user_bcs','user_mcs','user_dcs'];
 
+
+	$selector_array = array(
+		'status' => 'Status',
+		'deceased' => 'Deceased',
+		'live' => 'Data',
+
+	);
 //# -------- PERMANENT -----------------------------================
 $yesno_array = array(
 'yes' => 'Yes',

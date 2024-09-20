@@ -1,20 +1,18 @@
 //! ========== AJAX
-//! ========== APR 2024
-//! ========== v 3.32
+//! ========== May 2024
+//! ========== v 3.5
+//# deactivate/reactivate | checkPage |
 
 let pgPath = window.location.pathname;
 let pgName = pgPath.split("/").pop();
-// console.log( pgName );
-// let pgFieldsArray = pgName + '_fields_array';
-	// let pgNameSort = pgName +'sort';
 
-const modalButtonArchive = '<button id="process-form" class="btn btn-warning" type="submit" role="button" data-bs-dismiss="modal"> <i class="fas fa-save"></i> A R C H I V E </button>';
-const modalButtonUnarchive = '<button id="process-form" class="btn btn-success" type="submit" role="button" data-bs-dismiss="modal"> <i class="fas fa-save"></i> U N A R C H I V E </button>';
-const modalButtonSave = '<button id="process-form" class="btn btn-success" type="submit" role="button" data-bs-dismiss="modal"> <i class="fas fa-save"></i> S A V E </button>';
-const modalButtonDelete = '<button id="process-form" class="btn btn-danger" type="submit" role="button" data-bs-dismiss="modal"> <i class="fa-solid fa-trash-can"></i> D E L E T E </button>';
-const modalButtonUnDelete = '<button id="process-form" class="btn btn-info" type="submit" role="button" data-bs-dismiss="modal"> <i class="fa-solid fa-trash-undo"></i> U N D E L E T E </button>';
-const modalButtonYes = '<button id="process-form" class="btn btn-primary" type="submit" role="button" data-bs-dismiss="modal"> <i class="fas fa-save"></i> Y E S </button>';
-const modalButtonClose = '<button type="button" class="btn btn-secondary" type="cancel" data-bs-dismiss="modal"><i class="fa-regular fa-rectangle-xmark"></i> Close</button>';
+var modalButtonArchive = '<button id="process-form" class="btn btn-warning" type="submit" role="button" data-bs-dismiss="modal"> <i class="fa-solid fa-pen-to-square"></i> A R C H I V E </button>';
+var modalButtonUnarchive = '<button id="process-form" class="btn btn-success" type="submit" role="button" data-bs-dismiss="modal"> <i class="fa-solid fa-pen-to-square"></i> U N A R C H I V E </button>';
+
+var modalButtonYes = '<button id="process-form" class="btn btn-primary" type="submit" role="button" data-bs-dismiss="modal"> <i class="fa-solid fa-pen-to-square"></i> Y E S </button>';
+
+var modalButtonSave = '<button id="process-form" class="btn btn-success" type="submit" role="button" data-bs-dismiss="modal"> <i class="fa-solid fa-pen-to-square"></i> S A V E </button>';
+var modalButtonClose = '<button type="button" class="btn btn-secondary" type="cancel" data-bs-dismiss="modal"><i class="fa-regular fa-rectangle-xmark"></i> Close</button>';
 
 let customSearch = typeof(localStorage.getItem('customSearch')) != "undefined" && localStorage.getItem('customSearch') !== null ? localStorage.getItem('customSearch') : 'all';
 localStorage.setItem('customSearch',customSearch);
@@ -25,10 +23,13 @@ let pgNum = typeof(localStorage.getItem('pgNum')) != "undefined" && localStorage
 let pgSort = typeof(localStorage.getItem('pgSort')) != "undefined" && localStorage.getItem('pgSort') !== null ? localStorage.getItem('pgSort') : '';
 let pgActive = typeof(localStorage.getItem('pgActive')) != "undefined" && localStorage.getItem('pgActive') !== null ? localStorage.getItem('pgActive') : 'yes';
 
+let alertDismiss = typeof(localStorage.getItem('alertDismiss')) != "undefined" && localStorage.getItem('alertDismiss') !== null ? localStorage.getItem('alertDismiss') : '0000';
+localStorage.setItem('alertDismiss',alertDismiss);
+
 localStorage.setItem('fontSize',fontSize);
 localStorage.setItem('limitNum',limitNum);
 localStorage.setItem('pgNum',pgNum);
-localStorage.setItem('pgSort',pgSort);
+localStorage.setItem('pgSort','');
 localStorage.setItem('pgActive',pgActive);
 
 //# ------ THESE WORK TOGETHER
@@ -244,15 +245,15 @@ function toastMessage(msgType='success',msgBody='')
 
 	let toastColor = msgType == 'success' ? 'success' : 'danger';
 	let toastBody = msgBody.length < 1 ? 'Your save was successful.' : msgBody;
-	let toastIcon = msgType == 'success' ? '<span class="fa-stack fa-1x"><i class="fa-solid fa-circle fa-stack-2x"></i><i class="fa-solid fa-thumbs-up fa-bounce fa-stack-1x fa-inverse"></i></span>' : '<span class="fa-stack fa-1x"><i class="fa-solid fa-circle fa-stack-2x"></i><i class="fa-solid fa-dumpster-fire fa-beat-fade fa-stack-1x fa-inverse"></i></span>';
+	let toastIcon = msgType == 'success' ? '<span class="fa-stack fa-1x"  style="--fa-inverse: #198754;"><i class="fa-solid fa-circle fa-stack-2x"></i><i class="fa-solid fa-thumbs-up fa-bounce fa-stack-1x fa-inverse"></i></span>' : '<span class="fa-stack fa-1x"  style="--fa-inverse: #dc3545;"><i class="fa-solid fa-circle fa-stack-2x"></i><i class="fa-solid fa-dumpster-fire fa-beat-fade fa-stack-1x fa-inverse"></i></span>';
 	let toastItem = `
-		<div class="toast-header text-`+ toastColor +`">
+		<div class="toast-header bg-`+ toastColor +` text-white">
 			` + toastIcon + `
 			<strong class="me-auto">` + msgType.toUpperCase() + `</strong>
-			<small class="text-body-secondary" id="toastTimer` + marker + `"></small>
-			<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+			<small class="text-body-white" id="toastTimer` + marker + `"></small>
+			<button type="button" class="btn-close text-body-white" data-bs-dismiss="toast" aria-label="Close"></button>
 		</div>
-		<div class="toast-body">` + toastBody + `</div>
+		<div class="toast-body"><strong>` + toastBody + `</strong></div>
 	`;
 
 		toastEl.innerHTML =toastItem;
@@ -410,7 +411,7 @@ function clearAll()
 
 function viewActiveBtns()
 {
-	let pgActive = localStorage.getItem("pgActive");
+	let pgActive = localStorage.getItem('pgActive');
 	let responseButton = pgActive == 'yes' ? '<button class="btn btn-danger btn-sm active-btn" data-info="no"><i class="fa-solid fa-eye-slash"></i> View Inactive</button>' : '<button class="btn btn-success btn-sm active-btn" data-info="yes"><i class="fa-solid fa-eye"></i> View Active</button>';
 	// return responseButton;
 	$('#viewActiveBtns').html(responseButton);
@@ -450,14 +451,13 @@ function clearData(obj)
 	document.getElementById(obj).value = '';
 }
 
-function preDeleteItem(thisID,thisIDField,thisTable,thisField,thisValue)
+var modalButtonDeactivate = '<button id="active-process" data-form="active-edit" class="btn btn-danger" type="submit" role="button" data-bs-dismiss="modal"> <i class="fa-solid fa-trash-can"></i> D E A C T I V A T E </button>';
+var modalButtonReactivate = '<button id="active-process" data-form="active-edit" class="btn btn-success" type="submit" role="button" data-bs-dismiss="modal"> <i class="fa-solid fa-recycle"></i> R E A C T I V A T E </button>';
+
+function preDeactivateItem(thisID,thisIDField,thisTable,thisField,thisVal,thisFormID,thisMsg)
 {
-	// console.log('thisID: ' +thisID);
-	// console.log('thisIDField: ' +thisIDField);
-	// console.log('thisTable: ' +thisTable);
-	// console.log('thisField: ' +thisField);
-	// console.log('thisValue: ' +thisValue);
-	let modalButtons = modalButtonDelete + ' ' + modalButtonClose;
+	let modalPhrase = thisMsg != null && thisMsg != "undefined" ? thisMsg : 'Are your sure you want to deactivate this item?';
+	let modalActiveButtons = modalButtonDeactivate + ' ' + modalButtonClose;
 	let modalMessage = '<form class="alert alert-danger" id="active_edit" class="" method="POST" enctype="multipart/form-data">';
 		modalMessage += '<input type="hidden" name="process" id="process" value="yes">';
 		modalMessage += '<input type="hidden" name="db_table" id="db_table" value="'+thisTable+'" />';
@@ -465,124 +465,36 @@ function preDeleteItem(thisID,thisIDField,thisTable,thisField,thisValue)
 		modalMessage += '<input type="hidden" name="action" id="action" value="update" />';
 		modalMessage += '<input type="hidden" name="'+thisIDField+'" id="'+thisIDField+'" value="'+thisID+'">';
 		modalMessage += '<input type="hidden" name="'+thisField+'" id="'+thisField+'" value="no">';
-		modalMessage += '<h5 class="mb-3">Are your sure you want to delete this item?</h5>';
-		modalMessage += modalButtons;
+		modalMessage += '<input type="hidden" name="test" id="test" value="no">';
+		modalMessage += '<h5 class="mb-3">'+modalPhrase+'</h5>';
 		modalMessage += '</form>';
 
-	$('#modalLabel').html('<i class="fa-solid fa-trash-can text-danger"></i> Delete item?');
-	$('#modalButtons').hide();
+	$('#modalLabel').html('<i class="fa-solid fa-trash-can text-danger"></i> Deactivate item?');
 	$('#modalData').html(modalMessage);
+	$('#modalFooter').html(modalActiveButtons);
+	// $('#modalFooter').hide();
 }
 
-function unDeleteItem(thisID,thisIDField,thisTable,thisField,thisValue)
+function preReactivateItem(thisID,thisIDField,thisTable,thisField,thisVal,thisFormID,thisMsg)
 {
-	let modalButtons = modalButtonUnDelete + ' ' + modalButtonClose;
-	let modalMessage = '<form class="alert alert-primary" id="active_edit" class="" method="POST" enctype="multipart/form-data">';
-		modalMessage += '<input type="hidden" name="process" id="process" value="yes">';
-		modalMessage += '<input type="hidden" name="db_table" id="db_table" value="'+thisTable+'" />';
-		modalMessage += '<input type="hidden" name="id_field" id="id_field" value="'+thisIDField+'" />';
-		modalMessage += '<input type="hidden" name="action" id="action" value="update" />';
-		modalMessage += '<input type="hidden" name="'+thisIDField+'" id="'+thisIDField+'" value="'+thisID+'">';
-		modalMessage += '<input type="hidden" name="'+thisField+'" id="'+thisField+'" value="yes">';
-		modalMessage += '<h5 class="mb-3">Are your sure you want to undelete this item?</h5>';
-		modalMessage += modalButtons;
-		modalMessage += '</form>';
-
-	$('#modalLabel').html('<i class="fa-solid fa-recycle text-info"></i> Activate item?');
-	$('#modalButtons').hide();
-	$('#modalData').html(modalMessage);
-}
-
-function preDeleteFile(thisID,thisIDField,thisTable,thisField,fileName,fileDirectory)
-{
-
-	let modalButtons = modalButtonDelete + ' ' + modalButtonClose;
-	let modalMessage = '<form class="alert alert-danger" id="file_delete" class="" method="POST" enctype="multipart/form-data">';
-		modalMessage += '<input type="hidden" name="process" id="process" value="yes">';
-		modalMessage += '<input type="hidden" name="delete_file" id="delete_file" value="yes">';
-
-		modalMessage += '<input type="hidden" name="id_field" id="id_field" value="'+thisIDField+'" />';
-		modalMessage += '<input type="hidden" name="db_table" id="db_table" value="'+thisTable+'" />';
-		modalMessage += '<input type="hidden" name="action" id="action" value="update" />';
-		modalMessage += '<input type="hidden" name="'+thisIDField+'" id="'+thisIDField+'" value="'+thisID+'">';
-
-		modalMessage += '<input type="hidden" name="'+thisField+'" id="'+thisField+'" value="">';
-		modalMessage += '<input type="hidden" name="file_name" id="file_name" value="'+fileName+'">';
-		modalMessage += '<input type="hidden" name="file_directory" id="file_directory" value="'+fileDirectory+'">';
-
-		modalMessage += '<h5 class="mb-3">Are your sure you want to <strong>permanently</strong> delete this file? (' +fileName+')</h5>';
-		modalMessage += modalButtons;
-		modalMessage += '</form>';
-
-	$('#modalLabel').html('<i class="fa-solid fa-trash-can text-danger"></i> Delete file?');
-	$('#modalData').html(modalMessage);
-}
-
-
-function preArchiveItem(thisID,thisIDField,thisTable,thisField,thisValue)
-{
-	// console.log('thisID: ' +thisID);
-	// console.log('thisIDField: ' +thisIDField);
-	// console.log('thisTable: ' +thisTable);
-	// console.log('thisField: ' +thisField);
-	// console.log('thisValue: ' +thisValue);
-	let modalButtons = modalButtonArchive + ' ' + modalButtonClose;
-	let modalMessage = '<form class="alert alert-warning" id="active_edit" class="" method="POST" enctype="multipart/form-data">';
-		modalMessage += '<input type="hidden" name="process" id="process" value="yes">';
-		modalMessage += '<input type="hidden" name="db_table" id="db_table" value="'+thisTable+'" />';
-		modalMessage += '<input type="hidden" name="id_field" id="id_field" value="'+thisIDField+'" />';
-		modalMessage += '<input type="hidden" name="action" id="action" value="update" />';
-		modalMessage += '<input type="hidden" name="'+thisIDField+'" id="'+thisIDField+'" value="'+thisID+'">';
-		modalMessage += '<input type="hidden" name="'+thisField+'" id="'+thisField+'" value="no">';
-		modalMessage += '<h5 class="mb-3">Are your sure you want to archive this item?</h5>';
-		modalMessage += modalButtons;
-		modalMessage += '</form>';
-
-	$('#modalLabel').html('<i class="fa-solid fa-trash-can text-danger"></i> Archive item?');
-	$('#modalData').html(modalMessage);
-}
-
-function preActivateItem(thisID,thisIDField,thisTable,thisField,thisValue)
-{
-	// console.log('thisID: ' +thisID);
-	// console.log('thisIDField: ' +thisIDField);
-	// console.log('thisTable: ' +thisTable);
-	// console.log('thisField: ' +thisField);
-	// console.log('thisValue: ' +thisValue);
-	let modalButtons = modalButtonUnarchive + ' ' + modalButtonClose;
+	let modalPhrase = thisMsg != null && thisMsg != "undefined" ? thisMsg : 'Are your sure you want to reactivate this item?';
+	let modalActiveButtons = modalButtonReactivate + ' ' + modalButtonClose;
 	let modalMessage = '<form class="alert alert-success" id="active_edit" class="" method="POST" enctype="multipart/form-data">';
 		modalMessage += '<input type="hidden" name="process" id="process" value="yes">';
 		modalMessage += '<input type="hidden" name="db_table" id="db_table" value="'+thisTable+'" />';
 		modalMessage += '<input type="hidden" name="id_field" id="id_field" value="'+thisIDField+'" />';
 		modalMessage += '<input type="hidden" name="action" id="action" value="update" />';
 		modalMessage += '<input type="hidden" name="'+thisIDField+'" id="'+thisIDField+'" value="'+thisID+'">';
-		modalMessage += '<input type="hidden" name="'+thisField+'" id="'+thisField+'" value="'+thisValue+'">';
-		modalMessage += '<h5 class="mb-3">Are your sure you want to activate this item?</h5>';
-		modalMessage += modalButtons;
-		modalMessage += '</form>';
-
-	$('#modalLabel').html('<i class="fa-solid fa-recycle text-success"></i> Activate item?');
-	$('#modalData').html(modalMessage);
-}
-
-function unArchiveItem(thisID,thisIDField,thisTable,thisField,thisValue)
-{
-	let modalButtons = modalButtonUnArchive + ' ' + modalButtonClose;
-	let modalMessage = '<form class="alert alert-primary" id="active_edit" class="" method="POST" enctype="multipart/form-data">';
-		modalMessage += '<input type="hidden" name="process" id="process" value="yes">';
-		modalMessage += '<input type="hidden" name="db_table" id="db_table" value="'+thisTable+'" />';
-		modalMessage += '<input type="hidden" name="id_field" id="id_field" value="'+thisIDField+'" />';
-		modalMessage += '<input type="hidden" name="action" id="action" value="update" />';
-		modalMessage += '<input type="hidden" name="'+thisIDField+'" id="'+thisIDField+'" value="'+thisID+'">';
 		modalMessage += '<input type="hidden" name="'+thisField+'" id="'+thisField+'" value="yes">';
-		modalMessage += '<h5 class="mb-3">Are your sure you want to unarchive this item?</h5>';
-		modalMessage += modalButtons;
+		modalMessage += '<input type="hidden" name="test" id="test" value="no">';
+		modalMessage += '<h5 class="mb-3">'+modalPhrase+'</h5>';
 		modalMessage += '</form>';
 
-	$('#modalLabel').html('<i class="fa-solid fa-recycle text-info"></i> Activate item?');
+	$('#modalLabel').html('<i class="fa-solid fa-recycle text-info"></i> Reactivate item?');
 	$('#modalData').html(modalMessage);
+	$('#modalFooter').html(modalActiveButtons);
+	// $('#modalFooter').hide();
 }
-
 
 
 //! ===========>> PROCESS <<=============
@@ -603,7 +515,6 @@ function processForm(thisID)
 		processData: false,
 		success:	function(response)
 		{
-			// console.log(response);
 			let trimResponse = response.trim();
 			if( trimResponse == 'success' )
 			{
@@ -626,12 +537,59 @@ function processForm(thisID)
 //! ===========>> PROCESS <<=============
 
 
+//! ===========>> NEW PROCESS <<=============
+//! ===========>> NEW PROCESS <<=============
+//! ===========>> NEW PROCESS <<=============
+function formProcess(formData,formTest='no')
+{
+	console.log('formProcess');
+	let adminUser = $('#adminUser').val();
+
+	let mydata = {
+		adminUser:adminUser,
+		formData:formData,
+	};
+
+	$.ajax({
+		url: 		"jquery/jq_process.php",
+		method: 	"POST",
+		dataType:	"text",
+		data: 		JSON.stringify(mydata),
+		success:	function(response)
+		{
+			let trimResponse = response.toString().trim();
+
+			if( formTest !== 'yes')
+			{
+				if(trimResponse.toLowerCase().indexOf("success") >= 0 )
+				{
+					toastMessage(trimResponse,'')
+					refreshPage();
+				}
+				else
+				{
+					$('#dataDump').html('Possible error ' +response);
+				}
+			}
+			else
+			{
+				$('#dataDump').html(response);
+			}
+		},
+		error: function(response)
+		{
+			console.log('ERROR: ' + JSON.stringify(response));
+		}
+	});
+}
+//! ===========>> NEW PROCESS <<=============
+//! ===========>> NEW PROCESS <<=============
+//! ===========>> NEW PROCESS <<=============
 
 function validTest(formName)
 {
 	let allRequired = $('#' + formName + ' input,textarea,select').filter('[required]:visible');
 	let countRequired = allRequired.length;
-	// console.log('countRequired: ' + countRequired);
 
 	let countComplete=0;
 	$(allRequired).each(function()
@@ -933,7 +891,7 @@ function displayCustomSearchBtn()
 	}
 }
 
-function checkPage(page,defaultVar)
+function checkPage(page,defaultVar=thisID)
 {
 	let currentPage = localStorage.getItem("currentPage") ?? '';
 	if( currentPage !== page )
@@ -948,11 +906,57 @@ function checkPage(page,defaultVar)
 	}
 }
 
+function validateForm(formID)
+{
+	var allFilled = false;
+	// Find all visible required input elements (including text, textarea, and select)
+	var requiredInputs = $('input,textarea,select').filter('[required]:visible');
+	let allFilledCnt = requiredInputs.length;
+	let chkFilledCnt = 0;
+
+	requiredInputs.each(function() {
+		// Check if the current element has a value (trimmed for text inputs)
+		var val = $(this).val();
+		let valLen = val.length;
+		// if(($(this).is(':text') && $.trim(val) === '') || val === null) {
+		if( valLen > 0 ) {
+			allFilled = true;
+			chkFilledCnt++;
+			// Optionally, highlight the empty required field here (using .addClass() etc.)
+			$(this).removeClass('is-invalid')
+			$(this).addClass('is-valid')
+		}
+		else
+		{
+			$(this).removeClass('is-valid')
+			$(this).addClass(' is-invalid')
+		}
+		i++;
+	});
+
+	if( chkFilledCnt == allFilledCnt )
+	{
+		$('#form-process').show();
+		$('#form-waiting').hide();
+	}
+}
+
+function showAlert() {
+	let alertData = $('#alertData').val();
+	var tempElem = document.createElement('div');
+	tempElem.innerHTML = alertData;
+	var elementId = $(tempElem).children().first().attr('id');
+	let alertDismiss = localStorage.getItem('alertDismiss');
+	if( alertDismiss !== elementId )
+	{
+		$('#alerter').html(alertData);
+	}
+}
+
+
 function refreshAjax() {
-	// console.log('ajaxing ====>');
 
 	$('#displayResults').html('<span class="h4 m-2"> <i class="fa-solid fa-spinner fa-spin"></i> Thinking...</span>');
-
 
 	viewActiveBtns();
 	limitAmt();

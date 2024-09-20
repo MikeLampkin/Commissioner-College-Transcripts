@@ -91,15 +91,15 @@
 				$loggedin = false;
 			?>
 		</header>
-
+		<input type="hidden" id="adminUser" value="<?php echo $admin_user_ID; ?>">
+		<input type="hidden" id="adminCouncilID" value="<?php echo $admin_council_ID; ?>">
 		<section class="main">
 			<?php
 				include_once 'includes/navbar.php';
 				include_once 'includes/alert.php';
 				include_once 'includes/form_elements.php';
 			?>
-<input type="hidden" id="adminUser" value="<?php echo $admin_user_ID; ?>">
-<input type="hidden" id="adminCouncilID" value="<?php echo $admin_council_ID; ?>">
+
 
 <a id="top" class="top"> </a>
 <!-- // ** Lampkin 2024 ** // -->

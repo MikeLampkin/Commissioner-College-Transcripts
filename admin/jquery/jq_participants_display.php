@@ -31,8 +31,7 @@
 			// 'dcs_count' => '# DCS',
 			// 'ced_count' => '# CED',
 
-		'council_name' => 'Council',
-		'user_district' => 'District',
+		'user_district_ID' => 'District',
 		// 'user_positions' => 'Positions',
 		'email_phone' => 'Phone / Email',
 		'user_notes_public' => 'Notes',
@@ -51,13 +50,12 @@
 	$data = file_get_contents("php://input");
 	$mydata = json_decode($data, true);
 		$admin_user = $mydata['adminUser'];
-		$admin_council_ID = $mydata['adminCouncilID'];
+		$admin_council_select = $mydata['adminCouncilSelect'];
 		$search_terms = $mydata['searchTerms'];
 
 		$status = $mydata['statusSelect'];
 		$deceased = $mydata['deceasedSelect'];
-		$active = $mydata['activeSelect'];
-		$council = $mydata['councilSelect'];
+		$active = $mydata['dataSelect'];
 
 		$limit = $mydata['limitNum'];
 		$pgnum = $mydata['pgNum'];
@@ -69,13 +67,6 @@
 	$status_sql = $status !== 'all' && strlen($status) > 0 ? "AND LOWER(`user_status`) LIKE '" . $status . "'" : "";
 	$deceased_sql = $deceased !== 'all' && strlen($deceased) > 0 ? "AND LOWER(`user_deceased`) LIKE '" . $deceased . "'" : "";
 	$active_sql = $active !== 'all' && strlen($active) > 0 ? "AND LOWER(`" . $var_active . "`) LIKE '" . $active . "'" : "";
-
-
-	$council_sql = $admin_council_ID == '9999' && strlen($council) > 0 ? "AND LOWER(`user_council_ID`) LIKE '" . $council . "'" : "AND LOWER(`user_council_ID`) = '" . $admin_council_ID . "'";
-	$council_sql = $council == 'all' ? '' : $council_sql;
-
-	// $council_sql = $admin_council_ID !== '9999' && strlen($my_council_IDs) > 0 ? "AND LOWER(`user_council_ID`) LIKE '" . $admin_council_ID . "'" : "";
-
 
 	$limit_sql = $limit < 0 ? "LIMIT 10" : "LIMIT " . $limit;
 		$offset = ( $pgnum > 1 ) ? ($pgnum - 1) * $limit : 0;
@@ -140,21 +131,19 @@
 	//! CHECK ADMIN LEVEL ACCESS  ==========================
 	$my_admin_level = 100;
 	$my_admin_level = getAdminLevel($admin_user);
-	$my_admin_council_ID = getAdminCouncilID($admin_user);
 	//! CHECK ADMIN LEVEL ACCESS  ==========================
 
 
 	//# Build queries ==========================
 	$addl_sql = $status_sql . '
 	'
-	. $deceased_sql . '
-	'
-	. $council_sql;
+	. $deceased_sql;
 
 	$total_sql = "
 	SELECT *
 	FROM `users`
 	WHERE 1=1
+	AND LOWER(`user_council_ID`) LIKE '" . $admin_council_select . "'
 	" . $addl_sql . "
 	" . $search_sql . "
 	" . $active_sql . "
@@ -170,8 +159,12 @@
 			$data_results_intro .= 'There are <strong>' . $total_cnt . '</strong> item' . $plural . ' on this report. <br />';
 			$data_results_intro .= 'Displaying: ';
 
-			$council_msg = $council == '9999' || $council == 'all' ? 'All' : getCouncilFromID($council);
-			$data_results_intro .= '<strong> Council:  <span class="text-danger">' . $council_msg . '</span></strong> ';
+			$patch = getCouncilPatch($admin_council_select);
+			$council_name = getCouncilFromID($admin_council_select);
+			$council_image = file_exists('/var/www/html/img/img_councils/' . $patch . '') !== false ? '<img src="../img/img_councils/' . $patch . '" id="council_strip" title="' . $council_name . ' Council Strip" class="council-strip">' : '<img src="../img/img_councils/generic.png" id="council_strip" title="Council Strip" class="council-strip">';
+
+			$council_msg = $council_image . ' ' . $council_name . ' ' ;
+			$data_results_intro .= ' <strong> Council:  <span class="text-success">' . $council_msg . '</span></strong> ';
 			$deceased_msg = $deceased == 'yes' ? 'Deceased' : 'Living';
 			$data_results_intro .= '| <strong> Deceased:  <span class="text-success">' . $deceased_msg . '</span></strong> ';
 			$status_msg = ucfirst($status);
@@ -282,7 +275,6 @@
 			// 	// 'dcs_count' => '# DCS',
 			// 	// 'ced_count' => '# CED',
 
-			// 'user_council' => 'Council',
 			// 'user_district' => 'District',
 			// 'user_positions' => 'Positions',
 			// 'email_phone' => 'Phone / Email',
@@ -358,8 +350,6 @@
 				$last_ccs = $last_ccs == 'none' ? '<em>' . $last_ccs . '</em>' : $last_ccs;
 			$last_ccs =  '<span class="' . $this_clr . ' text-centered" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Last CCS attended.">
 			' . $last_ccs . '</span>';
-
-			$council_name = getCouncilFromID($user_council_ID);
 
 			// $user_email = strlen($user_email) > 4 ? '<span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Click to copy."><input type="hidden" id="copyEmail' . $user_ID . '" value="ThIss DaaTaa"><a class="no-deco" onclick="copyToClipboardB(\'copyEmail' . $user_ID . '\')">' . $user_email . '</a></span>' : '';
 			// $user_phone = strlen($user_phone) > 4 ? '<span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Click to copy."><input type="hidden" id="copyPhone' . $user_ID . '" value="ThIss DaaTaa"><a class="no-deco" onclick="copyToClipboardB(\'copyPhone' . $user_ID . '\')">' . $user_phone . '</a></span>' : '';

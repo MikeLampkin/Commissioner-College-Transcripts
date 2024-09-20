@@ -106,7 +106,7 @@
 	{
 		$var_array = $addl_var;
 		$formChunk .= '
-		<select class="form-select class_' . $field_var . ' input_class ' . $alt_class . '" id="' . $field_var . '" name="' . $field_var . '" data-info="' . $data . '"  ' . $required . ' ' . $javascript . '>
+		<select class="form-select class_' . $field_var . ' input_class ' . $alt_class . '" id="' . $field_var . '" name="' . $field_var . '" data-info="' . $data . '"  ' . $required . ' ' . $javascript . ' ' . $disabled_readonly . '>
 			';
 			$select_term = strlen($placeholder) > 4 ? $placeholder : 'Select';
 		if( is_array($addl_var) && count($addl_var) > 0 )

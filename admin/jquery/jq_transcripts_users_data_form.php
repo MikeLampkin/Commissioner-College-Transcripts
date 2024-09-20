@@ -18,40 +18,37 @@
 	$data = file_get_contents("php://input");
 	$mydata = json_decode($data, true);
 		$admin_user = $mydata['adminUser'];
-		$admin_council_ID = $mydata['adminCouncilID'];
+		$admin_council_select = $mydata['adminCouncilSelect'];
 		$this_id = $mydata['transcriptsUser'];
 
 		$status = $mydata['statusSelect'];
 		$deceased = $mydata['deceasedSelect'];
 		$active = $mydata['activeSelect'];
-		$council = $mydata['councilSelect'];
 
 		$disabled = '';
+
+		// transcriptsUser:transcriptsUser,
+		// activeSelect:activeSelect,
+		// statusSelect:statusSelect,
+		// deceasedSelect:deceasedSelect,
+		// limitNum:limitNum,
+		// pgNum:pgNum,
+		// pgSort:pgSort,
+		// thisPage:thisPage,
 
 	foreach( $$fields_array as $key => $value )
 	{
 		$$value = '';
 	}
 
-	// $user_sql = $this_id > 0 ? "AND `user_ID` = '" . $this_id . "'" : '';
-	// $active_sql = $pg_active !== 'no' ? "AND LOWER(`" . $var_active . "`) = 'yes'" : "AND LOWER(`" . $var_active . "`) = 'no'";
-	// $status_sql = $status !== 'all' && strlen($status) > 0 ? "AND LOWER(`user_status`) LIKE '" . $status . "'" : "";
-	// $deceased_sql = $deceased !== 'all' && strlen($deceased) > 0 ? "AND LOWER(`user_deceased`) LIKE '" . $deceased . "'" : "";
-
-	// $council_sql = '';
-	// $council_sql = $admin_council_ID == '9999' && strlen($council) > 0 ? "AND LOWER(`user_council_ID`) LIKE '" . $council . "'" : "AND LOWER(`user_council_ID`) = '" . $admin_council_ID . "'";
-	// $council_sql = $council == 'all' ? '' : $council_sql;
-
 	//! CHECK ADMIN LEVEL ACCESS  ==========================
 	$my_admin_level = 100;
 	$my_admin_level = getAdminLevel($admin_user);
-	$my_admin_council_ID = getAdminCouncilID($admin_user);
 	//! CHECK ADMIN LEVEL ACCESS  ==========================
 
 	//# Build queries ==========================
 	$addl_sql = $status_sql .
-	' ' . $deceased_sql .
-	' ' . $council_sql;
+	' ' . $deceased_sql;
 
 	$sql = "
 		SELECT  *
@@ -80,7 +77,7 @@
 
 
 
-	$getMyLastUpdate_sql = "
+	$last_update_sql = "
 	SELECT MAX(`transcript_last_update`) AS `transcript_last_update`
 	FROM `transcripts` t
 		JOIN `courses` c
@@ -88,12 +85,12 @@
 	WHERE 1=1
 	AND `transcript_user_ID` = '" . $user_ID . "'
 	";
-	$getMyLastUpdate = mysqli_query($con,$getMyLastUpdate_sql);
-	$getMyLastUpdate_cnt = mysqli_num_rows($getMyLastUpdate);
+	$last_update = mysqli_query($con,$last_update_sql);
+	$last_update_cnt = mysqli_num_rows($last_update);
 
-	if ( $getMyLastUpdate_cnt > 0 )
+	if ( $last_update_cnt > 0 )
 	{
-		while( $max = mysqli_fetch_assoc($getMyLastUpdate) )
+		while( $max = mysqli_fetch_assoc($last_update) )
 		{
 			$transcript_last_update = $max['transcript_last_update'];
 			$transcript_last_update = date('M d, Y G:i a', strtotime($transcript_last_update ?? ''));
@@ -117,13 +114,13 @@
 			<input type="hidden" class="form-control" name="db_table" id="db_table" value="users">
 			<input type="hidden" class="form-control" name="user_ID" id="user_ID" value="<?php echo $user_ID; ?>">
 			<input type="hidden" class="form-control" name="action" id="action" value="<?php echo $form_action;?>">
-			<input type="hidden" class="form-control" name="user_council_ID" id="user_council_ID" value="<?php echo $user_council_ID;?>">
+			<input type="hidden" class="form-control" name="user_council_ID" id="user_council_ID" value="<?php echo $admin_council_select;?>">
 
 			<div class="row px-0 py-0 mx-1 mb-3">
 				<div class="h4 col-md-6 m-0 p-0">
 					<?php
-						$patch = getCouncilPatch($council);
-						$council_name = getCouncilFromID($council);
+						$patch = getCouncilPatch($admin_council_select);
+						$council_name = getCouncilFromID($admin_council_select);
 						$image = file_exists('/var/www/html/img/img_councils/' . $patch . '') !== false ? '<img src="../img/img_councils/' . $patch . '" id="council_strip" title="' . $council_name . ' Council Strip" class="council-strip">' : '<img src="../img/img_councils/generic.png" id="council_strip" title="Council Strip" class="council-strip">';
 						$full_name = ($user_ID >= '1') ? fullName($user_prefix,$user_first_name,$user_nick_name,'',$user_last_name,$user_suffix) : 'ERROR: No user selected.';
 						echo $full_name;
@@ -211,14 +208,15 @@
 					SELECT *
 					FROM `transcripts`
 					WHERE 1=1
-					AND `transcript_user_ID` = '" . $user_ID . "'1=1
-					AND LOWER(`course_active`) = '" . $active_course . "'
+					AND `transcript_user_ID` = '" . $user_ID . "'
+					AND LOWER(`transcript_active`) = '" . $active_course . "'
 					AND (
-						`course_council_ID` <> '" . $council . "'
+						`transcript_council_ID` <> '" . $admin_council_select . "'
 						OR
-						`course_council_ID` <> '999'
+						`transcript_council_ID` <> '999'
 					)
 					";
+					// echo $ooc_transcript_courses_sql;
 				$ooc_transcript_courses = mysqli_query($con,$ooc_transcript_courses_sql);
 				$ooc_transcript_courses_cnt = mysqli_num_rows($ooc_transcript_courses) ?? 0;
 				if( $ooc_transcript_courses_cnt > 0 )
@@ -256,7 +254,7 @@
 							WHERE 1=1
 							AND LOWER(`course_active`) = '" . $active_course . "'
 							AND (
-								`course_council_ID` = '" . $council . "'
+								`course_council_ID` = '" . $admin_council_select . "'
 								OR
 								`course_council_ID` = '999'
 							)

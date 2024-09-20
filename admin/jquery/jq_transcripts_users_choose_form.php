@@ -18,15 +18,12 @@
 	$data = file_get_contents("php://input");
 	$mydata = json_decode($data, true);
 		$admin_user = $mydata['adminUser'];
-		$admin_council_ID = $mydata['adminCouncilID'];
+		$admin_council_select = $mydata['adminCouncilSelect'];
 		$this_id = $mydata['transcriptsUser'];
-
-		$council = $mydata['councilSelect'];
 
 		$status = $mydata['statusSelect'];
 		$deceased = $mydata['deceasedSelect'];
 		$active = $mydata['activeSelect'];
-		$council = $mydata['councilSelect'];
 
 		$disabled = '';
 
@@ -40,20 +37,14 @@
 	$status_sql = $status !== 'all' && strlen($status) > 0 ? "AND LOWER(`user_status`) LIKE '" . $status . "'" : "";
 	$deceased_sql = $deceased !== 'all' && strlen($deceased) > 0 ? "AND LOWER(`user_deceased`) LIKE '" . $deceased . "'" : "";
 
-	$council_sql = '';
-	$council_sql = $admin_council_ID == '9999' && strlen($council) > 0 ? "AND LOWER(`user_council_ID`) LIKE '" . $council . "'" : "AND LOWER(`user_council_ID`) = '" . $admin_council_ID . "'";
-	$council_sql = $council == 'all' ? '' : $council_sql;
-
 	//! CHECK ADMIN LEVEL ACCESS  ==========================
 	$my_admin_level = 100;
 	$my_admin_level = getAdminLevel($admin_user);
-	$my_admin_council_ID = getAdminCouncilID($admin_user);
 	//! CHECK ADMIN LEVEL ACCESS  ==========================
 
 	//# Build queries ==========================
 	$addl_sql = $status_sql .
-	' ' . $deceased_sql .
-	' ' . $council_sql;
+	' ' . $deceased_sql;
 
 	$sql = "
 		SELECT  *
@@ -61,6 +52,7 @@
 		WHERE 1=1
 		" . $addl_sql . "
 		" . $active_sql . "
+		AND LOWER(`user_council_ID`) LIKE '" . $admin_council_select . "'
 		ORDER BY `user_last_name`, `user_first_name`
 	";
 	// echo nl2br($sql) . '<br />';

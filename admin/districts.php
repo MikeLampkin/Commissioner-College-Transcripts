@@ -57,9 +57,6 @@
 				<div class="selectors" id="deceasedSelectForm" class="selector" data-field="user_deceased" data-term="deceased" data-tooltip="Deceased or living"></div>
 			</div> -->
 			<div class="col-md-3 selector_box">
-				<div class="selectors" id="councilSelectForm" class="selector" data-field="user_council_ID" data-term="council" data-tooltip="Current Council"></div>
-			</div>
-			<div class="col-md-3 selector_box">
 				<div class="selectors" id="activeSelectForm" class="selector" data-field="user_active" data-term="active" data-tooltip="Database listing"></div>
 			</div>
 
@@ -78,23 +75,9 @@
 	const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 	let today = new Date();
 
-	const adminUser = $('#adminUser').val();
-	const adminCouncilID = $('#adminCouncilID').val();
-
 	const selectors_array = {
-		'council' : 'user_council_ID',
 		'active' : 'user_active'
 	};
-
-	localStorage.setItem("adminUser", adminUser);
-	localStorage.setItem("adminCouncilID", adminCouncilID);
-
-	// let searchTerms = typeof(localStorage.getItem('searchTerms')) != "undefined" && localStorage.getItem('searchTerms') != null ? localStorage.getItem('searchTerms') : '';
-	// localStorage.setItem("searchTerms",searchTerms);
-	// $('#search_terms').val(searchTerms);
-
-	let councilSelect = typeof(localStorage.getItem('councilSelect')) != "undefined" && localStorage.getItem('councilSelect') != null ? localStorage.getItem('councilSelect') : '';
-	localStorage.setItem("councilSelect",councilSelect);
 
 	let activeSelect = typeof(localStorage.getItem('activeSelect')) != "undefined" && localStorage.getItem('activeSelect') != null ? localStorage.getItem('activeSelect') : 'yes';
 	localStorage.setItem("activeSelect",activeSelect);
@@ -112,7 +95,7 @@
 
 		let mydata = {
 			adminUser:adminUser,
-			adminCouncilID:adminCouncilID,
+			adminCouncilSelect:adminCouncilSelect,
 			dbTable:dbTable,
 			selectField:selectField,
 			selectTerm:selectTerm,
@@ -179,22 +162,18 @@
 	function getList() {
 		let marker = Math.floor(randomNumber(0, 255));
 		let searchTerms = localStorage.getItem('searchTerms');
-		let pgActive = localStorage.getItem('pgActive');
 		let limitNum = localStorage.getItem('limitNum');
 		let pgNum = localStorage.getItem('pgNum');
 		let pgSort = localStorage.getItem('pgSort');
 
 		let activeSelect = localStorage.getItem('activeSelect');
-		let councilSelect = localStorage.getItem('councilSelect');
 
 		let mydata = {
 			adminUser:adminUser,
-			adminCouncilID:adminCouncilID,
+			adminCouncilSelect:adminCouncilSelect,
 			searchTerms:searchTerms,
 			activeSelect:activeSelect,
-			councilSelect:councilSelect,
 			limitNum:limitNum,
-			pgActive:pgActive,
 			pgNum:pgNum,
 			pgSort:pgSort,
 			thisPage:thisPage,
@@ -220,13 +199,10 @@
 	function displayEntryForm(thisID) {
 		let marker = Math.floor(randomNumber(0, 255));
 
-		let councilSelect = localStorage.getItem('councilSelect');
-
 		let mydata = {
 			thisID:thisID,
 			adminUser:adminUser,
-			adminCouncilID:adminCouncilID,
-			councilSelect:councilSelect,
+			adminCouncilSelect:adminCouncilSelect,
 		};
 
 		$.ajax({

@@ -37,10 +37,7 @@
 	//! CHECK ADMIN LEVEL ACCESS  ==========================
 	$my_admin_level = 100;
 	$my_admin_level = getAdminLevel($admin_user);
-	$my_admin_council_ID = getAdminCouncilID($admin_user);
 	//! CHECK ADMIN LEVEL ACCESS  ==========================
-	// echo 'You are admin for ' . $my_admin_council_ID . '<br> ';
-	// echo 'Your admin level ' . $my_admin_level . '<br> ';
 
 	$admin_level_array = array();
 	$levels_sql = "

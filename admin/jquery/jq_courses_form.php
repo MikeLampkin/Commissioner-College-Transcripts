@@ -31,11 +31,7 @@
 	//! CHECK ADMIN LEVEL ACCESS  ==========================
 	$my_admin_level = 100;
 	$my_admin_level = getAdminLevel($admin_user);
-	$my_admin_council_ID = getAdminCouncilID($admin_user);
 	//! CHECK ADMIN LEVEL ACCESS  ==========================
-	// echo 'You are admin for ' . $my_admin_council_ID . '<br> ';
-	// echo 'Your admin level ' . $my_admin_level . '<br> ';
-	// echo 'You are working with ' . $council . '<br> ';
 
 	$council_ID_phrase = $council !== '9999' ? getCouncilFromID($council) : 'ALL Councils';
 	echo '<h5> Editing for ' . $council_ID_phrase . '</h5>';

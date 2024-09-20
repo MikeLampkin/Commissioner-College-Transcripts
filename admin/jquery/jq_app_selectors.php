@@ -12,8 +12,8 @@
 	$data = file_get_contents("php://input");
 	$mydata = json_decode($data,true);
 		$admin_user = $mydata['adminUser'];
-		$admin_council_ID = $mydata['adminCouncilID'];
 		$select_field = $mydata['selectField'];
+			$select_field = $select_field == 'data' ? $select_field = 'active' : $select_field;
 		$select_term = $mydata['selectTerm'];
 		$select_data = $mydata['sessionVal'];
 		$tooltip = $mydata['tooltip'];
@@ -24,6 +24,7 @@
 	$selectme = $select_data == 'all' ? 'selected' : '';
 
 	$data_results = '<div class="row mb-3">';
+	$data_results .= '<span id="' . $select_term . 'Icon"></span>';
 	$data_results .= '<span id="' . $select_term . 'Form" for="' . $select_term . 'Select" class="col-sm-4 col-form-label col-form-label-sm text-end"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="' . $tooltip . '">';
 		$data_results .= ucfirst($select_term);
 	$data_results .= '</span>';
