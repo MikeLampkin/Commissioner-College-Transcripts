@@ -11,7 +11,7 @@ Icon
 ._*
 *Icon*
 
-.git/*/*Icon*
+.git/refs/*/*Icon*
 
 # Ignore files -- WORKING
 untitled folder/
