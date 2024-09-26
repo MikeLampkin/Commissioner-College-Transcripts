@@ -15,6 +15,7 @@ _working/
 _hold/
 _archive/
 _dbase/
+_refs/Icon?
 
 # Ignore files -- CUSTOM
 config_private.php
@@ -22,7 +23,7 @@ Icon
 Icon?
 updates.php
 update_*
-
+refs/Icon?
 
 # Files that might appear in the root of a volume
 .DocumentRevisions-V100
@@ -32,6 +33,7 @@ update_*
 .Trashes
 .VolumeIcon.icns
 .com.apple.timemachine.donotpresent
+.refs/Icon?
 
 # Directories potentially created on remote AFP share
 .AppleDB
