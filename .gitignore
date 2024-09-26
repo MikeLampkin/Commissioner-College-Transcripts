@@ -1,9 +1,13 @@
 # Ignore files -- AUTO
+.icon
 .DS_Store
 .Thumb_db
 *.txt
-
-# Thumbnails
+icon
+Icon$
+Icon$'\r'
+Icon^M^M
+Icon
 ._*
 *Icon*
 
@@ -18,7 +22,6 @@ _dbase/
 # Ignore files -- CUSTOM
 config_private.php
 Icon
-Icon?
 updates.php
 update_*
 *Icon*
@@ -31,6 +34,7 @@ update_*
 .Trashes
 .VolumeIcon.icns
 .com.apple.timemachine.donotpresent
+*Icon*
 
 # Directories potentially created on remote AFP share
 .AppleDB
@@ -38,3 +42,4 @@ update_*
 Network Trash Folder
 Temporary Items
 .apdisk
+*Icon*
