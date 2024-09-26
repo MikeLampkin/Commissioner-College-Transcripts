@@ -1,14 +1,11 @@
 # Ignore files -- AUTO
-.icon
 .DS_Store
 .Thumb_db
 *.txt
-icon
-Icon$
-Icon$'\r'
-Icon^M^M
-Icon
 
+# Thumbnails
+._*
+*Icon*
 
 # Ignore files -- WORKING
 untitled folder/
@@ -16,9 +13,28 @@ _working/
 _hold/
 _archive/
 _dbase/
+*Icon*
 
 # Ignore files -- CUSTOM
 config_private.php
 Icon
+Icon?
 updates.php
 update_*
+*Icon*
+
+# Files that might appear in the root of a volume
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
