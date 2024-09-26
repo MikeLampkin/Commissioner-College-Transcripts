@@ -21,7 +21,7 @@
 <h2 class="">New Commissioner College Transcripts -- COMING SOON!</h2>
 
 <div class="alert alert-light">
-	<h4 class="text-darkred">Update: January 2024</h4>
+	<h4 class="text-darkred">Update: September 2024</h4>
 	<p> After many requests, I've decided to push out the Commissioner Transcript System to all councils. You'll be able to sign up your council and track all of your commissioners' progress through their College of Commissioner journey.
 
 	<!-- <p>To help offset costs, I'll have an advertisement or two on the site, but I'll do my best to keep the ads "civil" and unobtrusive.</p> -->

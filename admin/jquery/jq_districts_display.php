@@ -123,20 +123,14 @@
 
 			if( $my_admin_level >= $level_code )
 			{
-				$button_set .= '<span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-title="Edit"><button id="editItem' . $$var_ID . '" data-info="' . $$var_ID . '" class="btn btn-success btn-sm m-1 list-text text-nowrap edit-item" data-bs-toggle="modal" data-bs-target="#modalAlert"><i class="fas fa-edit list-text text-nowrap" aria-hidden="true"></i> Edit</a></button></span>&nbsp;';
+				$button_set .= '<span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-title="Edit"><button id="editItem' . $$var_ID . '" data-info="' . $$var_ID . '" class="btn btn-success btn-sm m-1 list-text text-nowrap edit-item" data-bs-toggle="modal" data-bs-target="#modalAlert"><i class="fas fa-edit list-text text-nowrap" aria-hidden="true"></i> Edit</button></span>&nbsp;';
 
-				if( $admin_user !== $admin_user_ID )
-				{
+
 					$var_active_opp = strtolower($$var_active) == 'yes' ? 'no' : 'yes';
 					$active_btn_term = strtolower($$var_active) == 'yes' ? 'deactivate' : 'activate';
 					$active_btn_clr = strtolower($$var_active) == 'yes' ? 'danger' : 'primary';
 					$active_btn_icn = strtolower($$var_active) == 'yes' ? 'fa-trash-can' : 'fa-recycle';
-					$button_set .= '<span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-title="' . ucfirst($active_btn_term) . '"><button type="button" class="btn btn-' . $active_btn_clr . ' btn-sm list-text text-nowrap ' . $active_btn_term . '-item" id="' . $active_btn_term . 'Item' . $$var_ID . '" data-info="' . $$var_ID . '" data-idfield="' . $var_ID . '" data-table="' . $db_table . '" data-field="' . $var_active . '" data-value="' . $var_active_opp . '"  data-bs-toggle="modal" data-bs-target="#modalAlert"><i class="fa-solid ' . $active_btn_icn . ' list-text text-nowrap"></i></a></button></span>&nbsp;';
-				}
-				else
-				{
-						$button_set .= '<button type="button" class="btn btn-secondary btn-sm list-text text-nowrap"><i class="fa-solid fa-trash-can list-text text-nowrap"></i></a></button></span>&nbsp;';
-				}
+					$button_set .= '<span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-title="' . ucfirst($active_btn_term) . '"><button type="button" class="btn btn-' . $active_btn_clr . ' btn-sm list-text text-nowrap ' . $active_btn_term . '-item" id="' . $active_btn_term . 'Item' . $$var_ID . '" data-info="' . $$var_ID . '" data-idfield="' . $var_ID . '" data-table="' . $db_table . '" data-field="' . $var_active . '" data-value="' . $var_active_opp . '"  data-bs-toggle="modal" data-bs-target="#modalAlert"><i class="fa-solid ' . $active_btn_icn . ' list-text text-nowrap"></i></button></span>&nbsp;';
 			}
 			$data_results .=   '<td class="list-text text-nowrap text-end" nowrap>' . $button_set . '</td>';
 			/* actionButtons === actionButtons === actionButtons */

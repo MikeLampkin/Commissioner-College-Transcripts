@@ -32,7 +32,7 @@
 	use PHPMailer\PHPMailer\Exception;
 
 	// Load Composer's autoloader
-	require_once $aws_autoload;
+	require_once $composer_autoload;
 
 	if ( !isset($subject) ) 		{ $subject 			= '[Contact Us ' . $today_date; }
 

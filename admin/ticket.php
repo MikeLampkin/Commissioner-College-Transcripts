@@ -15,12 +15,6 @@
 
 ?>
 
-<div class="row">
-	<div class="col-md-3"></div>
-	<div class="col-md-6" id="alertMsg"></div>
-	<div class="col-md-3"></div>
-</div>
-
 <h3>Got an issue or an idea? Submit a ticket here.</h3>
 
 <?php  // ** Lampkin 2024 ** // ?>

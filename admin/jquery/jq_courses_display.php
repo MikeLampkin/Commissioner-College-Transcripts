@@ -128,15 +128,15 @@
 
 					if( $course_council_ID !== '999' )
 					{
-						$button_set .= '<span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-title="Edit"><button id="editItem' . $$var_ID . '" data-info="' . $$var_ID . '" class="btn btn-xs btn-success m-1 list-text text-nowrap edit-item" data-bs-toggle="modal" data-bs-target="#modalAlert"><i class="fas fa-edit list-text text-nowrap" aria-hidden="true"></i> Edit</a></button></span>&nbsp;';
+						$button_set .= '<span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-title="Edit"><button id="editItem' . $$var_ID . '" data-info="' . $$var_ID . '" class="btn btn-xs btn-success m-1 list-text text-nowrap edit-item" data-bs-toggle="modal" data-bs-target="#modalAlert"><i class="fas fa-edit list-text text-nowrap" aria-hidden="true"></i> Edit</button></span>&nbsp;';
 
 						if( strtolower($$var_active) !== 'no' )
 						{
-						$button_set .= '<span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-title="Deactivate"><button type="button" class="btn btn-danger btn-xs list-text text-nowrap deactivate-item" id="deactivateItem' . $$var_ID . '" data-info="' . $$var_ID . '" data-idfield="' . $var_ID . '" data-table="' . $db_table . '" data-field="' . $var_active . '" data-value="no"  data-bs-toggle="modal" data-bs-target="#modalAlert"><i class="fa-solid fa-trash-can list-text text-nowrap"></i></a></button></span>&nbsp;';
+						$button_set .= '<span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-title="Deactivate"><button type="button" class="btn btn-danger btn-xs list-text text-nowrap deactivate-item" id="deactivateItem' . $$var_ID . '" data-info="' . $$var_ID . '" data-idfield="' . $var_ID . '" data-table="' . $db_table . '" data-field="' . $var_active . '" data-value="no"  data-bs-toggle="modal" data-bs-target="#modalAlert"><i class="fa-solid fa-trash-can list-text text-nowrap"></i></button></span>&nbsp;';
 						}
 						else
 						{
-							$button_set .= '<span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-title="Reactivate"><button type="button" class="btn btn-primary btn-xs list-text text-nowrap reactivate-item" id="reactivateItem' . $$var_ID . '" data-info="' . $$var_ID . '" data-idfield="' . $var_ID . '" data-table="' . $db_table . '" data-field="' . $var_active . '" data-value="yes"  data-bs-toggle="modal" data-bs-target="#modalAlert"><i class="fa-solid fa-recycle list-text text-nowrap"></i></a></button></span>&nbsp;';
+							$button_set .= '<span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-title="Reactivate"><button type="button" class="btn btn-primary btn-xs list-text text-nowrap reactivate-item" id="reactivateItem' . $$var_ID . '" data-info="' . $$var_ID . '" data-idfield="' . $var_ID . '" data-table="' . $db_table . '" data-field="' . $var_active . '" data-value="yes"  data-bs-toggle="modal" data-bs-target="#modalAlert"><i class="fa-solid fa-recycle list-text text-nowrap"></i></button></span>&nbsp;';
 						}
 					}
 					else

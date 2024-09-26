@@ -23,13 +23,13 @@
 					<a class="nav-link" role="button" href="courses"> Course List </a>
 				</li>
 
-				<!-- <li class="nav-item <?php if(strpos($pg,'degrees') !== false) { echo 'active';} ?>">
+				<li class="nav-item <?php if(strpos($pg,'degrees') !== false) { echo 'active';} ?>">
 					<a class="nav-link" role="button" href="degrees"> Degree List </a>
-				</li> -->
+				</li>
 
-				<!-- <li class="nav-item <?php if(strpos($pg,'thesis') !== false) { echo 'active';} ?>">
-					<a class="nav-link" role="button" href="thesis"> Thesis Library </a>
-				</li> -->
+				<li class="nav-item <?php if(strpos($pg,'library') !== false) { echo 'active';} ?>">
+					<a class="nav-link" role="button" href="library"> Thesis Library </a>
+				</li>
 
 				<li class="nav-item <?php if(strpos($pg,'info') !== false) { echo 'active';} ?>">
 					<a class="nav-link" role="button" href="info"> Info </a>

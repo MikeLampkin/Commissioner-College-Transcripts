@@ -67,14 +67,14 @@
 	<input type="hidden" class="form-control" name="action" id="action" value="<?php echo $form_action; ?>" />
 	<input type="hidden" class="form-control" name="user_ID" id="user_ID" value="<?php echo $this_id; ?>" />
 
-	<?php //? start card 1 ?>
+	<?php //? start card - basic ?>
 	<div class="card">
-		<div id="header1" class="card-header btn btn-block text-start h5 px-3 py-2" type="button" aria-expanded="true" data-bs-toggle="collapse" data-bs-target="#collapse1" aria-expanded="true" aria-controls="collapse1">
+		<div id="header_basic" class="card-header btn btn-block text-start h5 px-3 py-2" type="button" aria-expanded="true" data-bs-toggle="collapse" data-bs-target="#collapse1" aria-expanded="true" aria-controls="collapse1">
 			<span class="required">Basic Info</span>
 			<span class="xs required">(Required)</span> <i class="fas fa-caret-up float-end" id="caret_collapse1"></i>
 		</div>
 
-		<div id="collapse1" class="collapse show" aria-labelledby="header1" data-bs-parent="#XXXdata_entry">
+		<div id="collapse1" class="collapse show" aria-labelledby="header_basic" data-bs-parent="#XXXdata_entry">
 			<div class="card-body row">
 
 				<div class="mb-1 col-md-5">
@@ -238,10 +238,89 @@
 					?>
 				</div>
 
+				<div class="mb-1 col-md-12">
+					<?php
+						$field_var 		= 'user_notes_public';
+						$field_name 	= 'Notes for Other Admin';
+						$field_type 	= 'textarea';
+						$field_size 	= '1000';
+						$required 		= '';
+						$placeholder 	= '';
+						$tabindex		= '';
+						$disabled		= ''; // Optional
+						$addl_var		= ''; // Optional
+						$tooltip		= ''; // Optional
+						$footie			= ''; // Optional
+						$typeahead		= ''; // Optional
+						$form_id 		= 'data_entry';
+						$javascript 	= '';
+						formElements($field_var,$$field_var,$field_name,$field_type,$placeholder,$required,$field_size,$tabindex,$disabled,$addl_var,$tooltip,$footie,$typeahead,$form_id,$javascript);
+					?>
+				</div>
+
+<div class="mb-1 col-md-3">
+	<?php
+		$field_var 		= 'user_bcs';
+		$field_name 	= 'BCS';
+		$field_type 	= 'text';
+		$field_size 	= '64';
+		$required 		= '';
+		$placeholder 	= '';
+		$tabindex		= '';
+		$disabled		= ''; // Optional
+		$addl_var		= ''; // Optional
+		$tooltip		= ''; // Optional
+		$footie			= ''; // Optional
+		$typeahead		= ''; // Optional
+		$form_id 		= 'data_entry';
+		$javascript 	= '';
+		formElements($field_var,$$field_var,$field_name,$field_type,$placeholder,$required,$field_size,$tabindex,$disabled,$addl_var,$tooltip,$footie,$typeahead,$form_id,$javascript);
+	?>
+</div>
+
+<div class="mb-1 col-md-3">
+	<?php
+		$field_var 		= 'user_mcs';
+		$field_name 	= 'MCS';
+		$field_type 	= 'text';
+		$field_size 	= '64';
+		$required 		= '';
+		$placeholder 	= '';
+		$tabindex		= '';
+		$disabled		= ''; // Optional
+		$addl_var		= ''; // Optional
+		$tooltip		= ''; // Optional
+		$footie			= ''; // Optional
+		$typeahead		= ''; // Optional
+		$form_id 		= 'data_entry';
+		$javascript 	= '';
+		formElements($field_var,$$field_var,$field_name,$field_type,$placeholder,$required,$field_size,$tabindex,$disabled,$addl_var,$tooltip,$footie,$typeahead,$form_id,$javascript);
+	?>
+</div>
+<div class="mb-1 col-md-3">
+	<?php
+		$field_var 		= 'user_dcs';
+		$field_name 	= 'DCS';
+		$field_type 	= 'text';
+		$field_size 	= '64';
+		$required 		= '';
+		$placeholder 	= '';
+		$tabindex		= '';
+		$disabled		= ''; // Optional
+		$addl_var		= ''; // Optional
+		$tooltip		= ''; // Optional
+		$footie			= ''; // Optional
+		$typeahead		= ''; // Optional
+		$form_id 		= 'data_entry';
+		$javascript 	= '';
+		formElements($field_var,$$field_var,$field_name,$field_type,$placeholder,$required,$field_size,$tabindex,$disabled,$addl_var,$tooltip,$footie,$typeahead,$form_id,$javascript);
+	?>
+</div>
 			</div>
 		</div>
 	</div>
-	<?php //? end card 1 ?>
+	<?php //? end card basic ?>
+
 
 	<?php //? start card 2 ?>
 	<div class="card">
@@ -295,8 +374,13 @@
 						FROM `districts`
 						WHERE 1=1
 						AND `district_active` = 'yes'
-						AND `district_council_ID` = '" . $admin_council_select . "'
-						ORDER BY `district_name`
+						AND
+						(
+						 `district_council_ID` = '" . $admin_council_select . "'
+						OR
+						 `district_council_ID` = '999'
+						 )
+						ORDER BY `district_council_ID`, `district_name`
 						";
 						$results = mysqli_query($con,$sql);
 						$data_array = array();
@@ -306,7 +390,7 @@
 						}
 
 						$field_var 		= 'user_district_ID';
-						$field_name 	= 'District ' . $user_district_ID;
+						$field_name 	= 'District ';
 						$field_type 	= 'select';
 						$field_size 	= '64';
 						$required 		= '';
@@ -314,6 +398,28 @@
 						$tabindex		= '';
 						$disabled		= ''; // Optional
 						$addl_var		= $data_array; // Optional
+						$tooltip		= ''; // Optional
+						$footie			= ''; // Optional
+						$typeahead		= ''; // Optional
+						$form_id 		= 'data_entry';
+						$javascript 	= '';
+						formElements($field_var,$$field_var,$field_name,$field_type,$placeholder,$required,$field_size,$tabindex,$disabled,$addl_var,$tooltip,$footie,$typeahead,$form_id,$javascript);
+					?>
+				</div>
+
+				<div class="mb-1 col-md-2">
+				<?php
+						$user_pro = $this_id < 1 || strlen($user_pro ?? '') < 1 ? 'no' : $user_pro;
+
+						$field_var 		= 'user_pro';
+						$field_name 	= 'BSA Pro';
+						$field_type 	= 'radio';
+						$field_size 	= '12';
+						$required 		= '';
+						$placeholder 	= '';
+						$tabindex		= '';
+						$disabled		= ''; // Optional
+						$addl_var		= $yesno_array; // Optional
 						$tooltip		= ''; // Optional
 						$footie			= ''; // Optional
 						$typeahead		= ''; // Optional

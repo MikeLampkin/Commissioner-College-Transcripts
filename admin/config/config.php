@@ -13,12 +13,12 @@
 	$db_name 			= 'transcript';
 
 	$config_config 			= $_SERVER['DOCUMENT_ROOT'] . '/admin/config/config.php';
-	$config_functions 		= $_SERVER['DOCUMENT_ROOT'] . '/admin//includes/functions.php';
-	$config_query 			= $_SERVER['DOCUMENT_ROOT'] . '/admin//includes/query.php';
-	$config_form_elements 	= $_SERVER['DOCUMENT_ROOT'] . '/admin//includes/form_elements.php';
-	$config_arrays 			= $_SERVER['DOCUMENT_ROOT'] . '/admin//includes/arrays.php';
-	$config_functions_custom = $_SERVER['DOCUMENT_ROOT'] . '/admin//includes/functions_custom.php';
-	$config_mailme 			= $_SERVER['DOCUMENT_ROOT'] . '/admin//includes/mailme.php';
+	$config_functions 		= $_SERVER['DOCUMENT_ROOT'] . '/admin/includes/functions.php';
+	$config_query 			= $_SERVER['DOCUMENT_ROOT'] . '/admin/includes/query.php';
+	$config_form_elements 	= $_SERVER['DOCUMENT_ROOT'] . '/admin/includes/form_elements.php';
+	$config_arrays 			= $_SERVER['DOCUMENT_ROOT'] . '/admin/includes/arrays.php';
+	$config_functions_custom = $_SERVER['DOCUMENT_ROOT'] . '/admin/includes/functions_custom.php';
+	$config_mailme 			= $_SERVER['DOCUMENT_ROOT'] . '/admin/includes/mailme.php';
 
 	// $authenticate_methods = array('Simple','COH','Google','Facebook','Instagram','Reddit','Twitter','Yahoo');
 	$public_authenticate_methods = array('Simple');

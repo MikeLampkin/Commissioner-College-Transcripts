@@ -1,8 +1,9 @@
-<?php  // ** Lampkin 2024 ** // ?>
-<?php //! Form Elements VERSION 11.5   ?>
-<?php // ** Modified: strlen  ** //?>
+<?php  // ** Lampkin MAY 2024 ** // ?>
+<?php //! Form Elements VERSION 13.7   ?>
+<?php // ** Modified: now | tinymce | rando | fixed $data issue with quotes | AJAX selectmultiple | data-1p-ignore | strlen  | disabled_readonly ** //?>
 
 <?php
+
 	function formButtons($var='')
 	{
 		$form_buttons = '<div class="btn-group" role="group" aria-label="Save or Cancel buttons">';
@@ -61,17 +62,19 @@
 		)
 	{
 
+	$now_marker = date('U');
 
 	global $db_name,$db_table,$var_active;
 	global $con, $con_master;
 	$conn = $db_name == 'datamaster' ? $con_master : $con;
 	$formChunk = '';
 
-	$data = isset($data) ? trim($data) : null;
+	$data = isset($data) ? htmlentities(trim($data)) : null;
 	$required = ( $required !== 'no' && strlen($required) > 2 ) ? 'required' : $required;
 
-	$readonly = ( $disabled_readonly == 'readonly' ) ? 'readonly' : '';
-	$disabled = ( $disabled_readonly == 'disabled' ) ? 'disabled' : '';
+	$readonly = ( strpos( $disabled_readonly, 'readonly' ) !== false ) ? 'readonly' : $disabled_readonly;
+	$disabled = ( strpos( $disabled_readonly, 'disabled' ) !== false ) ? 'disabled' : $disabled_readonly;
+	$ignore = ( strpos( $disabled_readonly, 'ignore' ) !== false ) ? 'data-1p-ignore' : '';
 
 	$placeholder = ( strlen($placeholder) > 1 ) ? htmlentities(addslashes($placeholder)) : '';
 
@@ -79,6 +82,15 @@
 
 	$type_ahead = ( $insert_typeahead == 'yes' ) ? 'typeahead' : ''; // Typeahead can contain a size value; Like 10, 12, 14
 	$typeahead_size = ( empty($typeahead) || !is_numeric($typeahead) ) ? '10' : $typeahead;
+
+	//! RANDO
+	// $number_array = array();
+	// for ($x = 0; $x < 10; $x++) {
+	// 	$number_array[] =  rand(0, 9);
+	// }
+	// $rando = implode('', $number_array);
+	$rando = $data;
+	//! RANDO
 
 	if( strlen($tooltip) > 3 )
 	{
@@ -90,11 +102,11 @@
 	}
 
 	$formChunk .= '<div class="form-group m-0 p-0">';
-	if( $field_type !== 'password')
+	if( $field_type !== 'password' && $field_type !== 'textarea' )
 	{
 		$formChunk .= $tooltipChunk;
 		$formChunk .= '
-			<label for="' . $field_var . '" class="col-md-12 px-0 form-label ' . $required . ' ' . $readonly . ' ' . $disabled . '" id="label_' . $field_var . '">' . $field_name;
+			<label for="' . $field_var . '" class="col-md-12 px-0 form-label ' . $required . ' ' . $readonly . ' ' . $disabled . ' ' . $ignore . ' " id="label_' . $field_var . '">' . $field_name;
 		$formChunk .= '</label>';
 		$formChunk .= '</span>';
 	}
@@ -106,7 +118,7 @@
 	{
 		$var_array = $addl_var;
 		$formChunk .= '
-		<select class="form-select class_' . $field_var . ' input_class ' . $alt_class . '" id="' . $field_var . '" name="' . $field_var . '" data-info="' . $data . '"  ' . $required . ' ' . $javascript . ' ' . $disabled_readonly . '>
+		<select class="form-select class_' . $field_var . ' input_class ' . $alt_class . '" id="' . $field_var . '" name="' . $field_var . '" data-info="' . $data . '" data-rando="' . $rando . '" ' . $required . ' ' . $javascript . '>
 			';
 			$select_term = strlen($placeholder) > 4 ? $placeholder : 'Select';
 		if( is_array($addl_var) && count($addl_var) > 0 )
@@ -150,7 +162,7 @@
 		WHERE `" . $var_active . "` = 'yes'
 		ORDER BY `" . $field_var . "`
 		";
-		$formChunk .=  '<select class="form-select class_' . $field_var . ' input_class ' . $alt_class . '" name="' . $field_var . '" data-info="' . $data . '" ' . $required . ' id="' . $field_var . '" >
+		$formChunk .=  '<select class="form-select class_' . $field_var . ' input_class ' . $alt_class . '" name="' . $field_var . '" data-info="' . $data . '" data-rando="' . $rando . '" ' . $required . ' id="' . $field_var . '" >
 		';
 		$select_term = strlen($placeholder) > 4 ? $placeholder : 'Select';
 
@@ -188,7 +200,7 @@
 		$formChunk .= '<input type="hidden" id="' . $field_var . '" name="' . $field_var . '" class="form-control input_class" value="' . $data . '" ' . $required . '  />';
 		$formChunk .= '<div class="alert alert-secondary m-0" id="display_' . $field_var . '"></div>';
 		$formChunk .= '
-		<select class="form-select class_' . $field_var . ' multi-select input_class ' . $alt_class . '" id="multiple_' . $field_var . '" data-info="' . $data . '" data-field="' . $field_var . '"  ' . $javascript . '>
+		<select class="form-select class_' . $field_var . ' multi-select input_class ' . $alt_class . '" id="multiple_' . $field_var . '" data-info="' . $data . '" data-field="' . $field_var . '" data-rando="' . $rando . '"  ' . $javascript . '>
 			';
 		if( is_array($addl_var) && count($addl_var) > 0 )
 		{
@@ -228,11 +240,17 @@
 		//! TEXTAREA
 	elseif ( $field_type == 'textarea' )
 	{
-		$id_tinyMCE = ( $placeholder == 'tinyMCE' ) ? 'tinyMCE' : $field_var;
-		// $rowlen = (strlen($data)>'10') ? rowlen($data,125) : ((strlen($placeholder)>'0') ? $placeholder : '1');
-		$txt_rows = (strlen(trim($txt_rows))>0) ? $txt_rows : ((strlen($data)>'10') ? rowlen($data,80) : '1');
+		$formChunk .= $tooltipChunk;
 		$formChunk .= '
-		<textarea class="form-control class_' . $field_var . ' ' . $id_tinyMCE . ' input_class ' . $alt_class . '" name="' . $field_var . '" id="' . $field_var . '" rows="' . $txt_rows . '" placeholder="' . $placeholder . '" onKeyUp="' . $onkeyup . '" ' . $readonly . ' ' . $disabled . ' ' . $required . ' >' . $data . '</textarea>
+			<label for="' . $field_var . '' . $now_marker . '" class="col-md-12 px-0 form-label ' . $required . ' ' . $readonly . ' ' . $disabled . ' ' . $ignore . ' " id="label_' . $field_var . '">' . $field_name;
+		$formChunk .= '</label>';
+		$formChunk .= '</span>';
+
+		$tinymce = ( strtolower($placeholder) == 'tinymce' ) ? 'tinyMCE' : $field_var;
+		// $rowlen = (strlen($data)>'10') ? rowlen($data,125) : ((strlen($placeholder)>'0') ? $placeholder : '1');
+		$txt_rows = (strlen(trim($txt_rows))>0) ? $txt_rows : ((strlen($data)>'10') ? rowlen($data,70) : '1');
+		$formChunk .= '
+		<textarea class="form-control class_' . $field_var . ' ' . $tinymce . ' input_class ' . $alt_class . '" name="' . $field_var . '" id="' . $field_var . '' . $now_marker . '" data-rando="' . $rando . '" rows="' . $txt_rows . '" placeholder="' . $placeholder . '" onKeyUp="' . $onkeyup . '" ' . $readonly . ' ' . $disabled . ' ' . $ignore . '  ' . $required . ' >' . $data . '</textarea>
 		';
 	}
 
@@ -241,7 +259,7 @@
 	elseif ( $field_type == 'color' || $field_type == 'colorhex' )
 	{
 		$formChunk .= '
-			<input type="color" class="form-control form-control-color class_' . $field_var . ' input_class ' . $alt_class . '" id="' . $field_var . '" data-info="' . $data . '" name="' . $field_var . '" value="' . $data . '" title="Choose your color"  />
+			<input type="color" class="form-control form-control-color class_' . $field_var . ' input_class ' . $alt_class . '" id="' . $field_var . '" data-info="' . $data . '" data-rando="' . $rando . '" name="' . $field_var . '" value="' . $data . '" title="Choose your color"  />
 				';
 	}
 	elseif ( $field_type == 'select_color' )
@@ -320,7 +338,7 @@
 		{
 			$formChunk .= '
 				<div class="form-check">
-					<input class="form-check-input class_' . $field_var . ' input_class" type="checkbox" id="delete_' . $field_var . '" name="delete_' . $field_var . '"  />
+					<input class="form-check-input class_' . $field_var . ' input_class" type="checkbox" id="delete_' . $field_var . '" name="delete_' . $field_var . '" data-rando="' . $rando . '"  />
 					<label class="form-check-label class_' . $field_var . '" for="delete_' . $field_var . '"  id="label_' . $field_var . '" > Delete ' . $data . '</label>
 				</div>
 				';
@@ -333,7 +351,7 @@
 	{
 		// if( !is_array($data) ) { $data = explode(',',$data); }
 		$formChunk .= '
-		<select class="form-select class_' . $field_var . ' input_class multi-select" id="' . $field_var . '" name="' . $field_var . '[]" data-info="' . $data . '" size="2" multiple ' . $required . '  >
+		<select class="form-select class_' . $field_var . ' input_class multi-select" id="' . $field_var . '" name="' . $field_var . '[]" data-info="' . $data . '" data-rando="' . $rando . '" size="2" multiple ' . $required . '  >
 			';
 		if( is_array($addl_var) && count($addl_var) > 0 )
 		{
@@ -353,7 +371,7 @@
 		}
 		$formChunk .= '
 		</select>
-		<span style="font-size:9px;">Hold control key to select multiple.</span>';
+		<span class="xs">Hold control key to select multiple.</span>';
 	}
 
 		//! CHECK
@@ -365,8 +383,9 @@
 		';
 
 		$x=0;
-		$formChunk .=  '<div class="border p-2 border-rounded">
-		';
+		$formChunk .=  '<div class="border p-2 border-rounded" id="select_check_' . $field_var . '_box" >';
+		$formChunk .=  '<span class="" id="select_check_' . $field_var . '_msg"></span>';
+		$formChunk .=  '<span class="" id="select_check_' . $field_var . '_view">';
 
 		if( !is_array($addl_var) )
 		{
@@ -405,7 +424,7 @@
 					{
 						$formChunk .= '
 						<div class="form-check form-check-inline">
-							<input class="form-check-input input_class" type="checkbox" value="' . $key . '" name="check_' . $field_var . '[]" id="check_' . $field_var . '_' . $x . '" ' . $checkme . '   />
+							<input class="form-check-input input_class class_' . $field_var . '" type="checkbox" value="' . $key . '" name="check_' . $field_var . '[]" id="check_' . $field_var . '_' . $x . '" ' . $checkme . '   />
 							<label class="form-check-label " for="check_' . $field_var . '_' . $x . '" id="label_check_' . $field_var . '' . $x . '" >
 								' . $value . '
 							</label>
@@ -425,10 +444,10 @@
 			$formChunk .=  '<em>None</em>';
 		}
 
-
-
+		$formChunk .=  '</span>';
 		$formChunk .=  '</div>';
 	}
+
 
 		//! RADIO
 	elseif ( $field_type == 'radio' )
@@ -461,13 +480,13 @@
 		$formChunk .= '
 						<label for="' . $field_var . '" class="col-md-12 pl-0 form-label ' . $required . ' ">
 							' . $field_name . '
-								<span class=" text-end" id="pwrd_response" style="font-size:11px;"></span>
+								<span class=" text-end" id="pwrd_response"></span>
 						</label>
 
 						<input type="hidden" class="form-control class_' . $field_var . '" name="old_pwrd" value="' . $data . '" />';
 		$formChunk .= $tooltipChunk;
 		$formChunk .= '
-						<input type="' . $field_type . '" class="form-control class_' . $field_var . ' input_class ' . $alt_class . '" name="' . $field_var . '" id="' . $field_var . '" placeholder="' . $placeholder . '"  maxlength="' . $field_size . '" value="' . $data . '" onKeyUp="validatePassword(\'' . $field_var . '\')" ' . $required . '  />
+						<input type="' . $field_type . '" class="form-control class_' . $field_var . ' input_class ' . $alt_class . '" name="' . $field_var . '" id="' . $field_var . '" data-rando="' . $rando . '" placeholder="' . $placeholder . '"  maxlength="' . $field_size . '" value="' . $data . '" onKeyUp="validatePassword(\'' . $field_var . '\')" ' . $required . '  />
 			</span>
 		';
 	}
@@ -475,7 +494,7 @@
 	elseif ( $field_type == 'date'  )
 	{
 			$formChunk .= '
-			<input type="' . $field_type . '" class="form-control date_form class_' . $field_var . ' input_class ' . $alt_class . '" name="' . $field_var . '" id="' . $field_var . '" value="' . $data . '" placeholder="' . $placeholder . '" min="' . $min . '" max="' . $max . '" data-id="' . $field_var . '" ' . $readonly . ' ' . $disabled . ' ' . $required . '  />
+			<input type="' . $field_type . '" class="form-control date_form class_' . $field_var . ' input_class ' . $alt_class . '" name="' . $field_var . '" id="' . $field_var . '" value="' . $data . '" placeholder="' . $placeholder . '" min="' . $min . '" max="' . $max . '" data-id="' . $field_var . '" data-rando="' . $rando . '" ' . $readonly . ' ' . $disabled . ' ' . $ignore . '  ' . $required . '  />
 							';
 	}
 		//! datetime
@@ -484,28 +503,28 @@
 			$data_repair = date('Y-m-d\TH:i:s', strtotime($data));
 
 			$formChunk .= '
-			<input type="' . $field_type . '" class="form-control  class_' . $field_var . ' input_class ' . $alt_class . '" name="' . $field_var . '" id="' . $field_var . '" value="' . $data_repair . '" placeholder="' . $placeholder . '" min="' . $min . '" max="' . $max . '" data-id="' . $field_var . '" ' . $readonly . ' ' . $disabled . ' ' . $required . '  />
+			<input type="' . $field_type . '" class="form-control  class_' . $field_var . ' input_class ' . $alt_class . '" name="' . $field_var . '" id="' . $field_var . '" value="' . $data_repair . '" placeholder="' . $placeholder . '" min="' . $min . '" max="' . $max . '" data-id="' . $field_var . '" data-rando="' . $rando . '" ' . $readonly . ' ' . $disabled . ' ' . $ignore . '  ' . $required . '  />
 							';
 	}
 		//! NUMBER
 	elseif ( $field_type == 'number' )
 	{
 			$formChunk .= '
-			<input type="' . $field_type . '" .. class="form-control  class_' . $field_var . ' input_class ' . $alt_class . '" name="' . $field_var . '" id="' . $field_var . '" value="' . $data . '" placeholder="' . $placeholder . '" min="' . $min . '" max="' . $max . '" data-id="' . $field_var . '"  maxlength="' . $field_size . '" ' . $readonly . ' ' . $disabled . ' ' . $required . ' />
+			<input type="' . $field_type . '" .. class="form-control  class_' . $field_var . ' input_class ' . $alt_class . '" name="' . $field_var . '" id="' . $field_var . '" value="' . $data . '" placeholder="' . $placeholder . '" min="' . $min . '" max="' . $max . '" data-id="' . $field_var . '"  maxlength="' . $field_size . '" ' . $readonly . ' ' . $disabled . ' ' . $ignore . '  ' . $required . ' />
 							';
 	}
 		//! TEXT
 	elseif (  $field_type == 'time'  )
 	{
 			$formChunk .= '
-			<input type="' . $field_type . '" class="form-control  class_' . $field_var . ' input_class ' . $alt_class . '" name="' . $field_var . '" id="' . $field_var . '" value="' . $data . '" placeholder="' . $placeholder . '" data-id="' . $field_var . '"  step="' . $field_size . '" min="' . $min . '" max="' . $max . '" data-id="' . $field_var . '" ' . $readonly . ' ' . $disabled . ' ' . $required . ' />
+			<input type="' . $field_type . '" class="form-control  class_' . $field_var . ' input_class ' . $alt_class . '" name="' . $field_var . '" id="' . $field_var . '" value="' . $data . '" placeholder="' . $placeholder . '" data-id="' . $field_var . '" data-rando="' . $rando . '"  step="' . $field_size . '" min="' . $min . '" max="' . $max . '" data-id="' . $field_var . '" ' . $readonly . ' ' . $disabled . ' ' . $ignore . '  ' . $required . ' />
 							';
 	}
 		//! TEXT
 	elseif ( $field_type == 'text'  )
 	{
 			$formChunk .= '
-			<input type="' . $field_type . '" class="form-control ' . $type_ahead . ' class_' . $field_var . ' input_class ' . $alt_class . '" name="' . $field_var . '" id="' . $field_var . '" value="' . $data . '" placeholder="' . $placeholder . '" data-id="' . $field_var . '" list="datalist_' . $field_var . '" maxlength="' . $field_size . '" onKeyUp="' . $onkeyup . '" ' . $readonly . ' ' . $disabled . ' ' . $required . '  /><datalist id="datalist_' . $field_var . '"></datalist>
+			<input type="' . $field_type . '" class="form-control ' . $type_ahead . ' class_' . $field_var . ' input_class ' . $alt_class . '" name="' . $field_var . '" id="' . $field_var . '" value="' . $data . '" placeholder="' . $placeholder . '" data-id="' . $field_var . '" data-rando="' . $rando . '" list="datalist_' . $field_var . '" maxlength="' . $field_size . '" onKeyUp="' . $onkeyup . '" ' . $readonly . ' ' . $disabled . ' ' . $ignore . '  ' . $required . '  /><datalist id="datalist_' . $field_var . '"></datalist>
 							';
 	}
 
@@ -518,29 +537,29 @@
 		$formChunk .= '
 			<div class="col-md-12 pl-4">
 				<div class="form-check">
-					<input class="form-check-input" type="checkbox" id="showPass" onchange="showPassword(\'' . $field_var . '\')"  style="font-size:.7rem;" />
-					<label class="form-check-label" for="showPass" style="font-size:.7rem;"> Show password </label>
+					<input class="form-check-input" type="checkbox" id="showPass" onchange="showPassword(\'' . $field_var . '\')" />
+					<label class="form-check-label" for="showPass" > Show password </label>
 				</div>
 			</div>
 			';
 	}
-	elseif ( ( $field_type == 'text' || $field_type == 'textarea' || $field_type == 'file'  ) && $field_size > 0 && strlen($footie) < 3)
+	elseif ( ( $field_type == 'text' || $field_type == 'Xtextarea' || $field_type == 'file'  ) && $field_size > 0 && strlen($footie) < 3)
 	{
 	// ($field_size-strlen($data))
 		$formChunk .= '
 			<div class="col-md-8 m-0 p-0" id="msg_' . $field_var . '"></div>
 			<div class="col-md-4 m-0 p-0 text-end">
-				<small class="form-text text-muted"><span id="len_' . $field_var . '">' . strlen($data) . '</span>/' . $field_size . '</small>
+				<small><span class="form-text text-muted"><span id="len_' . $field_var . '">' . strlen($data) . '</span>/' . $field_size . '</span></small>
 			</div>
 	';
 	}
-	elseif ( ( $field_type == 'text' || $field_type == 'textarea' || $field_type == 'file'   ) && $field_size > 0 && strlen($footie) > 3)
+	elseif ( ( $field_type == 'text' || $field_type == 'Xtextarea' || $field_type == 'file'   ) && $field_size > 0 && strlen($footie) > 3)
 	{
 	// ($field_size-strlen($data))
 		$formChunk .= '
 			<div class="col-md-8 m-0 p-0" id="msg_' . $field_var . '">' . $footie . '</div>
 			<div class="col-md-4 m-0 p-0 text-end" id="">
-				<small class="form-text text-muted"><span id="len_' . $field_var . '">' . strlen($data) . '</span>/' . $field_size . '</small>
+				<small><span class="form-text text-muted"><span id="len_' . $field_var . '">' . strlen($data) . '</span>/' . $field_size . '</span></small>
 			</div>
 	';
 	}

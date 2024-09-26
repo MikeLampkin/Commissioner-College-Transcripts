@@ -75,8 +75,6 @@
 		$form_action = 'update';
 	}
 
-
-
 	$last_update_sql = "
 	SELECT MAX(`transcript_last_update`) AS `transcript_last_update`
 	FROM `transcripts` t
@@ -102,12 +100,13 @@
 	}
 // echo '<h4>' . $council . '</h4>';
 
-	if( strlen($this_id ?? '') > 0 )
+	if( $this_id > 0 )
 	{
 ?>
 
-		<hr />
-		<form class="nice-form col-sm-12 col-md-9 mx-auto" id="transaction_data"  method="post" enctype="application/x-www-form-urlencoded">
+<div class="row">
+	<div class="col-md-9">
+		<form class="nice-form col-sm-12 mx-auto" id="transaction_data"  method="post" enctype="application/x-www-form-urlencoded">
 			<input type="hidden" class="form-control" name="process" value="yes">
 
 			<input type="hidden" class="form-control" name="id_field" id="id_field" value="user_ID">
@@ -121,11 +120,11 @@
 					<?php
 						$patch = getCouncilPatch($admin_council_select);
 						$council_name = getCouncilFromID($admin_council_select);
-						$image = file_exists('/var/www/html/img/img_councils/' . $patch . '') !== false ? '<img src="../img/img_councils/' . $patch . '" id="council_strip" title="' . $council_name . ' Council Strip" class="council-strip">' : '<img src="../img/img_councils/generic.png" id="council_strip" title="Council Strip" class="council-strip">';
+						$council_image = file_exists('/var/www/html/img/img_councils/' . $patch . '') !== false ? '<img src="../img/img_councils/' . $patch . '" id="council_strip" title="' . $council_name . ' Council Strip" class="council-strip">' : '<img src="../img/img_councils/generic.png" id="council_strip" title="Council Strip" class="council-strip">';
 						$full_name = ($user_ID >= '1') ? fullName($user_prefix,$user_first_name,$user_nick_name,'',$user_last_name,$user_suffix) : 'ERROR: No user selected.';
 						echo $full_name;
 						echo ' ';
-						echo $image;
+						echo $council_image;
 					?>
 				</div>
 				<div class="col-md-6 m-0 p-0 text-end">
@@ -392,7 +391,17 @@
 
 			</div>
 		</form>
+	</div>
+	<div class="col-md-3">
+		Info about <strong> <?php echo $full_name; ?></strong>
+		<div class="row">
+			<div class="col-md-6">BSA ID </div>
+			<div class="col-md-6"><?php echo $user_bsa_ID; ?></div>
 
+		</div>
+
+	</div>
+</div>
 <?php
 	}
 ?>

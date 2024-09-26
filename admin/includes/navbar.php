@@ -13,8 +13,7 @@ $menu_master_array = array(
 	'jedi_pg_array'		=> 'Jedi|999|<i class="fa-solid fa-jedi" aria-hidden="true"></i>',
 );
 
-$users_pg_array = array (
-	// 'ticket' 	=> 'Ticket|100|<i class="fa-solid fa-file-user"></i>',
+$users_pg_array = array(
 
 );
 
@@ -26,7 +25,7 @@ $transcripts_pg_array = array(
 $core_pg_array = array(
 	'participants' 			=> 'Participants|100|<i class="fa-solid fa-user-graduate"></i>',
 	'courses' 				=> 'Courses|100|<i class="fa-solid fa-book-open-cover"></i>',
-	'library' 				=> 'Thesis Library|100|<i class="fa-solid fa-book"></i>',
+	'thesis' 				=> 'Thesis Library|100|<i class="fa-solid fa-book"></i>',
 	'deans' 				=> 'Deans|100|<i class="fa-solid fa-chalkboard-user"></i>',
 	'districts' 			=> 'Districts|100|<i class="fa-solid fa-school-flag"></i>',
 );
@@ -37,11 +36,12 @@ $degree_pg_array = array(
 );
 
 $reports_pg_array = array(
+	'report_dump' 				=> 'Report: Dump|200|<i class="fa-solid fa-file-alt"></i>',
 	'report_users_per_course' 	=> 'Report: Users|200|<i class="fa-solid fa-file-alt"></i>',
 	'report_attendees' 			=> 'Report: Attendees|200|<i class="fa-solid fa-file-alt"></i>',
 	'report_years' 				=> 'Report: Degree by Year|200|<i class="fa-solid fa-file-alt"></i>',
-	'report_next_by_district' 	=> 'Report: Next by District|200|<i class="fa-solid fa-file-alt"></i>',
-	'report_roster' 			=> 'Report: Rosters|200|<i class="fa-solid fa-file-alt"></i>',
+	'report_districts' 			=> 'Report: District|200|<i class="fa-solid fa-file-alt"></i>',
+	'report_rosters' 			=> 'Report: Rosters|200|<i class="fa-solid fa-file-alt"></i>',
 );
 
 
@@ -52,11 +52,13 @@ $admin_pg_array = array(
 );
 
 $jedi_pg_array = array(
-	'admin_msg'				=> 'Admin Message|999|<i class="fa-solid fa-file-alt"></i>',
-	'colors'				=> 'Colors|999|<i class="fa-solid fa-file-alt" aria-hidden="true"></i>',
-	'stats'					=> 'Stats|999|<i class="fa-solid fa-file-alt" aria-hidden="true"></i>',
-	'blockade'				=> 'Blockade|999|<i class="fa-solid fa-file-alt" aria-hidden="true"></i>',
-	// 'updates'			=> 'Updates|999|<i class="fa-solid fa-compass"></i>',
+	'waiting_list'			=> 'Waiting List|999|<i class="fa-solid fa-badger-honey"></i>',
+	'tickets	'			=> 'Tickets|999|<i class="fa-solid fa-compass"></i>',
+	'admin_msg'				=> 'Admin Message|999|<i class="fa-solid fa-alicorn"></i>',
+	'colors'				=> 'Colors|999|<i class="fa-solid fa-burger-cheese"></i>',
+	'stats'					=> 'Stats|999|<i class="fa-solid fa-cat-space"></i>',
+	'blockade'				=> 'Blockade|999|<i class="fa-solid fa-face-disguise"></i>',
+	'updates'				=> 'Updates|999|<i class="fa-solid fa-person-biking"></i>',
 );
 
 ?>
@@ -150,7 +152,7 @@ $jedi_pg_array = array(
 
 		<!-- <div class="" id="navbarNavRight"> -->
 
-			<div class="navbar-text text-center px-4"><span class="h6"><span class="" id="navLoc"></span></div>
+			<div class="navbar-text text-center px-4"><span class="fw-bold" id="navLoc"></span></div>
 			<div class="navbar-text text-center m-0 p-0" style="font-size:10px;line-height:1.25">
 				<a class="mx-auto text-white" href="?logout"><?php echo $app_icon ;?> <?php echo ucwords($app_short_name); ?></a>
 				<br/ >

@@ -15,12 +15,6 @@
 
 ?>
 
-<div class="row">
-	<div class="col-md-3"></div>
-	<div class="col-md-6" id="alertMsg"></div>
-	<div class="col-md-3"></div>
-</div>
-
 <div class="row mb-3">
 	<div id="" class="col-md-2 text-start"><button class="btn btn-outline-secondary btn-sm position-relative" id="filters" type="button" data-bs-toggle="collapse" data-bs-target="#filterList" aria-expanded="false" aria-controls="filterList"><i class="fa-solid fa-bars-filter"></i> Filters <span id="filters_alert"></span></button></div>
 	<div id="paginationDisplay" class="col-md-8 pagination_display"></div>

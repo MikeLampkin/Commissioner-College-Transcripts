@@ -12,16 +12,24 @@
 	$data_results = $data_results_intro = $data_results_table = '';
 	$var_ID 		= 'user_ID';
 	$var_active 	= 'user_active';
-	$default_sort 	= 'user_last_name';
+	$default_sort 	= 'user_last_name` ASC, `user_first_name';
 
 	$fields_array 	= $users_fields_array;
 	$display_array = array(
+		'user_ID' => '#',
 		'user_bsa_ID' => 'BSA ID',
-		// 'bsa_marker' => '<i class="fa-solid fa-user-check"></i>',
 		'user_name_details' => 'Name',
 
 		'last_ccs' => '<small>Last<br></small> CCS',
 		// 'user_last_bsa_reg' => '<small>Last<br></small> BSA',
+
+		'user_arrowhead_nice' => 'Arrow',
+		'user_comm_key_nice' => 'Key',
+		'user_distinguished_nice' => 'DCA',
+
+		'user_bcs_nice' => 'B',
+		'user_mcs_nice' => 'M',
+		'user_dcs_nice' => 'D',
 
 		'all_count_cnt' => '#courses',
 
@@ -31,7 +39,7 @@
 			// 'dcs_count' => '# DCS',
 			// 'ced_count' => '# CED',
 
-		'user_district_ID' => 'District',
+		'user_district' => 'District',
 		// 'user_positions' => 'Positions',
 		'email_phone' => 'Phone / Email',
 		'user_notes_public' => 'Notes',
@@ -128,6 +136,21 @@
 	}
 	//# search =============================================
 
+	function getCourseCount($id) {
+
+		global $con;
+		$sql = "
+		SELECT `transcript_ID`
+		FROM `transcripts`
+		WHERE 1=1
+		AND `transcript_user_ID` = '" . $id . "'
+		AND `transcript_course_ID` <> '999'
+		";
+		$results = mysqli_query($con,$sql);
+		$cnt = mysqli_num_rows($results) ?? 0;
+		return $cnt;
+	}
+
 	//! CHECK ADMIN LEVEL ACCESS  ==========================
 	$my_admin_level = 100;
 	$my_admin_level = getAdminLevel($admin_user);
@@ -153,6 +176,7 @@
 	$total_cnt = mysqli_num_rows($total_results) ?? 0;
 
 	$data_results_intro .= '<input type="hidden" id="totalCnt" value="' . $total_cnt . '">';
+
 	$data_results_intro .= '<div class="row">';
 		$data_results_intro .= '<div class="col-md-6">';
 			$plural = $total_cnt > 1 ? 's' : '';
@@ -172,10 +196,9 @@
 			// $active_msg = $active == 'yes' ? 'Live' : 'Archived';
 			$active_msg = ucfirst($active);
 			$data_results_intro .= '| <strong> Live Data:  <span class="text-info">' . $active_msg . '</span></strong> ';
-	// $data_results_intro .= 'items. ';
 		$data_results_intro .= '</div>';
 		$data_results_intro .= '<div class="col-md-6 text-end">';
-		$data_results_intro .= 'Page: <strong>' . $pgnum . '</strong> of ' . ceil($total_cnt/$limit);
+			$data_results_intro .= 'Page: <strong>' . $pgnum . '</strong> of ' . ceil($total_cnt/$limit);
 		$data_results_intro .= '</div>';
 	$data_results_intro .= '</div>';
 
@@ -198,11 +221,10 @@
 	$cnt = mysqli_num_rows($results);
 
 
-
 	//# ======= start output ======================================================================
 	$col_cnt = count($display_array)+1;
 
-	$center_fields = array('bsa_marker');
+	$center_fields = array('user_arrowhead_nice','user_comm_key_nice','user_distinguished_nice','user_bcs_nice','user_mcs_nice','user_dcs_nice');
 	$nowrap_fields = array('po_number');
 
 	$data_results_table .= '
@@ -260,30 +282,34 @@
 
 
 			//! =========== CUSTOM VARIABLES ==========
-			// 'user_bsa_ID' => 'BSA ID',
-			// 'bsa_marker' => '<i class="fa-solid fa-user-check"></i>',
-			// 'user_name_details' => 'Name',
-
-			// 'last_ccs' => '<small>Last<br></small> CCS',
-			// 'user_last_bsa_reg' => '<small>Last<br></small> BSA',
-
-			// 'all_count_cnt' => '#courses',
-
-			// 	// 'acs_count' => '# ACS',
-			// 	// 'bcs_count' => '# BCS',
-			// 	// 'mcs_count' => '# MCS',
-			// 	// 'dcs_count' => '# DCS',
-			// 	// 'ced_count' => '# CED',
-
-			// 'user_district' => 'District',
-			// 'user_positions' => 'Positions',
-			// 'email_phone' => 'Phone / Email',
 			// 'user_notes_public' => 'Notes',
 
-			$bsa_marker = '';
+			$user_district = getDistrictName($user_district_ID);
 			$last_ccs = '';
-			$all_count_cnt = '';
+			$all_count_cnt = getCourseCount($user_ID);
 			$email_phone = '';
+
+			$user_arrowhead = strlen($user_arrowhead) > 4 ? date("'y",strtotime($user_arrowhead)) : ( strlen($user_arrowhead) > 2 ? "'".substr($user_arrowhead, -2) : $user_arrowhead );
+			$user_arrowhead_nice = strlen($user_arrowhead) > 1 ? '<span data-bs-toggle="tooltip" data-bs-placement="top" class="" title="Arrowhead Honor">' . $user_arrowhead . '</span>' : '';
+
+			$user_comm_key = strlen($user_comm_key) > 4 ? date("'y",strtotime($user_comm_key)) : ( strlen($user_comm_key) > 2 ? "'".substr($user_comm_key, -2) : $user_comm_key );
+			$user_comm_key_nice = strlen($user_comm_key) > 1 ? '<span data-bs-toggle="tooltip" data-bs-placement="top" class="" title="Commissioner Key">' . $user_comm_key . '</span>' : '';
+
+			$user_distinguished = strlen($user_distinguished) > 4 ? date("'y",strtotime($user_distinguished)) : ( strlen($user_distinguished) > 2 ? "'".substr($user_distinguished, -2) : $user_distinguished );
+			$user_distinguished_nice = strlen($user_distinguished) > 1 ? '<span data-bs-toggle="tooltip" data-bs-placement="top" class="" title="Distinguished Commissioner">' . $user_distinguished . '</span>' : '';
+
+			$user_bcs = strlen($user_bcs) > 4 ? date("'y",strtotime($user_bcs)) : ( strlen($user_bcs) > 2 ? "'".substr($user_bcs, -2) : $user_bcs );
+			$user_bcs_nice = strlen($user_bcs) > 1 ? '<span data-bs-toggle="tooltip" data-bs-placement="top" class="" title="Bachelor Degree">' . $user_bcs . '</span>' : '';
+
+			$user_mcs = strlen($user_mcs) > 4 ? date("'y",strtotime($user_mcs)) : ( strlen($user_mcs) > 2 ? "'".substr($user_mcs, -2) : $user_mcs );
+			$user_mcs_nice = strlen($user_mcs) > 1 ? '<span data-bs-toggle="tooltip" data-bs-placement="top" class="" title="Masters Degree">' . $user_mcs . '</span>' : '';
+
+			$user_dcs = strlen($user_dcs) > 4 ? date("'y",strtotime($user_dcs)) : ( strlen($user_dcs) > 2 ? "'".substr($user_dcs, -2) : $user_dcs );
+			$user_dcs_nice = strlen($user_dcs) > 1 ? '<span data-bs-toggle="tooltip" data-bs-placement="top" class="" title="Doctorate Degree">' . $user_dcs . '</span>' : '';
+
+			// $user_bcs = strlen($user_bcs) > 0 ? 'X' : '';
+			// $user_mcs = strlen($user_mcs) > 0 ? 'X' : '';
+			// $user_dcs = strlen($user_dcs) > 0 ? 'X' : '';
 
 			$user_name = fullNameList($user_prefix,$user_first_name,$user_nick_name,$user_middle_name,$user_last_name,$user_suffix);
 			$user_name = trim($user_name);
@@ -291,65 +317,59 @@
 			$user_image = 'no-photo.jpg';
 			if ( strlen($user_image) < 4 || !file_exists('../img_users/' . $user_image) ) { $user_image = 'no-photo.jpg'; }
 
-			//! ======== name marker ============
-				$name_marker = '';
+				//! ======== name marker ============
+					$name_marker = '';
 
-				//! INACTIVE
-				if( $user_status == 'inactive')
-				{
-					$name_marker = '
-					<span data-bs-toggle="tooltip" data-bs-placement="top" class="text-danger" title="Inactive">
-						<i class="fa-solid fa-circle-x text-danger list-text-sm align-top"></i>
+					//! INACTIVE
+					if( $user_status == 'inactive')
+					{
+						$name_marker = '
+						<span data-bs-toggle="tooltip" data-bs-placement="top" class="text-danger" title="Inactive">
+							<i class="fa-solid fa-circle-x text-orange list-text-sm align-top"></i>
+						</span>
+						';
+					}
+					//! DECEASED
+					$deceased_marker = '';
+					if( $user_deceased == 'yes')
+					{
+						$name_marker = '
+						<span data-bs-toggle="tooltip" data-bs-placement="top" class="text-danger" title="Deceased">
+							<i class="fa-solid fa-dot-circle text-danger list-text-sm align-top"></i>
+						</span>
+						';
+					}
+
+					$is_user_pro = ( $user_pro == 'yes') ? 'yes' : 'no';
+
+					$user_fullname_list = fullNameList($user_prefix,$user_first_name,$user_nick_name,$user_middle_name,$user_last_name,$user_suffix);
+					$user_fulladdress = fullAddress($user_address,$user_address2,$user_city,$user_state,$user_zip,'','','');
+
+					$user_phone = ( strlen($user_phone ?? '') > 2 ) ? prettyPhone($user_phone) : $user_phone;
+					$user_phone2 = ( strlen($user_phone2 ?? '') > 2 ) ? prettyPhone($user_phone2) : $user_phone2;
+
+					$user_em_contact1_phone = ( strlen($user_em_contact1_phone ?? '') > 2 ) ? prettyPhone($user_em_contact1_phone) : $user_em_contact1_phone;
+					$user_em_contact2_phone = ( strlen($user_em_contact2_phone ?? '') > 2 ) ? prettyPhone($user_em_contact2_phone) : $user_em_contact2_phone;
+
+
+					$user_image = 'no-photo.jpg';
+					// if ( strlen($user_image) < 4 || !file_exists('../img_users/' . $user_image) ) { $user_image = 'no-photo.jpg'; }
+					$user_name_details = '
+					<span id="viewItem' . $$var_ID . '" data-info="' . $$var_ID . '" class="list-text text-nowrap view-item" data-bs-toggle="modal" data-bs-target="#details' . $user_ID . '">
+						' . $user_fullname_list . '
+						' . $user_icon_list . '
 					</span>
 					';
-				}
-				//! DECEASED
-				$deceased_marker = '';
-				if( $user_deceased == 'yes')
-				{
-					$name_marker = '
-					<span data-bs-toggle="tooltip" data-bs-placement="top" class="text-danger" title="Deceased">
-						<i class="fa-solid fa-dot-circle text-danger list-text-sm align-top"></i>
-					</span>
-					';
-				}
 
-				$is_user_pro = ( $user_pro == 'yes') ? 'yes' : 'no';
+					$user_name_details = $user_name_details . ' <span class="xs">' . $name_marker . '</span>';
 
-				$user_fullname_list = fullNameList($user_prefix,$user_first_name,$user_nick_name,$user_middle_name,$user_last_name,$user_suffix);
-				$user_fulladdress = fullAddress($user_address,$user_address2,$user_city,$user_state,$user_zip,'','','');
-
-				$user_phone = ( strlen($user_phone ?? '') > 2 ) ? prettyPhone($user_phone) : $user_phone;
-				$user_phone2 = ( strlen($user_phone2 ?? '') > 2 ) ? prettyPhone($user_phone2) : $user_phone2;
-
-				$user_em_contact1_phone = ( strlen($user_em_contact1_phone ?? '') > 2 ) ? prettyPhone($user_em_contact1_phone) : $user_em_contact1_phone;
-				$user_em_contact2_phone = ( strlen($user_em_contact2_phone ?? '') > 2 ) ? prettyPhone($user_em_contact2_phone) : $user_em_contact2_phone;
-
-				$user_image = 'no-photo.jpg';
-				// if ( strlen($user_image) < 4 || !file_exists('../img_users/' . $user_image) ) { $user_image = 'no-photo.jpg'; }
-				$user_name_details = '
-				<span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="View details.">
-				<span id="viewItem' . $$var_ID . '" data-info="' . $$var_ID . '" class="list-text text-nowrap view-item" data-bs-toggle="modal" data-bs-target="#details' . $user_ID . '">
-
-				<!-- <a id="viewItem' . $$var_ID . '" data-info="' . $$var_ID . '" class="list-text text-nowrap view-item" data-bs-toggle="modal" data-bs-target="#modalAlert"> -->
-					' . $user_fullname_list .'
-				</span>
-				</span>
-				';
-
-				$user_name_details = $user_name_details . ' <span class="xs">' . $name_marker . '</span>';
-
-			//! ======== name marker ============
-
-			// $bsa_marker = ( strlen($user_bsa_ID ?? '') > 2) ? '<i class="fa-solid fa-user-circle mx-auto"></i>' : '<i class="far fa-question-circle"></i>';
-			// $bsa_marker = '<span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="BSA ID">' . $bsa_marker .'</span>';
+				//! ======== name marker ============
 
 			$last_ccs = lastCCS($user_ID);
-			$min_ccs = date('Y',strtotime('-5 years'));
-			$this_clr = $last_ccs < $min_ccs ? 'text-danger' : ( $last_ccs == 'none'  ? 'text-secondary' : 'text-black');
+				$min_ccs = date('Y',strtotime('-5 years'));
+				$this_clr = $last_ccs < $min_ccs ? 'text-danger' : ( $last_ccs == 'none'  ? 'text-secondary' : 'text-black');
 				$last_ccs = $last_ccs == 'none' ? '<em>' . $last_ccs . '</em>' : $last_ccs;
-			$last_ccs =  '<span class="' . $this_clr . ' text-centered" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Last CCS attended.">
-			' . $last_ccs . '</span>';
+				$last_ccs =  '<span class="' . $this_clr . ' text-centered" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Last CCS attended.">' . $last_ccs . '</span>';
 
 			// $user_email = strlen($user_email) > 4 ? '<span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Click to copy."><input type="hidden" id="copyEmail' . $user_ID . '" value="ThIss DaaTaa"><a class="no-deco" onclick="copyToClipboardB(\'copyEmail' . $user_ID . '\')">' . $user_email . '</a></span>' : '';
 			// $user_phone = strlen($user_phone) > 4 ? '<span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="Click to copy."><input type="hidden" id="copyPhone' . $user_ID . '" value="ThIss DaaTaa"><a class="no-deco" onclick="copyToClipboardB(\'copyPhone' . $user_ID . '\')">' . $user_phone . '</a></span>' : '';
@@ -360,6 +380,7 @@
 			$email_phone = strlen($user_email) > 4 ?  $user_email : $email_phone;
 			$email_phone = strlen($user_phone) > 4 && strlen($user_email) > 4 ?  $user_email . '<br />' . $user_phone : $email_phone;
 
+			$active_clr = $user_active !== 'yes' ? 'text-darkred bg-lightpink' : '';
 			//! =========== CUSTOM VARIABLES ==========
 
 
@@ -367,13 +388,13 @@
 			{
 				$td_align = (in_array($display_key, $center_fields) !== false) ? 'text-center' : '';
 				$nowrap =  (in_array($display_key, $nowrap_fields) !== false) ? 'nowrap' : '';
-				$data_results_table .= '<td class="list-text ' . $td_align . ' " ' . $nowrap . '> ' . $$display_key . '</td>';
+				$data_results_table .= '<td class="list-text ' . $td_align . ' ' . $active_clr . ' " ' . $nowrap . '> ' . $$display_key . '</td>';
 			}
 
 			/* actionButtons === actionButtons === actionButtons */
 			$button_set = '';
 
-			$button_set .= '<span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-title="Edit"><button title="Edit" id="editItem' . $$var_ID . '" data-info="' . $$var_ID . '" class="btn btn-xs btn-success m-1 list-text text-nowrap edit-item" data-bs-toggle="modal" data-bs-target="#modalAlert"><i class="fa-solid fa-edit list-text text-nowrap" aria-hidden="true"></i> Edit</a></button></span>&nbsp;';
+			$button_set .= '<span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-title="Edit"><button title="Edit" id="editItem' . $$var_ID . '" data-info="' . $$var_ID . '" class="btn btn-xs btn-success m-1 list-text text-nowrap edit-item" data-bs-toggle="modal" data-bs-target="#modalAlert"><i class="fa-solid fa-edit list-text text-nowrap" aria-hidden="true"></i> Edit</button></span>&nbsp;';
 
 			$action_buttons_value_array = array(
 				'deceased' 	=> 'yes|no',
@@ -395,7 +416,7 @@
 			);
 			$action_buttons_color_array = array(
 				'deceased' 	=> 'danger|info',
-				'status' 	=> 'warning|danger',
+				'status' 	=> 'success|orange',
 				'pro' 		=> 'lightgray|primary',
 				'active' 	=> 'danger|success',
 			);
@@ -418,7 +439,7 @@
 				$button_set .= '<span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-title="' . $tips . '"><button title="' . $key . '" type="button" class="btn btn-' . $clr . ' btn-xs list-text text-nowrap action-item" id="' . $key . 'Item' . $field_value . '' . $user_ID . '" data-info="' . $$var_ID . '" data-idfield="' . $var_ID . '" data-table="' . $db_table . '" data-field="' . $field_key . '" data-value="' . $field_value_opp . '"><i class="fa-solid ' . $icon . '"></i></a> </button></span>&nbsp;';
 			}
 
-			$data_results_table .=   '<td class="list-text text-nowrap text-end" nowrap>' . $button_set . '</td>';
+			$data_results_table .=   '<td class="list-text text-nowrap ' . $active_clr . ' text-end" nowrap>' . $button_set . '</td>';
 			/* actionButtons === actionButtons === actionButtons */
 
 			$data_results_table .= '</tr>';

@@ -49,17 +49,20 @@
 		<meta name="author" content="Mike Lampkin" />
 		<!--- /META TAGS --->
 
-		<?php // JQUERY :: 2024 :: https://releases.jquery.com/  ?>
+		<?php //! JQUERY :: 2024 :: https://releases.jquery.com/  ?>
 		<script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
 
 		<?php //! Bootstrap  -- Feb 2024  ?>
 		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 
-		<?php // Font Awesome Kit -- LAMPKIN  ?>
+		<?php //! Font Awesome Kit -- LAMPKIN  ?>
 		<!-- <script src="https://kit.fontawesome.com/2a2cf637f6.js" crossorigin="anonymous"></script> -->
 		<script src="https://kit.fontawesome.com/a54ef717a2.js" crossorigin="anonymous"></script>
 
-		<?php // 2024 AdSense Google  ?>
+		<?php //! Bootstrap FONTS  -- Feb 2024  ?>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+		<?php //! 2024 AdSense Google  ?>
 		<!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6055240313710130"
      crossorigin="anonymous"></script>
 		<meta name="google-adsense-account" content="ca-pub-6055240313710130"> -->
@@ -116,3 +119,4 @@
 		</div>
 	</div>
 <div id="dataDump"></div>
+<div id="alertMsg"></div>

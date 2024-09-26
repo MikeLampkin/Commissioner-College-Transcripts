@@ -12,13 +12,20 @@
 	$app_full_name 		= 'Commissioner College Transcript System';
 	$db_name 			= 'transcript';
 
-	$authenticate_methods = array('Simple','COH','Google','Facebook','Instagram','Reddit','Twitter','Yahoo');
+	$config_config 			= $_SERVER['DOCUMENT_ROOT'] . '/config/config.php';
+	$config_functions 		= $_SERVER['DOCUMENT_ROOT'] . '/includes/functions.php';
+	$config_query 			= $_SERVER['DOCUMENT_ROOT'] . '/includes/query.php';
+	$config_form_elements 	= $_SERVER['DOCUMENT_ROOT'] . '/includes/form_elements.php';
+	$config_arrays 			= $_SERVER['DOCUMENT_ROOT'] . '/includes/arrays.php';
+	$config_functions_custom = $_SERVER['DOCUMENT_ROOT'] . '/includes/functions_custom.php';
+	$config_mailme 			= $_SERVER['DOCUMENT_ROOT'] . '/includes/mailme.php';
+
+	// $authenticate_methods = array('Simple','COH','Google','Facebook','Instagram','Reddit','Twitter','Yahoo');
 	$public_authenticate_methods = array('Simple');
 	$admin_authenticate_methods = array('Simple');
 
 	$login_logo 	= 'img/commissioner-college-logo.png';
 	$app_logo 		= 'img/commissioner-college-logo.png';
-
 	$app_icon 		= '<i class="fa-solid fa-truck-monster"></i>';
 
 	$show_errors = 'yes';
@@ -48,5 +55,6 @@
 	{
 		printf("Connect failed: %s\n", mysqli_connect_error()); echo 'ERRRORRORRRR'; //exit();
 	}
+
 
 ?>

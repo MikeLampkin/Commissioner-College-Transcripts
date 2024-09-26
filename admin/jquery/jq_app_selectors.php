@@ -17,6 +17,12 @@
 		$select_term = $mydata['selectTerm'];
 		$select_data = $mydata['sessionVal'];
 		$tooltip = $mydata['tooltip'];
+
+		$select_name_array = array(
+			'data' => 'dB Show',
+			'deceased' => 'Deceased',
+			'status' => 'Status',
+		);
 		// $db_table = $mydata['dbTable'];
 		// 	$ext_array = explode('_',$select_field);
 		// 	$ext = $ext_array[0];
@@ -26,7 +32,7 @@
 	$data_results = '<div class="row mb-3">';
 	$data_results .= '<span id="' . $select_term . 'Icon"></span>';
 	$data_results .= '<span id="' . $select_term . 'Form" for="' . $select_term . 'Select" class="col-sm-4 col-form-label col-form-label-sm text-end"  data-bs-toggle="tooltip" data-bs-placement="top" data-bs-title="' . $tooltip . '">';
-		$data_results .= ucfirst($select_term);
+	$data_results .= $select_name_array[$select_term];
 	$data_results .= '</span>';
 	$data_results .= '<div class="col-sm-8"><select class="form-select form-select-sm selector-action" data-field="' . $select_term . '" id="' . $select_term . 'Selector" aria-label="Select ' . ucfirst($select_term) . '">';
 	$data_results .= '<option ' . $selectme . ' data-info="all" value="all">ALL </option>';

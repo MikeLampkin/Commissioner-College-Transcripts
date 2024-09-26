@@ -15,90 +15,174 @@
 
 ?>
 
-	<div class="alert alert-secondary">
-		<h5>A list of courses which have been offered currently and in the past. For more information about courses, please visit the National BSA web site at <a href="https://www.scouting.org/commissioners" target="_blank">https://www.scouting.org/commissioners</a> </h5>
-	</div>
+<div id="displayResults" class="col-md-12">
+	<h4> <i class="fa-solid fa-spinner fa-spin"></i> Thinking...</h4>
+</div>
 
-<table class="table table-striped table-hover">
-	<thead>
-		<tr class="">
-			<th class="text-center bg-dark text-white fw-bold">ID</th>
-			<th class="text-center bg-dark text-white fw-bold">Code</th>
-			<th class="text-center bg-dark text-white fw-bold">CodeID</th>
-			<th class="text-center bg-dark text-white fw-bold">Type</th>
-			<th class="text-center bg-dark text-white fw-bold">No.</th>
-			<th class="text-center bg-dark text-white fw-bold">Name</th>
-			<th class="text-center bg-dark text-white fw-bold">Council</th>
-		</tr>
-	</thead>
 
-	<tbody>
-<?php
-$fields_array = query('getColumns', 'courses', $db_name, '', '', '');
+<script>
+	let thisPage = 'courses';
+	let thisTable = 'courses';
 
-$sql = "
-SELECT *
-FROM `courses`
-WHERE `course_active` = 'yes'
-ORDER BY `course_code`, `course_number`
-";
-$results = mysqli_query($con,$sql);
-while ($row = mysqli_fetch_assoc($results)) {
-	foreach( $fields_array as $key => $value ) {
-		$$value = $row[$value];
+	const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+	let today = new Date();
+	console.log('Today: ' +today);
+
+	let myCouncil = typeof(localStorage.getItem('myCouncil')) != "undefined" && localStorage.getItem('myCouncil') !== null ? localStorage.getItem('myCouncil') : 'undefined';
+	localStorage.setItem("myCouncil", myCouncil);
+	console.log(myCouncil);
+
+	function checkCouncil()
+	{
+		let myCouncil = localStorage.getItem('myCouncil');
+		if( myCouncil == 'undefined' )
+		{
+			$('#modalAlert').modal('show');
+			$('#searchForm').hide();
+			changeCouncil();
+		}
 	}
 
-	$council_name = getCouncilFromID($course_council_ID);
-	$council = str_replace('Council','', str_replace('Area','', $council_name));
+	function changeCouncil()
+	{
+		let myCouncil = localStorage.getItem('myCouncil');
 
-	echo '<tr>';
-	echo '<td class="col border"> ' . $course_ID . '</td>';
-	echo '<td class="col border"> ' . $course_code . '</td>';
-	echo '<td class="col border"> ' . $course_code_ID . '</td>';
-	echo '<td class="col border"> ' . $course_type . '</td>';
-	echo '<td class="col border"> ' . $course_number . '</td>';
-	echo '<td class="col border"> ' . $course_name . '</td>';
-	echo '<td class="col border"> ' . $council . '</td>';
-	echo '</tr>';
-}
+		let mydata = {
+			myCouncil:myCouncil,
+		};
 
-?>
-	</tbody>
-</table>
+		$.ajax({
+			url: "jquery/jq_council_select_form.php",
+			method: "POST",
+			dataType: "text",
+			data: JSON.stringify(mydata),
+			success: function(response) {
+				$('#modalLabel').html('Change Your Council');
+				$('#modalData').html(response);
+				$('#modalFooter').hide();
+			},
+			error: function(response) {
+				console.log('ERROR: ' + response);
+			}
+		});
+	}
 
-<br> <br>
+	function displayCouncil()
+	{
+		let myCouncil = localStorage.getItem('myCouncil');
+		let mydata = {
+			myCouncil:myCouncil,
+		};
 
-<h5> Associate Courses (prefix: 0xxx)</h5>
-<ul>
-	<li> 101—199 National courses </li>
-	<li> 201—299 Local council courses </li>
-</ul>
+		$.ajax({
+			url: "jquery/jq_council_select_display.php",
+			method: "POST",
+			dataType: "text",
+			data: JSON.stringify(mydata),
+			success: function(response) {
+				let trimResponse = response.trim();
+				let responseLen = trimResponse.length;
+				if( responseLen > 4 )
+				{
+					$('#showMyCouncil').html(response);
+					$('#navCouncil').html('['+response+']');
+					$('#searchForm').show();
+				}
+				else
+				{
+					$('#showMyCouncil').html('<em><strong>None selected.</strong></em>');
+				}
 
-<h5> Bachelors Courses (prefix: 1xxx)</h5>
-<ul>
-	<li> 101—199 National courses </li>
-	<li> 201—299 Local council courses </li>
-</ul>
-
-<h5> Masters Courses (prefix: 2xxx) </h5>
-<ul>
-	<li> 301—399 National courses </li>
-	<li> 401—499 Local council courses </li>
-</ul>
-
-<h5> Doctorate Courses (prefix: 3xxx) </h5>
-<ul>
-	<li> 501—599 National courses </li>
-	<li> 601—699 Local council courses </li>
-</ul>
-
-<h5> Continuing Education (prefix: 9xxx) </h5>
-<ul>
-	<li> 701—799 National courses </li>
-	<li> 801—899 Local council courses </li>
-</ul>
+			},
+			error: function(response) {
+				console.log('ERROR: ' + response);
+			}
+		});
+	}
 
 
+	function getList() {
+		let marker = Math.floor(randomNumber(0, 255));
+		let myCouncil = localStorage.getItem('myCouncil');
+
+		let mydata = {
+			myCouncil:myCouncil,
+		};
+
+		$.ajax({
+			url: 		"jquery/jq_" + thisPage + "_display.php?"+ marker,
+			method: 	"POST",
+			dataType:	"text",
+			data: 		JSON.stringify(mydata),
+			success:	function(response)
+			{
+				$('#displayResults').html(response);
+			},
+			error: function(response)
+			{
+				console.log('ERROR: ' + response);
+			}
+		});
+	}
+
+	function refreshPage()
+	{
+		$('.tooltip').remove();
+		refreshAjax();
+		console.log('refreshing ====>');
+		console.log(myCouncil);
+
+		getList();
+		checkCouncil();
+		displayCouncil();
+
+		$(document).ajaxComplete(function(e)
+		{
+			// let totalCnt = $('#totalCnt').val();
+			// if( totalCnt >= 1 )
+			// {
+			// 	$("#paginationDisplay").html(getPagination(totalCnt));
+			// }
+		});
+	}
+
+	//? ===========>> document ready <<=============
+	//? ===========>> document ready <<=============
+	//? ===========>> document ready <<=============
+	$(document).ready(function() {
+
+		// displayForm();
+		refreshPage();
+
+		//! ===========>> LISTENERS
+		//! ===========>> LISTENERS
+		//! ===========>> LISTENERS
+		$(document).on('click', '#clearAll', function(e)
+		{
+			clearAll();
+		});
+
+
+		//! ===========>> changeMyCouncil
+		$(document).on('click', '#changeCouncil', function(e)
+		{
+			changeCouncil();
+		});
+		//! ===========>> changeMyCouncil
+
+		//! ===========>> changeMyCouncilClick
+		$(document).on('click', '.council-change-btn', function(e)
+		{
+			localStorage.removeItem("myCouncil");
+			let thisData = $(this).data('info');
+			localStorage.setItem("myCouncil",thisData);
+			refreshPage();
+		});
+		//! ===========>> changeMyCouncilClick
+
+
+	});
+</script>
 
 <?php  // ** Lampkin 2024 ** // ?>
 <?php require "includes/footer.php"; ?>

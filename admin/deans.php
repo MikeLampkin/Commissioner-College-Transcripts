@@ -15,14 +15,8 @@
 
 ?>
 
-<div class="row">
-	<div class="col-md-3"></div>
-	<div class="col-md-6" id="alertMsg"></div>
-	<div class="col-md-3"></div>
-</div>
-
 <div class="alert alert-secondary row">
-	<div id="refreshDisplay" class="col-md-3 text-start">
+	<div id="" class="col-md-3 text-start">
 		<span class="btn btn-primary btn-sm" id="reloadPage"><i class="fa-solid fa-arrows-rotate" id="reloadIcon"></i> Refresh Page</span>
 	</div>
 </div>

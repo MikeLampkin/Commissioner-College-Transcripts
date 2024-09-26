@@ -15,12 +15,6 @@
 
 ?>
 
-<div class="row">
-	<div class="col-md-3"></div>
-	<div class="col-md-6" id="alertMsg"></div>
-	<div class="col-md-3"></div>
-</div>
-
 <div class="row mb-3">
 	<div id="" class="col-md-2"><span id="addItem" data-info="" class="btn btn-primary btn-sm edit-item" data-bs-toggle="modal" data-bs-target="#modalAlert"><i class="fa-solid fa-circle-plus"></i> Add New Admin</span></div>
 	<div id="" class="col-md-4"></div>

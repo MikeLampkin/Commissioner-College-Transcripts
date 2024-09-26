@@ -27,9 +27,9 @@
 
 
 ?>
-	<form class="nice-form mx-auto mb-3" id="waiting-list" method="POST" enctype="multipart/form-data" >
+	<form class="nice-form mx-auto mb-3" id="waiting_list" method="POST" enctype="multipart/form-data" >
 
-<!-- <form class="nice-form mx-auto mb-3 needs-validation" id="waiting-list" method="POST" enctype="multipart/form-data" novalidate> -->
+<!-- <form class="nice-form mx-auto mb-3 needs-validation" id="waiting_list" method="POST" enctype="multipart/form-data" novalidate> -->
 	<input type="hidden" name="wl_validate" id="wl_validate value="<?php echo $validator; ?>">
 	<div class="row mx-0">
 
@@ -47,7 +47,7 @@
 				$tooltip		= ''; // Optional
 				$footie			= ''; // Optional
 				$typeahead		= ''; // Optional
-				$form_id 		= 'waiting-list';
+				$form_id 		= 'waiting_list';
 				$javascript 	= '';
 				$min 		 	= '';
 				$max 		 	= '';
@@ -70,7 +70,7 @@
 				$tooltip		= ''; // Optional
 				$footie			= ''; // Optional
 				$typeahead		= ''; // Optional
-				$form_id 		= 'waiting-list';
+				$form_id 		= 'waiting_list';
 				$javascript 	= '';
 				$min 		 	= '';
 				$max 		 	= '';
@@ -108,7 +108,7 @@
 				$tooltip		= ''; // Optional
 				$footie			= ''; // Optional
 				$typeahead		= ''; // Optional
-				$form_id 		= 'waiting-list';
+				$form_id 		= 'waiting_list';
 				$javascript 	= '';
 				$min 		 	= '';
 				$max 		 	= '';
@@ -164,15 +164,15 @@ $('#wl_submit_email').keyup(function() {
 });
 
 
-$('#waiting-list').keyup(function() {
-	validTest('waiting-list');
+$('#waiting_list').keyup(function() {
+	validTest('waiting_list');
 });
 
 
 //! ===========>> submitWaiting
 $(document).on("click", '#form_data_submit', function(e) {
 	e.preventDefault();
-	if ($('#waiting-list')[0].checkValidity() === false) {
+	if ($('#waiting_list')[0].checkValidity() === false) {
 		e.stopPropagation();
 	} else {
 		console.log('=>>> POST <<<=');
@@ -182,7 +182,7 @@ $(document).on("click", '#form_data_submit', function(e) {
 			$('#modalAlert').modal('hide');
 		}, 1000);
 	}
-	$('#waiting-list').addClass('was-validated');
+	$('#waiting_list').addClass('was-validated');
 });
 //! ===========>> submitWaiting
 
