@@ -50,127 +50,13 @@
 	const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 	let today = new Date();
 
-	const selectors_array = {
-		'deceased' : 'user_deceased',
-		'status' : 'user_status',
-		'data' : 'user_active'
-	};
-
-	let searchTerms = typeof(localStorage.getItem('searchTerms')) != "undefined" && localStorage.getItem('searchTerms') != null ? localStorage.getItem('searchTerms') : '';
-	localStorage.setItem("searchTerms",searchTerms);
-	$('#search_terms').val(searchTerms);
-
-	let deceasedSelect = typeof(localStorage.getItem('deceasedSelect')) != "undefined" && localStorage.getItem('deceasedSelect') != null ? localStorage.getItem('deceasedSelect') : 'no';
-	localStorage.setItem("deceasedSelect",deceasedSelect);
-
-	let statusSelect = typeof(localStorage.getItem('statusSelect')) != "undefined" && localStorage.getItem('statusSelect') != null ? localStorage.getItem('statusSelect') : 'active';
-	localStorage.setItem("statusSelect",statusSelect);
-
-	let dataSelect = typeof(localStorage.getItem('dataSelect')) != "undefined" && localStorage.getItem('dataSelect') != null ? localStorage.getItem('dataSelect') : 'yes';
-	localStorage.setItem("dataSelect",dataSelect);
-
-	function displaySearchTerms() {
-		let searchTerms = localStorage.getItem('searchTerms') ?? '';
-		$('#search_terms').val(searchTerms);
-	}
-
-	function getSelector(selectField='user_active',selectTerm='data',dbTable='waiting_list',vars='')
-	{
-		let sessionVal = vars;
-		let tooltip = $('#'+selectTerm+'SelectForm').data('tooltip');
-
-		let mydata = {
-			adminUser:adminUser,
-			adminCouncilSelect:adminCouncilSelect,
-			dbTable:dbTable,
-			selectField:selectField,
-			selectTerm:selectTerm,
-			sessionVal:sessionVal,
-			tooltip:tooltip,
-		};
-
-		$.ajax({
-			url: 		"jquery/jq_app_selectors.php",
-			method: 	"POST",
-			dataType:	"text",
-			data: 		JSON.stringify(mydata),
-			success:	function(response)
-			{
-				$('#'+ selectTerm + 'SelectForm').html(response);
-				$('#'+ selectTerm + 'SelectForm').removeClass('filter-hilite');
-				if( sessionVal.length > 1 && sessionVal !== 'all' )
-				{
-					$('#' + selectTerm + 'SelectForm').addClass('filter-hilite');
-				}
-			},
-			error: function(response)
-			{
-				console.log('ERROR: ' + response);
-			}
-		});
-	}
-
-	function refreshSelectors()
-	{
-		for (const [key, value] of Object.entries(selectors_array))
-		{
-			let thisSelect = key + 'Select';
-			getSelector(value,key,thisTable,localStorage.getItem(thisSelect));
-
-		}
-	}
-
-	function highlightFilterBtn()
-	{
-		$('#filters').removeClass('active');
-		$('#filters_alert').removeClass('position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger');
-		let hilite = 'no';
-		let x=0;
-
-		for (const [key, value] of Object.entries(selectors_array))
-		{
-			let thisSelect = key + 'Select';
-			if( localStorage.getItem(thisSelect) != null && localStorage.getItem(thisSelect) != 'all' )
-			{
-				hilite = 'yes';
-				x++;
-			}
-		}
-
-		if( hilite == 'yes' )
-		{
-			$('#filters').addClass('active');
-			$('#filters_alert').addClass('position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger');
-			$('#filters_alert').html(x);
-		}
-	}
-
 	function getList() {
 		let marker = Math.floor(randomNumber(0, 255));
-		let searchTerms = localStorage.getItem('searchTerms');
 		// let pgActive = localStorage.getItem('pgActive');
-		let limitNum = localStorage.getItem('limitNum');
-		let pgNum = localStorage.getItem('pgNum');
-		let pgSort = localStorage.getItem('pgSort');
-
-		let dataSelect = localStorage.getItem('dataSelect');
-		let statusSelect = localStorage.getItem('statusSelect');
-		let deceasedSelect = localStorage.getItem('deceasedSelect');
-		let adminCouncilSelect = localStorage.getItem('adminCouncilSelect');
+		// let adminUser = $('#adminUser').val();
 
 		let mydata = {
 			adminUser:adminUser,
-			adminCouncilSelect:adminCouncilSelect,
-			searchTerms:searchTerms,
-			dataSelect:dataSelect,
-			statusSelect:statusSelect,
-			deceasedSelect:deceasedSelect,
-			pgActive:pgActive,
-			limitNum:limitNum,
-			pgNum:pgNum,
-			pgSort:pgSort,
-			thisPage:thisPage,
-
 		};
 
 		$.ajax({
@@ -184,38 +70,6 @@
 			},
 			error: function(response)
 			{
-				console.log('ERROR: ' + response);
-			}
-		});
-	}
-
-	function displayEntryForm(thisID) {
-		let marker = Math.floor(randomNumber(0, 255));
-
-		let adminCouncilSelect = localStorage.getItem('adminCouncilSelect');
-
-		let mydata = {
-			thisID:thisID,
-			adminUser:adminUser,
-			adminCouncilSelect:adminCouncilSelect,
-		};
-
-		$.ajax({
-			url: "jquery/jq_" + thisPage + "_form.php?"+ marker,
-			method: "POST",
-			dataType: "text",
-			data: JSON.stringify(mydata),
-			success: function(response) {
-				if( thisID < 1 )
-				{
-					$('#modalLabel').html('Add New Participant ');
-				} else {
-					$('#modalLabel').html('Modify This Participant');
-				}
-				$('#modalData').html(response);
-				$('#modalFooter').html(modalButtonSave+ ' ' +modalButtonClose);
-			},
-			error: function(response) {
 				console.log('ERROR: ' + response);
 			}
 		});
@@ -244,13 +98,9 @@
 		$('.tooltip').remove();
 		$('.modal-dialog').removeClass('modal-xl');
 
-		highlightFilterBtn();
-		refreshSelectors();
 		getList();
 
-		limitAmt(['10','25','50','100','ALL']);
 		$(document).ajaxComplete(function(e) {
-			displaySearchTerms();
 			let totalCnt = $('#totalCnt').val();
 			if( totalCnt )
 			{
@@ -278,45 +128,6 @@
 			displayEntryForm(thisID);
 		});
 		//! ===========>> editItem
-
-		//! ===========>> SEARCH
-		$(document).on("click", '#search_submit', function(e) {
-			e.preventDefault();
-			localStorage.removeItem('searchTerms');
-			let searchTerms = $('#search_terms').val();
-			localStorage.setItem('searchTerms', searchTerms);
-			localStorage.removeItem('pgNum');
-			localStorage.setItem('pgNum', 1);
-			refreshPage();
-		});
-		//! ===========>> SEARCH
-
-		//! ===========>> clearBtn --- This clears ONLY the search settings
-		$(document).on("click", '#search_clear', function(e) {
-			localStorage.removeItem('searchTerms');
-			localStorage.removeItem('pgNum');
-			localStorage.setItem('pgNum', 1);
-			refreshPage();
-		});
-		//! ===========>> clearBtn
-
-		//! ===========>> SORT
-		$(document).on("click", '.sort-table', function(e) {
-			localStorage.removeItem("pgSort");
-			let thisData = $(this).data('sort');
-			localStorage.setItem("pgSort", thisData);
-			refreshPage();
-		});
-		//! ===========>> SORT
-
-		//! ===========>> LIMIT
-		$(document).on("click", '.limit-btn', function(e) {
-			localStorage.removeItem("limitNum");
-			let thisData = $(this).data('limit');
-			localStorage.setItem("limitNum", thisData);
-			refreshPage();
-		});
-		//! ===========>> LIMIT
 
 		//! ===========>> action
 		$(document).on("click", '.action-item', function(e) {
@@ -351,39 +162,6 @@
 			}
 		});
 		//! ===========>> action
-
-		//! ===========>> selector
-		$(document).on("change", '.selector-action', function(e) {
-			let fieldName = $(this).data('field');
-			let fieldValue = $(this).val();
-			let fieldNameVar = fieldName + 'Select';
-			// updateBtnValues(fieldName,fieldValue,fieldId);
-			localStorage.removeItem(fieldNameVar);
-			localStorage.setItem(fieldNameVar,fieldValue);
-			localStorage.setItem('pgNum',1);
-			refreshPage();
-		});
-		//! ===========>> selector
-
-
-		//! ===========>> caret
-		$(document).on("click", '.card-header', function(e) {
-			let thisID = $(this).data('bs-target').replace('#','');
-			// console.log('thisID: ' +thisID);
-			let newTarget = 'caret_' + thisID;
-			// console.log('newTarget: ' +newTarget);
-
-			let thisInfo = $('#'+thisID).attr('class');
-			// console.log('thisInfo: ' +thisInfo);
-
-			if( $('#'+thisID ).hasClass('show') )
-			{
-				console.log('SHOWING');
-				$('#'+newTarget).addClass('text-danger');
-
-			}
-		});
-		//! ===========>> caret
 
 	});
 </script>
