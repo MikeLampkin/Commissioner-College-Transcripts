@@ -55,17 +55,18 @@ console.log('Today: ' +today);
 let myCouncil = typeof(localStorage.getItem('myCouncil')) != "undefined" && localStorage.getItem('myCouncil') !== null ? localStorage.getItem('myCouncil') : 'undefined';
 localStorage.setItem("myCouncil", myCouncil);
 
-let searchTerms = typeof(localStorage.getItem('searchTerms')) != "undefined" && localStorage.getItem('searchTerms') !== null ? localStorage.getItem('searchTerms') : '';
-localStorage.setItem("searchTerms", searchTerms);
-
 let viewEmpty = typeof(localStorage.getItem('viewEmpty')) != "undefined" && localStorage.getItem('viewEmpty') !== null ? localStorage.getItem('viewEmpty') : 'yes';
 localStorage.setItem("viewEmpty", viewEmpty);
 
 let viewReq = typeof(localStorage.getItem('viewReq')) != "undefined" && localStorage.getItem('viewReq') !== null ? localStorage.getItem('viewReq') : 'bcs';
 localStorage.setItem("viewReq", viewReq);
 
-let selectUser = typeof(localStorage.getItem('selectUser')) != "undefined" && localStorage.getItem('selectUser') !== null ? localStorage.getItem('selectUser') : 0;
-	localStorage.setItem("selectUser",selectUser);
+
+let searchTerms = typeof(sessionStorage.getItem('searchTerms')) != "undefined" && sessionStorage.getItem('searchTerms') !== null ? sessionStorage.getItem('searchTerms') : '';
+sessionStorage.setItem("searchTerms", searchTerms);
+
+let selectUser = typeof(sessionStorage.getItem('selectUser')) != "undefined" && sessionStorage.getItem('selectUser') !== null ? sessionStorage.getItem('selectUser') : 0;
+sessionStorage.setItem("selectUser",selectUser);
 
 function checkCouncil()
 {
@@ -138,16 +139,16 @@ function displayCouncil()
 function displaySearchTerms()
 {
 	let myCouncil = localStorage.getItem('myCouncil');
-	let searchTerms = localStorage.getItem('searchTerms');
-	let selectUser = localStorage.getItem('selectUser');
+	let searchTerms = sessionStorage.getItem('searchTerms');
+	let selectUser = sessionStorage.getItem('selectUser');
 	$('#search_terms').val(searchTerms);
 }
 
 function displayUsers()
 {
 	let myCouncil = localStorage.getItem('myCouncil');
-	let searchTerms = localStorage.getItem('searchTerms');
-	let selectUser = localStorage.getItem('selectUser');
+	let searchTerms = sessionStorage.getItem('searchTerms');
+	let selectUser = sessionStorage.getItem('selectUser');
 
 	// console.log('displayUsers: ' +searchTerms);
 
@@ -176,7 +177,7 @@ function displayUsers()
 function displayTranscripts()
 {
 	let myCouncil = localStorage.getItem('myCouncil');
-	let selectUser = localStorage.getItem('selectUser');
+	let selectUser = sessionStorage.getItem('selectUser');
 	let viewEmpty = localStorage.getItem('viewEmpty');
 	let viewReq = localStorage.getItem('viewReq');
 
@@ -208,8 +209,8 @@ function displayTranscripts()
 // function submitSearch(newSearchTerms)
 // {
 // 	console.log('ss newSearchTerms: ' +newSearchTerms);
-// 	localStorage.removeItem('searchTerms');
-// 	localStorage.setItem('searchTerms',newSearchTerms);
+// 	sessionStorage.removeItem('searchTerms');
+// 	sessionStorage.setItem('searchTerms',newSearchTerms);
 // 	$('#search_terms').val(newSearchTerms);
 // 	displayUsers();
 // }
@@ -221,8 +222,8 @@ function refreshPage()
 	console.log('refreshing ====>');
 
 	let myCouncil = localStorage.getItem('myCouncil');
-	let searchTerms = localStorage.getItem('searchTerms');
-	let selectUser = localStorage.getItem('selectUser');
+	let searchTerms = sessionStorage.getItem('searchTerms');
+	let selectUser = sessionStorage.getItem('selectUser');
 	// console.log('refresh myCouncil: ' + myCouncil);
 	// console.log('refresh searchTerms: ' + searchTerms);
 	// console.log('refresh selectUser: ' + selectUser);
@@ -285,9 +286,9 @@ $(document).ready(function() {
 	//! =====>> ClearSearch
 	$(document).on('click', '#search_clear', function(e)
 	{
-		localStorage.removeItem('searchTerms');
-		// localStorage.setItem('searchTerms','');
-		localStorage.removeItem('selectUser');
+		sessionStorage.removeItem('searchTerms');
+		// sessionStorage.setItem('searchTerms','');
+		sessionStorage.removeItem('selectUser');
 		// localStorage.setItem('selectUser','');
 		refreshPage();
 	});
@@ -297,8 +298,8 @@ $(document).ready(function() {
 	$(document).on('click', '#search_submit', function(e)
 	{
 		let newSearchTerms = $('#search_terms').val();
-		localStorage.removeItem('searchTerms');
-		localStorage.setItem('searchTerms',newSearchTerms);
+		sessionStorage.removeItem('searchTerms');
+		sessionStorage.setItem('searchTerms',newSearchTerms);
 		displayUsers();
 		// submitSearch(newSearchTerms);
 	});
@@ -307,9 +308,9 @@ $(document).ready(function() {
 	//! ===========>> selectUser
 	$(document).on('click', '.select-user', function(e)
 	{
-		localStorage.removeItem("selectUser");
+		sessionStorage.removeItem('selectUser');
 		let thisData = $(this).data('info');
-		localStorage.setItem("selectUser",thisData);
+		sessionStorage.setItem('selectUser',thisData);
 		refreshPage();
 	});
 	//! ===========>> selectUser
