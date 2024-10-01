@@ -21,6 +21,13 @@ _archive/
 _dbase/
 *Icon*
 
+refs/Icon?
+refs/heads/Icon?
+refs/remotes/Icon?
+refs/remotes/origin/Icon?
+refs/tags/Icon?
+
+
 # Ignore files -- CUSTOM
 config_private.php
 Icon
