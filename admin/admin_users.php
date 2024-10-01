@@ -15,10 +15,12 @@
 
 ?>
 
-<div class="row mb-3">
-	<div id="" class="col-md-2"><span id="addItem" data-info="" class="btn btn-primary btn-sm edit-item" data-bs-toggle="modal" data-bs-target="#modalAlert"><i class="fa-solid fa-circle-plus"></i> Add New Admin</span></div>
-	<div id="" class="col-md-4"></div>
-	<div id="" class="col-md-4 text-end">
+<div class="alert alert-secondary row">
+	<div id="" class="col-md-3 text-start">
+		<span id="addItem" data-info="" class="btn btn-purple text-white btn-sm edit-item" data-bs-toggle="modal" data-bs-target="#modalAlert"><i class="fa-solid fa-circle-plus"></i> Add New Admin</span>
+		<span class="btn btn-primary btn-sm" id="reloadPage"><i class="fa-solid fa-arrows-rotate" id="reloadIcon"></i> Refresh Page</span>
+	</div>
+	<div class="col-md-9 text-end">
 <?php
 // adminCouncilSelect
 if( $admin_council_ID == '9999' )
@@ -83,6 +85,7 @@ if( $admin_council_ID == '9999' )
 	const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 	let today = new Date();
 
+	// let adminCouncilID = $('#adminCouncilID').val();
 
 	function getList() {
 		let marker = Math.floor(randomNumber(0, 255));
@@ -94,6 +97,7 @@ if( $admin_council_ID == '9999' )
 			pgActive:pgActive,
 			adminUser:adminUser,
 			adminCouncilSelect:adminCouncilSelect,
+			adminCouncilID:adminCouncilID,
 		};
 
 		$.ajax({
@@ -121,6 +125,7 @@ if( $admin_council_ID == '9999' )
 			thisID:thisID,
 			adminUser:adminUser,
 			adminCouncilSelect:adminCouncilSelect,
+			adminCouncilID:adminCouncilID,
 		};
 
 		$.ajax({

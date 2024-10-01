@@ -20,8 +20,59 @@
 		<span id="addItem" data-info="" class="btn btn-purple text-white btn-sm edit-item" data-bs-toggle="modal" data-bs-target="#modalAlert"><i class="fa-solid fa-circle-plus"></i> Add New District</span>
 		<span class="btn btn-primary btn-sm" id="reloadPage"><i class="fa-solid fa-arrows-rotate" id="reloadIcon"></i> Refresh Page</span>
 	</div>
-	<div id="searchDisplay" class="col-md-6"></div>
-	<div id="limitAmount" class="col-md-3 text-end"></div>
+	<div class="col-md-9 text-end">
+
+<?php
+// adminCouncilSelect
+if( $admin_council_ID == '9999' )
+{
+	$sql = "
+	SELECT DISTINCT(`user_council_ID`)
+	FROM `users`
+	WHERE 1=1
+	AND `user_council_ID` <> ''
+	AND `user_council_ID` IS NOT NULL
+	AND `user_active` = 'yes'
+	ORDER BY `user_council_ID`
+	";
+	// echo nl2br($sql) . '<br />';
+	$results = mysqli_query($con,$sql);
+	$cnt = mysqli_num_rows($results);
+	$output_array = array();
+	$x=0;
+	if ( $cnt > 0 )
+	{
+		while( $row = mysqli_fetch_assoc($results) )
+		{
+			$user_council_ID = $row['user_council_ID'];
+			$user_council_ID_term = getCouncilFromID($user_council_ID);
+			$output_array[$user_council_ID] = $user_council_ID_term;
+			$x++;
+		}
+
+		asort($output_array);
+
+		echo '
+				<div class="mb-3 row">
+					<label for="adminCouncilSelect" class="col-sm-2 col-form-label">Council </label>
+					<div class="col-sm-10">
+						<select class="form-select" id="adminCouncilSelect">
+							<option value="9999" id="ALL" data-info="9999">** ALL COUNCILS ***</option>
+
+		';
+				foreach($output_array AS $key => $value )
+				{
+					echo '<option value="' . $key . '" id="' . $key . '" data-info="' . $key . '">' . $value . '</option>';
+				}
+		echo '
+					</select>
+				</div>
+			</div>
+		';
+	}
+}
+?>
+	</div>
 </div>
 
 <div class="row mb-3">

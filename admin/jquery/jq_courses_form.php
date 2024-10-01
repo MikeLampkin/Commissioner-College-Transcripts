@@ -180,7 +180,7 @@
 		<div class="col-md-4">
 			<?php
 
-			if( $my_admin_level == '999' && $my_admin_council_ID == '9999' )
+			if( $my_admin_level == '999' && $admin_council_ID == '9999' )
 			{
 				$data_array = array('900'=>'** ALL COUNCILS ***');
 				$sql = "

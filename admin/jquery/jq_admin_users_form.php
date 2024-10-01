@@ -21,6 +21,8 @@
 		$council = $mydata['adminCouncilSelect'];
 		$this_id = $mydata['thisID'];
 
+		$my_admin_council_ID = $mydata['adminCouncilID'];
+
 		$disabled = '';
 
 	foreach( $$fields_array as $key => $value )
@@ -191,7 +193,7 @@
 			}
 
 				$field_var 		= 'admin_council_ID';
-				$field_name 	= 'Council';
+				$field_name 	= 'Council Access';
 				$field_type 	= 'select';
 				$field_size 	= '12';
 				$required 		= 'required';

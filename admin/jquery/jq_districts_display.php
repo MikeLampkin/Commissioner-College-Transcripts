@@ -125,7 +125,6 @@
 			{
 				$button_set .= '<span data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" data-bs-title="Edit"><button id="editItem' . $$var_ID . '" data-info="' . $$var_ID . '" class="btn btn-success btn-sm m-1 list-text text-nowrap edit-item" data-bs-toggle="modal" data-bs-target="#modalAlert"><i class="fas fa-edit list-text text-nowrap" aria-hidden="true"></i> Edit</button></span>&nbsp;';
 
-
 					$var_active_opp = strtolower($$var_active) == 'yes' ? 'no' : 'yes';
 					$active_btn_term = strtolower($$var_active) == 'yes' ? 'deactivate' : 'activate';
 					$active_btn_clr = strtolower($$var_active) == 'yes' ? 'danger' : 'primary';
