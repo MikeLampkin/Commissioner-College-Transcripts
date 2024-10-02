@@ -316,6 +316,97 @@
 		formElements($field_var,$$field_var,$field_name,$field_type,$placeholder,$required,$field_size,$tabindex,$disabled,$addl_var,$tooltip,$footie,$typeahead,$form_id,$javascript);
 	?>
 </div>
+
+
+
+
+<div class="mb-1 col-md-3"> </div>
+
+
+<div class="mb-1 col-md-3">
+	<?php
+		$field_var 		= 'user_arrowhead';
+		$field_name 	= 'Arrowhead';
+		$field_type 	= 'text';
+		$field_size 	= '64';
+		$required 		= '';
+		$placeholder 	= '';
+		$tabindex		= '';
+		$disabled		= ''; // Optional
+		$addl_var		= ''; // Optional
+		$tooltip		= ''; // Optional
+		$footie			= ''; // Optional
+		$typeahead		= ''; // Optional
+		$form_id 		= 'data_entry';
+		$javascript 	= '';
+		formElements($field_var,$$field_var,$field_name,$field_type,$placeholder,$required,$field_size,$tabindex,$disabled,$addl_var,$tooltip,$footie,$typeahead,$form_id,$javascript);
+	?>
+</div>
+
+<div class="mb-1 col-md-3">
+	<?php
+		$field_var 		= 'user_comm_key';
+		$field_name 	= 'Comm Key';
+		$field_type 	= 'text';
+		$field_size 	= '64';
+		$required 		= '';
+		$placeholder 	= '';
+		$tabindex		= '';
+		$disabled		= ''; // Optional
+		$addl_var		= ''; // Optional
+		$tooltip		= ''; // Optional
+		$footie			= ''; // Optional
+		$typeahead		= ''; // Optional
+		$form_id 		= 'data_entry';
+		$javascript 	= '';
+		formElements($field_var,$$field_var,$field_name,$field_type,$placeholder,$required,$field_size,$tabindex,$disabled,$addl_var,$tooltip,$footie,$typeahead,$form_id,$javascript);
+	?>
+</div>
+
+<div class="mb-1 col-md-3">
+	<?php
+		$field_var 		= 'user_distinguished';
+		$field_name 	= 'Distinguished';
+		$field_type 	= 'text';
+		$field_size 	= '64';
+		$required 		= '';
+		$placeholder 	= '';
+		$tabindex		= '';
+		$disabled		= ''; // Optional
+		$addl_var		= ''; // Optional
+		$tooltip		= ''; // Optional
+		$footie			= ''; // Optional
+		$typeahead		= ''; // Optional
+		$form_id 		= 'data_entry';
+		$javascript 	= '';
+		formElements($field_var,$$field_var,$field_name,$field_type,$placeholder,$required,$field_size,$tabindex,$disabled,$addl_var,$tooltip,$footie,$typeahead,$form_id,$javascript);
+	?>
+</div>
+
+<div class="mb-1 col-md-3">
+	<?php
+		$field_var 		= 'user_excellence';
+		$field_name 	= 'Excellence';
+		$field_type 	= 'text';
+		$field_size 	= '64';
+		$required 		= '';
+		$placeholder 	= '';
+		$tabindex		= '';
+		$disabled		= ''; // Optional
+		$addl_var		= ''; // Optional
+		$tooltip		= ''; // Optional
+		$footie			= ''; // Optional
+		$typeahead		= ''; // Optional
+		$form_id 		= 'data_entry';
+		$javascript 	= '';
+		formElements($field_var,$$field_var,$field_name,$field_type,$placeholder,$required,$field_size,$tabindex,$disabled,$addl_var,$tooltip,$footie,$typeahead,$form_id,$javascript);
+	?>
+</div>
+
+
+
+
+
 			</div>
 		</div>
 	</div>

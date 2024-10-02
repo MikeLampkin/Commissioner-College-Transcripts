@@ -38,8 +38,8 @@
 		"user_mcs" => "Masters Degree",
 		"user_dcs" => "Doctorate Degree",
 		"user_arrowhead" => "Arrowhead Honor",
+		"user_comm_key" => "Commissioner Key",
 		"user_distinguished" => "Distinguished Commissioner",
-		"user_comm_key" => "Commissioner Key"
 	);
 
 	$selector_array = array(
