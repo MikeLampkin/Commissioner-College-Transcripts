@@ -27,13 +27,6 @@
 ?>
 
 <!-- // -- Lampkin 2010 - 2024 -- // -->
-	<div class="row mb-3">
-		<div class="col-4 text-start"><span id="changeCouncil" class="" data-bs-toggle="modal" data-bs-target="#modalAlert"><span data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Click to change your current council."><i class="fas fa-location-circle" aria-hidden="true"></i> Your current council: <strong><span id="showMyCouncil"></span></strong></span></div>
-		<div class="col-4 text-center"><span id="alertMsg"></span></div>
-		<div class="col-4 text-end"><span class="btn btn-primary btn-xs" id="reloadPage"><i class="fa-solid fa-arrows-rotate" id="reloadIcon"></i> Refresh Page</span></div>
-	</div>
-
-
 	<div class="alert alert-secondary">
 		<h5>A list of courses which have been offered currently and in the past. For more information about courses, please visit the National BSA web site at <a href="https://www.scouting.org/commissioners" target="_blank">https://www.scouting.org/commissioners</a> </h5>
 	</div>

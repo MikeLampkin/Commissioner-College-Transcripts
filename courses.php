@@ -1,19 +1,28 @@
-<?php  // ** Lampkin 2024 ** // ?>
+<?php  // ** Lampkin 2024 ** //
+?>
 
 <?php
-	$page_is_protected = 'no';
-	$navshow = 'yes';
+$page_is_protected = 'no';
+$navshow = 'yes';
 
-	$pg_title 		= "Course List";
-    $pg_keywords 	= "course list, boy scout, commissioner, bsa, transcripts, commissioner college";
-    $pg_description = "Course List for Commissioner College, BSA";
+$pg_title 		= "Course List";
+$pg_keywords 	= "course list, boy scout, commissioner, bsa, transcripts, commissioner college";
+$pg_description = "Course List for Commissioner College, BSA";
 
-	$pg 		= 'courses';
-	$db_table 	= 'transcripts';
+$pg 		= 'courses';
+$db_table 	= 'transcripts';
 
-	require "includes/header.php";
+require "includes/header.php";
 
 ?>
+<!-- <button id="clearAll" class="btn btn-danger btn-xs m-3">Clear TEST Search</button><br /> -->
+
+<!-- // -- Lampkin 2010 - 2024 -- // -->
+<div class="row mb-3">
+	<div class="col-4 text-start"><span id="changeCouncil" class="" data-bs-toggle="modal" data-bs-target="#modalAlert"><span data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="Click to change your current council."><i class="fas fa-location-circle" aria-hidden="true"></i> Your current council: <strong><span id="showMyCouncil"></span></strong></span></div>
+	<div class="col-4 text-center"><span id="alertMsg"></span></div>
+	<div class="col-4 text-end"><span class="btn btn-primary btn-xs" id="reloadPage"><i class="fa-solid fa-arrows-rotate" id="reloadIcon"></i> Refresh Page</span></div>
+</div>
 
 <div id="displayResults" class="col-md-12">
 	<h4> <i class="fa-solid fa-spinner fa-spin"></i> Thinking...</h4>
@@ -26,29 +35,25 @@
 
 	const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 	let today = new Date();
-	console.log('Today: ' +today);
+	console.log('Today: ' + today);
 
 	let myCouncil = typeof(localStorage.getItem('myCouncil')) != "undefined" && localStorage.getItem('myCouncil') !== null ? localStorage.getItem('myCouncil') : 'undefined';
 	localStorage.setItem("myCouncil", myCouncil);
-	console.log(myCouncil);
 
-	function checkCouncil()
-	{
+	function checkCouncil() {
 		let myCouncil = localStorage.getItem('myCouncil');
-		if( myCouncil == 'undefined' )
-		{
+		if (myCouncil == 'undefined') {
 			$('#modalAlert').modal('show');
 			$('#searchForm').hide();
 			changeCouncil();
 		}
 	}
 
-	function changeCouncil()
-	{
+	function changeCouncil() {
 		let myCouncil = localStorage.getItem('myCouncil');
 
 		let mydata = {
-			myCouncil:myCouncil,
+			myCouncil: myCouncil,
 		};
 
 		$.ajax({
@@ -67,11 +72,10 @@
 		});
 	}
 
-	function displayCouncil()
-	{
+	function displayCouncil() {
 		let myCouncil = localStorage.getItem('myCouncil');
 		let mydata = {
-			myCouncil:myCouncil,
+			myCouncil: myCouncil,
 		};
 
 		$.ajax({
@@ -82,14 +86,11 @@
 			success: function(response) {
 				let trimResponse = response.trim();
 				let responseLen = trimResponse.length;
-				if( responseLen > 4 )
-				{
+				if (responseLen > 4) {
 					$('#showMyCouncil').html(response);
-					$('#navCouncil').html('['+response+']');
+					$('#navCouncil').html('[' + response + ']');
 					$('#searchForm').show();
-				}
-				else
-				{
+				} else {
 					$('#showMyCouncil').html('<em><strong>None selected.</strong></em>');
 				}
 
@@ -106,38 +107,33 @@
 		let myCouncil = localStorage.getItem('myCouncil');
 
 		let mydata = {
-			myCouncil:myCouncil,
+			myCouncil: myCouncil,
 		};
 
 		$.ajax({
-			url: 		"jquery/jq_" + thisPage + "_display.php?"+ marker,
-			method: 	"POST",
-			dataType:	"text",
-			data: 		JSON.stringify(mydata),
-			success:	function(response)
-			{
+			url: "jquery/jq_" + thisPage + "_display.php?" + marker,
+			method: "POST",
+			dataType: "text",
+			data: JSON.stringify(mydata),
+			success: function(response) {
 				$('#displayResults').html(response);
 			},
-			error: function(response)
-			{
+			error: function(response) {
 				console.log('ERROR: ' + response);
 			}
 		});
 	}
 
-	function refreshPage()
-	{
+	function refreshPage() {
 		$('.tooltip').remove();
 		refreshAjax();
 		console.log('refreshing ====>');
-		console.log(myCouncil);
 
-		getList();
 		checkCouncil();
 		displayCouncil();
+		getList();
 
-		$(document).ajaxComplete(function(e)
-		{
+		$(document).ajaxComplete(function(e) {
 			// let totalCnt = $('#totalCnt').val();
 			// if( totalCnt >= 1 )
 			// {
@@ -157,25 +153,22 @@
 		//! ===========>> LISTENERS
 		//! ===========>> LISTENERS
 		//! ===========>> LISTENERS
-		$(document).on('click', '#clearAll', function(e)
-		{
+		$(document).on('click', '#clearAll', function(e) {
 			clearAll();
 		});
 
 
 		//! ===========>> changeMyCouncil
-		$(document).on('click', '#changeCouncil', function(e)
-		{
+		$(document).on('click', '#changeCouncil', function(e) {
 			changeCouncil();
 		});
 		//! ===========>> changeMyCouncil
 
 		//! ===========>> changeMyCouncilClick
-		$(document).on('click', '.council-change-btn', function(e)
-		{
+		$(document).on('click', '.council-change-btn', function(e) {
 			localStorage.removeItem("myCouncil");
 			let thisData = $(this).data('info');
-			localStorage.setItem("myCouncil",thisData);
+			localStorage.setItem("myCouncil", thisData);
 			refreshPage();
 		});
 		//! ===========>> changeMyCouncilClick
@@ -184,5 +177,6 @@
 	});
 </script>
 
-<?php  // ** Lampkin 2024 ** // ?>
+<?php  // ** Lampkin 2024 ** //
+?>
 <?php require "includes/footer.php"; ?>

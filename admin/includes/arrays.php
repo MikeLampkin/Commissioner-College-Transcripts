@@ -1,4 +1,7 @@
 <?php
+//! Commissioner Arrays
+//! Version 1.0
+
 	$table_array = array(
 		'admin_levels',
 		'admin_msg',
@@ -30,6 +33,14 @@
 
 	$users_awards_fields_array = ['user_basic','user_arrowhead','user_comm_key','user_distinguished','user_excellence','user_bcs','user_mcs','user_dcs'];
 
+	$degree_award_array = array(
+		"user_bcs" => "Bachelors Degree",
+		"user_mcs" => "Masters Degree",
+		"user_dcs" => "Doctorate Degree",
+		"user_arrowhead" => "Arrowhead Honor",
+		"user_distinguished" => "Distinguished Commissioner",
+		"user_comm_key" => "Commissioner Key"
+	);
 
 	$selector_array = array(
 		'status' => 'Status',

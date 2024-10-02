@@ -1,22 +1,53 @@
 <?php
-	$waiting_list_fields_array = query('getColumns', 'waiting_list', $db_name, '', '', '');
+//! Commissioner Arrays
+//! Version 1.0
 
+	$table_array = array(
+		'admin_levels',
+		'admin_msg',
+		'admin_users',
+		'attempts',
+		'colors',
+		'courses',
+		'deans',
+		'degree_team',
+		'degree_notifications',
+		'districts',
+		'download_links',
+		'events',
+		'thesis',
+		'transcripts',
+		'transcripts_safety',
+		'users',
+		'waiting_list',
+	);
+	foreach( $table_array AS $key => $value )
+	{
+		$array_name = $value . '_fields_array';
+		$$array_name = query('getColumns', $value, $db_name, '', '', '');
+	}
 
-	$users_fields_array = query('getColumns', 'users', $db_name, '', '', '');
-	$events_fields_array = query('getColumns', 'events', $db_name, '', '', '');
-	$courses_fields_array = query('getColumns', 'courses', $db_name, '', '', '');
-	$transcripts_fields_array = query('getColumns', 'transcripts', $db_name, '', '', '');
-
+	$awards_fields_array = query('getColumns', 'awards', 'master', '', '', '');
 	$councils_fields_array = query('getColumns', 'councils', 'master', '', '', '');
-?>
+	$positions_fields_array = query('getColumns', 'positions', 'master', '', '', '');
 
-<?php
+	$users_awards_fields_array = ['user_basic','user_arrowhead','user_comm_key','user_distinguished','user_excellence','user_bcs','user_mcs','user_dcs'];
 
-$pepper = 'trustworthyloyalhelpfulfriendlycourteouskindobedientthriftybravecleanreverend';
-$pepper_array = array('trustworthy','loyal','helpful','friendly','courteous','kind','obedient','cheerful','thrifty','brave','clean','reverent');
+	$degree_award_array = array(
+		"user_bcs" => "Bachelors Degree",
+		"user_mcs" => "Masters Degree",
+		"user_dcs" => "Doctorate Degree",
+		"user_arrowhead" => "Arrowhead Honor",
+		"user_distinguished" => "Distinguished Commissioner",
+		"user_comm_key" => "Commissioner Key"
+	);
 
-?>
-<?php
+	$selector_array = array(
+		'status' => 'Status',
+		'deceased' => 'Deceased',
+		'live' => 'Data',
+
+	);
 //# -------- PERMANENT -----------------------------================
 $yesno_array = array(
 'yes' => 'Yes',
@@ -33,31 +64,6 @@ $month_array = array('1'=>'January','2'=>'February','3'=>'March','4'=>'April','5
 $admin_msg_fields_array = query('getColumns','admin_msg', $db_name, '', '', '');
 $admin_users_fields_array = query('getColumns','admin_users', $db_name, '', '', '');
 
-$admin_users_display_array = array(
-	'full_name'		=> 'Name',
-	'admin_email' 	=> 'Email',
-	'admin_userID' 	=> 'User ID',
-);
-
 $admin_levels_fields_array = query('getColumns','admin_levels', $db_name, '', '', '');
-$admin_levels_display_array = array('level_ID'=>'ID');
-$admin_sql = "
-SELECT *
-FROM `admin_levels`
-ORDER BY `level_code`
-";
-$admin_results = mysqli_query($con,$admin_sql);
-$admin_cnt=0;$admin_cnt = @mysqli_num_rows($admin_results);
-while( $row = mysqli_fetch_assoc($admin_results) )
-{
-	$level_name = $row['level_name'];
-	$level_code = $row['level_code'];
-	$level_icon = $row['level_icon'];
-	$admin_level_array[$level_name] = $level_code . '|' . $level_icon;
-	$admin_level_form_array[$level_code] = ucfirst($level_name);
-}
-
 $colors_fields_array = query('getColumns','colors', $db_name, '', '', '');
-
-
 ?>

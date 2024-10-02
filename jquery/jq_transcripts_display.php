@@ -250,13 +250,13 @@ if ($select_user > '0')
 	color: blue;
 }
 </style>
-<div class="col-12 mx-auto my-2 p-4 border border-dark rounded-lg">
+<div class="col-12 mx-auto my-2 p-0">
 
-	<div class="row m-0 p-0">
-		<div class="col">
+	<div class="row m-0 mt-3 p-0 border-top border-success ">
+		<div class="col mt-3">
 			<h3 class="mx-auto mb-2">Current Transcripts for:  <span class="text-success"><?php echo $user_name; ?> </span></h3>
 		</div>
-		<div class="col-md-auto text-end text-end" id="view_empty_box">
+		<div class="col-md-auto mt-3 text-end text-end" id="view_empty_box">
 			<div class="form-check form-switch">
 				<input class="form-check-input" type="checkbox" role="switch" id="viewEmpty" <?php if($view_empty == 'yes') {echo' checked';} ?> >
 				<label class="form-check-label" for="viewEmpty">View empty courses.</label>
