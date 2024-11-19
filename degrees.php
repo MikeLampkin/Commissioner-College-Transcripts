@@ -65,9 +65,6 @@ foreach( $degree_award_array AS $award_key => $award_term )
 	let selectDegree = typeof(sessionStorage.getItem('selectDegree')) != "undefined" && sessionStorage.getItem('selectDegree') !== null ? sessionStorage.getItem('selectDegree') : 'bcs';
 	sessionStorage.setItem("selectDegree", selectDegree);
 
-	console.log('1selectDegree: ' +selectDegree);
-
-
 	function checkCouncil() {
 		let myCouncil = localStorage.getItem('myCouncil');
 		if (myCouncil == 'undefined') {
@@ -139,8 +136,6 @@ foreach( $degree_award_array AS $award_key => $award_term )
 		let marker = Math.floor(randomNumber(0, 255));
 		let myCouncil = localStorage.getItem('myCouncil');
 		let selectDegree = sessionStorage.getItem('selectDegree');
-
-		console.log('selectDegree: ' +selectDegree);
 		let mydata = {
 			myCouncil: myCouncil,
 			selectDegree: selectDegree,

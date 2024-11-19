@@ -150,30 +150,6 @@ function getAdminLevelIcon($id)
 	return $data;
 }
 
-function lastCCS($userID)
-{
-	$data = 'None';
-	global $con;
-	$sql = "
-	SELECT MAX(`transcript_year`) AS `max_year`
-	FROM `transcripts`
-	WHERE 1=1
-	AND `transcript_year` <> '9999'
-	AND `transcript_user_ID` = '" . $userID . "'
-	";
-	$results = mysqli_query($con,$sql);
-	$cnt = mysqli_num_rows($results) ?? 0;
-	if( $cnt > 0 )
-	{
-		while( $row = mysqli_fetch_assoc($results) )
-		{
-			$max_year = $row['max_year'];
-			$data = $max_year !== '9999' && $max_year > '1969' ? $max_year : 'none';
-		}
-	}
-	return $data;
-}
-
 function getDistrictName($id)
 {
 	$data = '';
@@ -261,4 +237,156 @@ function getCourseNameFull($id)
 	}
 	return $data;
 }
+
+
+
+function lastCCS($userID)
+{
+	$data = 'None';
+	global $con;
+	$sql = "
+	SELECT MAX(`transcript_year`) AS `max_year`
+	FROM `transcripts`
+	WHERE 1=1
+	AND `transcript_year` <> '9999'
+	AND `transcript_user_ID` = '" . $userID . "'
+	";
+	$results = mysqli_query($con,$sql);
+	$cnt = mysqli_num_rows($results) ?? 0;
+	if( $cnt > 0 )
+	{
+		while( $row = mysqli_fetch_assoc($results) )
+		{
+			$max_year = $row['max_year'];
+			$data = $max_year !== '9999' && $max_year > '1969' ? $max_year : 'none';
+		}
+	}
+	return $data;
+}
+
+
+function lastDegree($userID)
+{
+	global $con, $con_shac;
+
+	$data = '<em>none</em>';
+	$sql = "
+	SELECT *
+	FROM `users`
+	WHERE `user_ID` = '" . $userID . "'
+	";
+	$results = mysqli_query($con,$sql);
+	$cnt=0; $cnt = mysqli_num_rows($results);
+	if($cnt > 0 )
+	{
+		while ($row = mysqli_fetch_assoc($results))
+		{
+			$user_bcs = $row['user_bcs'];
+			$user_mcs = $row['user_mcs'];
+			$user_dcs = $row['user_dcs'];
+		}
+	}
+
+	if( $user_dcs > 0 && strlen($user_dcs) > 3 )
+	{
+		$data = 'DCS: ' . $user_dcs;
+	}
+	elseif( $user_mcs > 0 && strlen($user_mcs) > 3 )
+	{
+		$data = 'MCS: ' . $user_mcs;
+	}
+	elseif( $user_bcs > 0 && strlen($user_bcs) > 3 )
+	{
+		$data = 'BCS: ' . $user_bcs;
+	}
+
+	return $data;
+}
+
+function nextPrereq($userID)
+{
+	global $con, $con_shac;
+
+	$data = '';
+	$sql = "
+	SELECT *
+	FROM `users`
+	WHERE `user_ID` = '" . $userID . "'
+	";
+	$results = mysqli_query($con,$sql);
+	$cnt=0; $cnt = mysqli_num_rows($results);
+	if($cnt > 0 )
+	{
+		while ($row = mysqli_fetch_assoc($results))
+		{
+			$user_basic = $row['user_basic'];
+			$user_arrowhead = $row['user_arrowhead'];
+			$user_comm_key = $row['user_comm_key'];
+			$user_distinguished = $row['user_distinguished'];
+		}
+	}
+
+	if( $user_basic > 0 && strlen($user_basic) < 3 )
+	{
+		$data = 'Comm Basic';
+	}
+	elseif( $user_arrowhead > 0 && strlen($user_arrowhead) < 3 )
+	{
+		$data = 'Arrowhead';
+	}
+	elseif( $user_comm_key > 0 && strlen($user_comm_key) < 3 )
+	{
+		$data = 'Comm Key';
+	}
+	// elseif( strlen($user_distinguished) > 3 )
+	// {
+	// 	$data = 'Dist Comm';
+	// }
+
+	return $data;
+}
+
+
+function registeredCCS($userbsaID,$ln,$fn,$em)
+{
+	global $con, $con_shac;
+	$thisYear = date('Y');
+	// $data = '<span class="text-danger"> <i class="fa-solid fa-circle-xmark"></i> No </span>';
+	$data = 'No';
+
+	if( $userbsaID > 0 && strlen($userbsaID) > 4 )
+	{
+		$sql = "
+		SELECT *
+		FROM `attendees`
+		WHERE `user_year` = '" . $thisYear . "'
+		AND `user_bsaID` = '" . $userbsaID . "'
+		";
+		$results = mysqli_query($con,$sql);
+		$cnt=0; $cnt = mysqli_num_rows($results);
+		if($cnt < 1 )
+		{
+			$asql = "
+			SELECT *
+			FROM `attendees`
+			WHERE `user_year` = '" . $thisYear . "'
+			AND LOWER(`user_email`) LIKE '%" . strtolower($em) . "%'
+			";
+			$aresults = mysqli_query($con,$asql);
+			$acnt=0; $acnt = mysqli_num_rows($aresults);
+				if($acnt > 1 )
+				{
+					// $data = '<span class="text-success"><i class="fa-solid fa-badge-check"></i> Yes </span>';
+					$data = 'yes';
+				}
+		}
+		else
+		{
+			// $data = '<span class="text-success"><i class="fa-solid fa-badge-check"></i> Yes </span>';
+			$data = 'yes';
+		}
+	}
+	return $data;
+}
+
 ?>

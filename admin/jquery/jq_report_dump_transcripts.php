@@ -109,7 +109,7 @@
 		foreach ($courses_fields_array as $key => $value) {
 			$$value = $row[$value];
 		}
-		$council_course_array[$course_ID] = $course_type . '\n' . $course_code;
+		$council_course_array[$course_ID] = $course_type . ' ' . $course_code;
 	}
 
 	$header_array = array();

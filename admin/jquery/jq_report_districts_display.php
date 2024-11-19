@@ -8,8 +8,8 @@
 	include 	 $config_arrays;
 	include 	 $config_functions_custom;
 
-	$db_table 	= 'reports';
-	$pg_name 	= 'reports';
+	$db_table 	= 'users';
+	$pg_name 	= 'report_districts';
 	$var_ID 	= 'file_ID';
 	$var_active = 'file_active';
 	$default_sort = 'file_email';
@@ -22,8 +22,6 @@
 
 	$type_array = array(
 		'districts' => 'Districts',
-		'users' => 'Users',
-		'transcripts' => 'Transcripts',
 	);
 
 	$data = file_get_contents("php://input");
@@ -37,11 +35,12 @@
 	$clean_dir = array_diff(scandir($full_path_dir,1), array('HOLD','..', '.','.DS_Store','index.php'));
 	$clean_dir_cnt = count($clean_dir);
 
+	$display_results .= '<div class="">' . $admin_council_select . '</div>';
 	$display_results .= '<div class="row mt-3">';
 
 	foreach( $type_array AS $type_key => $type_value )
 	{
-		$display_results .= '<div class="col-md-12">';
+		$display_results .= '<div class="col-md-6">';
 		$display_results .= '<h4>' . $type_value . '</h4>';
 		$display_results .= '<table class="table table-striped table-bordered table-hover table-sm">';
 			$display_results .= '<thead class="table-dark">';
@@ -55,34 +54,29 @@
 			$display_results .= '<tbody>';
 
 			$x=0;
-			if( count($clean_dir) > 0 )
+			foreach ($clean_dir as $key => $file_name)
 			{
-				foreach ($clean_dir as $key => $file_name)
+				if( strpos($file_name,$type_key) )
 				{
-					if( strpos($file_name,$type_key) )
-					{
-						$file_name_array = explode('_',$file_name);
-							$file_council_id = trim($file_name_array[0]);
-							// $file_size = prettyFilesize($full_path_file);
+					$file_name_array = explode('_',$file_name);
+						$file_council_id = trim($file_name_array[0]);
+						// $file_size = prettyFilesize($full_path_file);
 
-							$file_link = file_exists('/var/www/html/admin/reports/' . $file_name) ? '<a href="reports/' . $file_name . '" download>' . $file_name . '</a>' : $file_name;
+						$file_link = file_exists('/var/www/html/admin/reports/' . $file_name) ? '<a href="reports/' . $file_name . '" download>' . $file_name . '</a>' : $file_name;
 
-							$file_size = file_exists('/var/www/html/admin/reports/' . $file_name) ? '<small>'. sizeOfFile(filesize('/var/www/html/admin/reports/' . $file_name)) . '</small>' : '0';
+						$file_size = file_exists('/var/www/html/admin/reports/' . $file_name) ? '<small>'. sizeOfFile(filesize('/var/www/html/admin/reports/' . $file_name)) . '</small>' : '0';
 
-							$file_date = file_exists('/var/www/html/admin/reports/' . $file_name) ? '<small>'. date('M d, Y - g:i a',filemtime('/var/www/html/admin/reports/' . $file_name)) . '</small>' : '0';
+						$file_date = file_exists('/var/www/html/admin/reports/' . $file_name) ? '<small>'. date('M d, Y - g:i a',filemtime('/var/www/html/admin/reports/' . $file_name)) . '</small>' : '0';
 
-							$bold_marker = $x==0 ? 'fw-bold' : '';
-							$display_results .= '<tr>';
-							$display_results .= '<td class="' . $bold_marker . '">' . $file_link . '</td>';
-							$display_results .= '<td class="' . $bold_marker . '">' . $file_size . '</td>';
-							$display_results .= '<td class="' . $bold_marker . '">' . $file_date . '</td>';
-							$display_results .= '<td class=""><button type="button" class="btn btn-danger btn-xs delete-file-button" data-file="' . $file_name . '" ><i class="fas fa-trash-alt"></i></button></td>';
-							$display_results .= ' </tr>';
-							$x++;
-					}
+						$bold_marker = $x==0 ? 'fw-bold' : '';
+						$display_results .= '<tr>';
+						$display_results .= '<td class="' . $bold_marker . '">' . $file_link . '</td>';
+						$display_results .= '<td class="' . $bold_marker . '">' . $file_size . '</td>';
+						$display_results .= '<td class="' . $bold_marker . '">' . $file_date . '</td>';
+						$display_results .= '<td class=""><button type="button" class="btn btn-danger btn-xs delete-file-button" data-file="' . $file_name . '" ><i class="fas fa-trash-alt"></i></button></td>';
+						$display_results .= ' </tr>';
+						$x++;
 				}
-			} else {
-				$display_results .= '<tr><td colspan="4"><strong><em>No reports available.</em></strong></td></tr>';
 			}
 			$display_results .= '</tbody>';
 			$display_results .= '</table>';

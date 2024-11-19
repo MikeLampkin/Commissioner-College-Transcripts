@@ -37,11 +37,11 @@ $degree_pg_array = array(
 
 $reports_pg_array = array(
 	'report_dump' 				=> 'Report: Dump|200|<i class="fa-solid fa-file-alt"></i>',
-	'report_users_per_course' 	=> 'Report: Users|200|<i class="fa-solid fa-file-alt"></i>',
-	'report_attendees' 			=> 'Report: Attendees|200|<i class="fa-solid fa-file-alt"></i>',
-	'report_years' 				=> 'Report: Degree by Year|200|<i class="fa-solid fa-file-alt"></i>',
-	'report_districts' 			=> 'Report: District|200|<i class="fa-solid fa-file-alt"></i>',
-	'report_rosters' 			=> 'Report: Rosters|200|<i class="fa-solid fa-file-alt"></i>',
+	// 'report_users_per_course' 	=> 'Report: Users|200|<i class="fa-solid fa-file-alt"></i>',
+	// 'report_attendees' 			=> 'Report: Attendees|200|<i class="fa-solid fa-file-alt"></i>',
+	// 'report_years' 				=> 'Report: Degree by Year|200|<i class="fa-solid fa-file-alt"></i>',
+	// 'report_districts' 			=> 'Report: District|200|<i class="fa-solid fa-file-alt"></i>',
+	// 'report_rosters' 			=> 'Report: Rosters|200|<i class="fa-solid fa-file-alt"></i>',
 );
 
 

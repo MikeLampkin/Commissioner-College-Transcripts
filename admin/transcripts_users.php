@@ -70,8 +70,8 @@
 		'active' : 'user_active'
 	};
 
-	let transcriptsUser = typeof(localStorage.getItem('transcriptsUser')) != "undefined" && localStorage.getItem('transcriptsUser') != null ? localStorage.getItem('transcriptsUser') : '';
-	localStorage.setItem("transcriptsUser",transcriptsUser);
+	let transcriptsUser = typeof(sessionStorage.getItem('transcriptsUser')) != "undefined" && sessionStorage.getItem('transcriptsUser') != null ? sessionStorage.getItem('transcriptsUser') : '';
+	sessionStorage.setItem("transcriptsUser",transcriptsUser);
 	// $('#transcripts_user').val(transcriptsUser);
 
 	let deceasedSelect = typeof(localStorage.getItem('deceasedSelect')) != "undefined" && localStorage.getItem('deceasedSelect') != null ? localStorage.getItem('deceasedSelect') : 'no';
@@ -160,7 +160,7 @@
 	function getUserSelector() {
 		let marker = Math.floor(randomNumber(0, 255));
 
-		let transcriptsUser = localStorage.getItem('transcriptsUser');
+		let transcriptsUser = sessionStorage.getItem('transcriptsUser');
 
 		let activeSelect = localStorage.getItem('activeSelect');
 		let statusSelect = localStorage.getItem('statusSelect');
@@ -200,7 +200,7 @@
 	function getTranscript() {
 		let marker = Math.floor(randomNumber(0, 255));
 
-		let transcriptsUser = localStorage.getItem('transcriptsUser');
+		let transcriptsUser = sessionStorage.getItem('transcriptsUser');
 
 		let activeSelect = localStorage.getItem('activeSelect');
 		let statusSelect = localStorage.getItem('statusSelect');
@@ -278,8 +278,8 @@
 		//! ===========>> transcriptsUser
 		$(document).on("change", '#transcripts_user', function(e) {
 			let transcriptsUser = $(this).val();
-			localStorage.removeItem('transcriptsUser');
-			localStorage.setItem('transcriptsUser',transcriptsUser);
+			sessionStorage.removeItem('transcriptsUser');
+			sessionStorage.setItem('transcriptsUser',transcriptsUser);
 			refreshPage();
 		});
 		//! ===========>> transcriptsUser

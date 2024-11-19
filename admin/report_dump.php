@@ -16,24 +16,28 @@
 ?>
 
 <div class="alert alert-secondary row">
-	<div id="" class="col-md-3 text-start">
-		<span class="btn btn-primary btn-sm" id="reloadPage"><i class="fa-solid fa-arrows-rotate" id="reloadIcon"></i> Refresh Page</span>
-	</div>
-	<div class="">
+	<div class="col-md-9">
 		<!-- Use this page to export MS Excel files of all of your data. -->
 		<strong> Generate Users Report </strong>: to download a spreadsheet of all user information |
 		<strong> Generate Transcripts Report </strong> to download a spreadsheet of all transcript information
 		<br />
 		Please note that reports are only kept for 30 days. Please download your report once you've generated it.
 	</div>
+	<div id="" class="col-md-3 text-start">
+		<span class="btn btn-primary btn-sm" id="reloadPage"><i class="fa-solid fa-arrows-rotate" id="reloadIcon"></i> Refresh Page</span>
+	</div>
 </div>
 
 <div class="grid text-center">
-	<button type="button" class="g-col-6 btn btn-success" id="usersReport"> Generate Users Report </button>
-	<span class="g-col-6  btn btn-secondary" id="usersReportWait"> Generate Users Report </span>
 
-	<button type="button" class="g-col-6 btn btn-primary" id="transcriptsReport"> Generate Transcripts Report </button>
-	<span class="g-col-6  btn btn-secondary" id="transcriptsReportWait"> Generate Transcripts Report </span>
+	<button type="button" class="g-col-3 btn btn-info" id="districtsReport"> Generate Districts Report </button>
+	<span class="g-col-3  btn btn-secondary" id="districtsReportWait"><i class="fa-solid fa-spinner-scale fa-spin-pulse"></i> Generating Districts Report </span>
+
+	<button type="button" class="g-col-3 btn btn-success" id="usersReport"> Generate Users Report </button>
+	<span class="g-col-3  btn btn-secondary" id="usersReportWait"><i class="fa-solid fa-spinner-scale fa-spin-pulse"></i> Generating Users Report </span>
+
+	<button type="button" class="g-col-3 btn btn-primary" id="transcriptsReport"> Generate Transcripts Report </button>
+	<span class="g-col-3  btn btn-secondary" id="transcriptsReportWait"> <i class="fa-solid fa-spinner-scale fa-spin-pulse"></i> Generating Transcripts Report </span>
 </div>
 
 <div id="displayResults" class="col-md-12">
@@ -130,6 +134,35 @@
 		});
 	}
 
+	function generateDistrictsReport() {
+		let marker = Math.floor(randomNumber(0, 255));
+		let adminCouncilSelect = localStorage.getItem('adminCouncilSelect');
+
+		let mydata = {
+			adminUser:adminUser,
+			adminCouncilSelect:adminCouncilSelect,
+		};
+
+		$.ajax({
+			url: 		"jquery/jq_" + thisPage + "_districts.php?"+ marker,
+			method: 	"POST",
+			dataType:	"text",
+			data: 		JSON.stringify(mydata),
+			success:	function(response)
+			{
+				let trimResponse = response.trim();
+				toastMessage(trimResponse,'');
+				$('#districtsReport').show();
+				$('#districtsReportWait').hide();
+				refreshPage();
+			},
+			error: function(response)
+			{
+				console.log('ERROR: ' + response);
+			}
+		});
+	}
+
 	function deleteFile(file,directory)
 	{
 		let mydata = {
@@ -161,6 +194,8 @@
 		getList();
 		$('#transcriptsReportWait').hide();
 		$('#usersReportWait').hide();
+		$('#districtsReportWait').hide();
+
 	}
 
 	//? ===========>> document ready <<=============
@@ -177,7 +212,7 @@
 			$('#usersReportWait').show();
 			generateUsersReport();
 		});
-		//! ===========>> generateTranscriptsReport
+		//! ===========>> generateUsersReport
 
 		//! ===========>> generateTranscriptsReport
 		$(document).on("click", '#transcriptsReport', function(e) {
@@ -187,6 +222,15 @@
 			generateTranscriptsReport();
 		});
 		//! ===========>> generateTranscriptsReport
+
+		//! ===========>> generateDistrictsReport
+		$(document).on("click", '#districtsReport', function(e) {
+			e.preventDefault();
+			$('#districtsReport').hide();
+			$('#districtsReportWait').show();
+			generateDistrictsReport();
+		});
+		//! ===========>> generateDistrictsReport
 
 		$(document).on("click", '.delete-file-button', function(e) {
 			e.preventDefault();

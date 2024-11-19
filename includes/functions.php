@@ -1,7 +1,7 @@
-<?php // Copyright © 2010-2024 Michael H Lampkin - mike@lampkin.net ?>
-<?php // Nov 2023 ?>
+<?php //! Copyright © 2010-2024 Michael H Lampkin - mike@lampkin.net ?>
+<?php //! Feb 2024 ?>
 
-<?php /* FUNCTIONS 10.0.5 --
+<?php /* FUNCTIONS 10.1.0 --
 
 timeLength
 timeSpan
@@ -35,6 +35,7 @@ fullNameList
 
 userInitialsFromID
 userFullnameFromID
+userFullnameListFromID
 userEmailFromID
 
 cleanPhone
@@ -635,18 +636,18 @@ function userInitialsFromID($var)
 	$response_data = '';
 	if ($var >= '1') {
 		$sql = "
-SELECT *
-FROM `users`
-WHERE `u_ID` = '" . $var . "'
-";
+		SELECT *
+		FROM `users`
+		WHERE `user_ID` = '" . $var . "'
+		";
 		$results = mysqli_query($con, $sql);
 		$cnt = mysqli_num_rows($results);
 			while ($row = mysqli_fetch_assoc($results)) {
 				foreach ($users_fields_array as $key => $value) {
 					$$value = $row[$value];
 				}
-				$f_initial = $u_first_name[0];
-				$l_initial = $u_last_name[0];
+				$f_initial = $user_first_name[0];
+				$l_initial = $user_last_name[0];
 				$response_data = $f_initial . $l_initial;
 			}
 	}
@@ -659,20 +660,40 @@ function userFullnameFromID($var)
 	$response_data = '';
 	if ($var >= '1') {
 		$sql = "
-SELECT *
-FROM `users`
-WHERE `u_ID` = '" . trim($var) . "'
-";
+		SELECT *
+		FROM `users`
+		WHERE `user_ID` = '" . trim($var) . "'
+		";
 		$results = mysqli_query($con, $sql);
 		$cnt = mysqli_num_rows($results);
 			while ($row = mysqli_fetch_assoc($results)) {
 				foreach ($users_fields_array as $key => $value) {
 					$$value = $row[$value];
 				}
-				$status = ($u_status == 'Disabled') ? ' - X' : '';
-				$response_data = fullName($u_prefix, $u_first_name, $u_nick_name, $u_middle_name, $u_last_name, $u_suffix) . $status;
+				$response_data = fullName($user_prefix, $user_first_name, $user_nick_name, $user_middle_name, $user_last_name, $user_suffix);
 			}
+	}
+	return $response_data;
+}
 
+function userFullnameListFromID($var)
+{
+	global $con, $users_fields_array;
+	$response_data = '';
+	if ($var >= '1') {
+		$sql = "
+		SELECT *
+		FROM `users`
+		WHERE `user_ID` = '" . trim($var) . "'
+		";
+		$results = mysqli_query($con, $sql);
+		$cnt = mysqli_num_rows($results);
+			while ($row = mysqli_fetch_assoc($results)) {
+				foreach ($users_fields_array as $key => $value) {
+					$$value = $row[$value];
+				}
+				$response_data = fullNameList($user_prefix, $user_first_name, $user_nick_name, $user_middle_name, $user_last_name, $user_suffix);
+			}
 	}
 	return $response_data;
 }
@@ -684,11 +705,11 @@ function userEmailFromID($id)
 	$sql = "
 SELECT *
 FROM `users`
-WHERE `u_ID` = '" . $id . "'
+WHERE `user_ID` = '" . $id . "'
 ";
 	$results = mysqli_query($con, $sql);
 	while ($row = mysqli_fetch_assoc($results)) {
-		$response_data = $row['u_email'];
+		$response_data = $row['user_email'];
 	}
 	return $response_data;
 }

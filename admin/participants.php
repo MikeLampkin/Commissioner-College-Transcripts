@@ -87,8 +87,8 @@
 		'data' : 'user_active'
 	};
 
-	let searchTerms = typeof(localStorage.getItem('searchTerms')) != "undefined" && localStorage.getItem('searchTerms') != null ? localStorage.getItem('searchTerms') : '';
-	localStorage.setItem("searchTerms",searchTerms);
+	let searchTerms = typeof(sessionStorage.getItem('searchTerms')) != "undefined" && sessionStorage.getItem('searchTerms') != null ? sessionStorage.getItem('searchTerms') : '';
+	sessionStorage.setItem("searchTerms",searchTerms);
 	$('#search_terms').val(searchTerms);
 
 	let deceasedSelect = typeof(localStorage.getItem('deceasedSelect')) != "undefined" && localStorage.getItem('deceasedSelect') != null ? localStorage.getItem('deceasedSelect') : 'no';
@@ -101,7 +101,7 @@
 	localStorage.setItem("dataSelect",dataSelect);
 
 	function displaySearchTerms() {
-		let searchTerms = localStorage.getItem('searchTerms') ?? '';
+		let searchTerms = sessionStorage.getItem('searchTerms') ?? '';
 		$('#search_terms').val(searchTerms);
 	}
 
@@ -178,7 +178,7 @@
 
 	function getList() {
 		let marker = Math.floor(randomNumber(0, 255));
-		let searchTerms = localStorage.getItem('searchTerms');
+		let searchTerms = sessionStorage.getItem('searchTerms');
 		// let pgActive = localStorage.getItem('pgActive');
 		let limitNum = localStorage.getItem('limitNum');
 		let pgNum = localStorage.getItem('pgNum');
@@ -313,9 +313,9 @@
 		//! ===========>> SEARCH
 		$(document).on("click", '#search_submit', function(e) {
 			e.preventDefault();
-			localStorage.removeItem('searchTerms');
+			sessionStorage.removeItem('searchTerms');
 			let searchTerms = $('#search_terms').val();
-			localStorage.setItem('searchTerms', searchTerms);
+			sessionStorage.setItem('searchTerms', searchTerms);
 			localStorage.removeItem('pgNum');
 			localStorage.setItem('pgNum', 1);
 			refreshPage();
@@ -324,7 +324,7 @@
 
 		//! ===========>> clearBtn --- This clears ONLY the search settings
 		$(document).on("click", '#search_clear', function(e) {
-			localStorage.removeItem('searchTerms');
+			sessionStorage.removeItem('searchTerms');
 			localStorage.removeItem('pgNum');
 			localStorage.setItem('pgNum', 1);
 			refreshPage();

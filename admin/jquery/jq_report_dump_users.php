@@ -75,7 +75,6 @@
 	$header_array = array();
 	$userdata_array = array();
 
-
 	foreach( $users_report_fields_array AS $key => $value )
 	{
 		$header_array[] = $value;
@@ -85,7 +84,6 @@
 	SELECT *
 	FROM `users`
 	WHERE `user_council_ID` = '" . $admin_council_select . "'
-	LIMIT 10
 	";
 	// echo nl2br($sql) . '<br />';
 	$results = mysqli_query($con,$sql);
@@ -99,15 +97,13 @@
 				$$value = $row[$value];
 			}
 
-			$user_district = 'test';
+			$user_district = getDistrictName($user_district_ID);
 
 			foreach( $users_report_fields_array AS $key => $value )
 			{
 				$row_array[] = $$key;
 			}
-
 			$userdata_array[] = $row_array;
-
 		}
 	}
 
